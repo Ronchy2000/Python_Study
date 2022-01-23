@@ -1,0 +1,10 @@
+C,h,i,n,a
+China
+A,m,e,r,i,c,a
+America
+R,u,s,s,i,a
+Russia
+J,a,p,a,n
+Japan
+K,o,r,e,a
+Korea

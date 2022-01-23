@@ -1,0 +1,5 @@
+import requests
+url='http://zhihu.com'
+response = requests.get(url)
+user_agent=
+print(response.content)

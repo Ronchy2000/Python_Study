@@ -1,0 +1,10 @@
+opencv中文文档：http://www.woshicver.com/
+
+车道线检测①：https://zhuanlan.zhihu.com/p/52623916
+
+车道线检测②：https://zhuanlan.zhihu.com/p/54866418
+
+
+pip install opencv -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
