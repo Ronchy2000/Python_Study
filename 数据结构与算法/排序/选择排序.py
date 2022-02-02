@@ -4,6 +4,8 @@
 # @Email   : rongqi1949@gmail.com
 # @File    : 选择排序.py
 # @Software: PyCharm
+# 从小到大排序
+'''
 def select_sort_simple(li):
     li_new = []
     for i in range(len(li)):
@@ -17,11 +19,14 @@ print(li)
 # print(select_sort_simple(li))
 
 
+
 def select_sort(li):
-     for i in range(len(li) - 1):   #i是第几趟
-         for j in range(i+1,len(li)):
+     for i in range( len(li)-1 ):   #i是第几趟
+        #认为i即是最小的数
+         for j in range(i+1,len(li)): #无序区
              if li[j] > li[i]:
                  li[j],li[i] = li[i],li[j]
 print(select_sort(li))
+'''
 
 
