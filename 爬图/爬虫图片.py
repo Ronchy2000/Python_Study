@@ -22,7 +22,7 @@ dir_name = re.findall('<img .*? alt="(.*?)" .*?>',html)[-1]
 if not os.path.exists(dir_name):
     os.mkdir(dir_name)
 
-urls = re.findall('<img src="(.*?)" data-pic=".*?" .*?>',html)
+urls = re.findall('<img src="(.*?)" work-pic=".*?" .*?>',html)
 print(urls)
 for url in urls:
     url = 'http://pic.netbian.com' + url

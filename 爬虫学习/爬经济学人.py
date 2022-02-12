@@ -28,7 +28,7 @@ print(response.text)
 ###匹配next url！  没配到！
 # #urls1= re.findall('<a class=".*?" href="(.*?)" one-link-mark="yes">Next</a>',html)
 # #print(urls1)
-urls2=re.findall('<a href="(.*?)" target="_blank" one-link-mark="yes"><img src="https://magazinelib.com/wp-includes/images/media/default.png" height="21" class="lazyloaded" data-ll-status="loaded"><noscript><img src="https://magazinelib.com/wp-includes/images/media/default.png" height="21" /></noscript>The Economist USA - January 16, 2021.pdf</a>',html)
+urls2=re.findall('<a href="(.*?)" target="_blank" one-link-mark="yes"><img src="https://magazinelib.com/wp-includes/images/media/default.png" height="21" class="lazyloaded" work-ll-status="loaded"><noscript><img src="https://magazinelib.com/wp-includes/images/media/default.png" height="21" /></noscript>The Economist USA - January 16, 2021.pdf</a>',html)
 <a href="https://vk.com/doc527052285_584513323?hash=4564574f949fc7232c&amp;dl=GQZDGNBSGQ2DGNQ:1611052426:dbe748ba96ef0cbbbe&amp;api=1&amp;no_preview=1" target="_blank" one-link-mark="yes"> <img src="https://magazinelib.com/wp-includes/images/media/default.png" height="21" class="lazyloaded" data-ll-status="loaded"><noscript><img src="https://magazinelib.com/wp-includes/images/media/default.png" height="21" /></noscript>The Economist USA - January 16, 2021.pdf</a>
 print(urls2)
 # for url in urls:

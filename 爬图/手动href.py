@@ -37,7 +37,7 @@ while i < 100:
         response_2 = requests.get(url=url, headers=headers)
     #    print(response_2.request.headers)
         html_2 = response_2.text
-        url_2  = re.findall('<img src="(.*?)" data-pic=".*?" .*?>',html_2)
+        url_2  = re.findall('<img src="(.*?)" work-pic=".*?" .*?>',html_2)
         for url_3 in url_2:
             url_3  = 'http://pic.netbian.com' + url_3
     #        time.sleep(0.1)
