@@ -2,3 +2,5 @@
 .idea
 .idea/target/
 .pytest_cache
+.gitattributes
+
