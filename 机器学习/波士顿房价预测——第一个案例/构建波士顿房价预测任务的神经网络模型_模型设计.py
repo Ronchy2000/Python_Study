@@ -52,9 +52,10 @@ class Network():
 #模型设计完成后，需要通过训练配置寻找模型的最优值
     #通过损失函数来衡量模型的好坏——方差
     def loss(self, z, y):
+        #z为预测值矩阵，y为真实值矩阵。  z-y =error
         error = z - y
         cost = error **2
-        cost = np.mean(cost)
+        cost = np.mean(cost)  #得到整体的loss
         return cost
 
 net = Network(13)
@@ -77,18 +78,64 @@ losses = np.zeros([len(w5), len(w9)])
 
 #计算设定区域内每个参数取值所对应的Loss
 for i in range(len(w5)):
-    for j in range(len(w9)):
+    for j in range(len(w9)): 
         net.w[5] = w5[i]
         net.w[9] = w9[j]
         z = net.forward(x)
         loss = net.loss(z, y)
         losses[i, j] = loss
 
+##画图
+# fig = plt.figure()
+# ax = Axes3D(fig)
+#
+# w5, w9 = np.meshgrid(w5, w9)
+#
+# ax.plot_surface(w5, w9, losses, rstride=1, cstride=1, cmap='rainbow')
+# plt.show()
 
-fig = plt.figure()
-ax = Axes3D(fig)
 
-w5, w9 = np.meshgrid(w5, w9)
+x1 = x[0]
+y1 = y[0]
+z1 = net.forward(x1)
+# print('x1{},shape{}'.format(x1,x1.shape))
+# print('y1{},shape{}'.format(y1,y1.shape))
+# print('z1{},shape{}'.format(z1,z1.shape))
 
-ax.plot_surface(w5, w9, losses, rstride=1, cstride=1, cmap='rainbow')
-plt.show()
+#计算梯度
+# gradient_w0 = (z1-y1)*x1[0]
+# print('gradient_w0{}'.format(gradient_w0))
+
+# gradient_w1 = (z1-y1)*x1[1]
+# print('gradient_w1{}'.format(gradient_w1))
+#不需要两层for循环
+#num 广播机制！扩展参数的维度
+# gradient_w = (z1-y1)*x1
+# print('gradient_w{0},gradient.shape{1}'.format(gradient_w,gradient_w.shape))
+# #扩展样本的维度
+# x3samples = x[0:]
+# y3samples = y[0:]
+# z3samples = net.forward(x3samples)
+#
+# gradient_w = (z3samples-y3samples)*x3samples
+# print('gradient_w{0},gradient{1}'.format(gradient_w,gradient_w.shape))
+
+
+#广播机制可以把矩阵直接运算！
+z = net.forward(x)
+gradient_w = (z-y)*x
+print('gradiient_w:',gradient_w)
+print('未执行mean操作 gradient shape{0}'.format(gradient_w.shape))
+print('w',net.w.shape)
+#404个样本，对同一个参数的作用合并。
+print('--------------执行mean操作--------------')
+gradient_w = np.mean(gradient_w,axis = 0)
+print('已执行mean操作 gradient shape{0}'.format(gradient_w.shape))
+print('w',net.w.shape)
+print(gradient_w)
+print(net.w)
+#发现 上矩阵 互为转置
+gradient_w = gradient_w[:,np.newaxis]
+print('newaxis',gradient_w.shape)
+gradient_b = z-y
+gradient_b = np.mean(gradient_b)
