@@ -12,6 +12,7 @@ a ,b = 1,1
 print(a,end='\n')
 print(b,end='\n')
 while(1):
+    #第三位
     c = a+b
     a = b
     b = c

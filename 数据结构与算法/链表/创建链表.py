@@ -9,7 +9,7 @@ class Node():
         self.val = val
         self.next = next
 
-class LinkedList():
+class SingleLinkedList():
     def __init__(self):
         self.head = Node()
         self.size = 0
@@ -22,7 +22,7 @@ class LinkedList():
     def len(self):
         return self.size
 
-ll = LinkedList()
+ll = SingleLinkedList()
 ll.add_first(5)
 ll.add_first(8)
 print(ll.len())
