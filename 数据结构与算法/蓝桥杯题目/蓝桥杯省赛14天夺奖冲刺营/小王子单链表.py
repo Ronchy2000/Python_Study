@@ -34,25 +34,18 @@ class Node():
     def __init__(self,value=None,next=None):
         self.value = value
         self.next = next
+def creat_linklist():
+    head = Node()
+    for i in range(1,11):
+        node = Node(i)
+        node.next = head.next
+        head.next = node
+    return head
+def print_linklist(ll):
+    while ll:
+        print(ll.value,end='\n')
+        ll = ll.next
 
-def creatSingalLink():
-    root = Node(0)
-    tmp = root  #对象的引用
-    # for i in range(1,11):
-    #     tmp.next = Node(i)
-    #     tmp = tmp.next
-    # tmp.next =None
-    return root
-
-root = creatSingalLink()
-n = Node(66)
-print(n.value)
-nn = n #对象的引用（其实就是对象的别名）
-print(nn.value)
-nn.value = 666
-print(nn.value)
-print(n.value)
-
-# def insert(x,linkedroot):
-#     tmp = Node(x)
-#     tmp.next = root.next
+head = creat_linklist()
+print('head:',head)
+print_linklist(head)
