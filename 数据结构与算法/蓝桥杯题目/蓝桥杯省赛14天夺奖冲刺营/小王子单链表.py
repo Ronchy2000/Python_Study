@@ -81,13 +81,17 @@ def add_front(l,val):
     return node
 # del_ll(head,5)
 M = int(input())
-
+ope = []
 while M:
-    M = M - 1
-    v = int(input())
+    ope.append(int(input()))
+    M = M-1
+while ope:
+    v = ope.pop(0)
+    # v = int(input())
     head = del_ll(head,v)
     head = add_front(head, v)
     print_linklist(head)
+    print('\n')
 
 
 
