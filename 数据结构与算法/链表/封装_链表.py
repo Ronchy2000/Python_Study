@@ -4,6 +4,7 @@
 # @Email   : rongqi1949@gmail.com
 # @File    : 封装_链表.py
 # @Software: PyCharm
+#万门大学教育，python 算法课
 class Node:
     #value
     #next
@@ -30,12 +31,20 @@ class LinkedList:
         r.next = node
         self.size += 1
 
+    def remove(self):
+        #if remove_first:
+
+        #else:
+        pass
+
+    def peek(self,val):#查找
+        pass
+
     def print_linklist(self):
         r = self.head
         while r.next != None:
             r = r.next
             print(r.value,end=' ')
-        print()
 
     def len(self):
         return self.size
