@@ -29,23 +29,68 @@
 4       4 3 2 1 5 6 7 8 9 10
 2       2 4 3 1 5 6 7 8 9 10
 '''
-#利用单链表
+import os
+import sys
+
+
 class Node():
-    def __init__(self,value=None,next=None):
+    def __init__(self, value=None, next=None):
         self.value = value
         self.next = next
+
+#尾插法创建链表
 def creat_linklist():
-    head = Node()
-    for i in range(1,11):
+    head = Node(1)
+    r = head
+    for i in range(2, 11):
         node = Node(i)
-        node.next = head.next
-        head.next = node
+        r.next = node
+        r = node
     return head
+
+
 def print_linklist(ll):
     while ll:
-        print(ll.value,end='\n')
+        print(ll.value,end=' ')
         ll = ll.next
 
 head = creat_linklist()
-print('head:',head)
-print_linklist(head)
+# print_linklist(head)
+def find_ll(ll,find_val):
+    while ll:
+        if ll.value == find_val:
+            return True
+        ll = ll.next
+    return False
+
+def del_ll(l,val):#没办法删 头
+    ll = l
+    while ll.next != None:
+        if ll.value == val: #头就是查找的元素
+            l = ll.next
+            return l
+        if ll.next.value == val:
+            ll.next = ll.next.next
+        else:
+            ll = ll.next
+    return l
+
+def add_front(l,val):
+    node = Node(val)
+    node.next = l
+    return node
+# del_ll(head,5)
+M = int(input())
+
+while M:
+    M = M - 1
+    v = int(input())
+    head = del_ll(head,v)
+    head = add_front(head, v)
+    print_linklist(head)
+
+
+
+
+
+
