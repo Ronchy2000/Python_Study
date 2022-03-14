@@ -4,6 +4,7 @@
 # @Email   : rongqi1949@gmail.com
 # @File    : 循环队列.py
 # @Software: PyCharm
+
 #python 不需要循环队列，因为python本身就是动态的list，很方便操作
 
 #使用deque
