@@ -14,6 +14,7 @@ N
 100
 '''
 #素数： N%i == 0
+sum = 0
 
 import math
 #判断素数
@@ -27,12 +28,14 @@ def judge_prime_number(num):
     return True
 
 def find(n):
+    global sum
     prime =[]
     for i in range(2,n+1): #从2开始，2是最小的素数
         if judge_prime_number(i)==True:
             prime.append(i)
     for j in prime:
         print(j)
+        sum += j
 
 
 if __name__ == '__main__':
@@ -40,4 +43,5 @@ if __name__ == '__main__':
     print('n=',n)
     #print( judge_prime_number(n) )
     find(n)
+    print('sum',sum)
 

@@ -5,7 +5,7 @@
 # @File    : 3358. 放养但没有完全放养.py
 # @Software: PyCharm
 from collections import deque
-alpbelt = 'abcdefdhijklmnopqrstuvwxyz'
+#alpbelt = 'abcdefdhijklmnopqrstuvwxyz'
 alpbelt_list = deque(alpbelt)
 # print(alpbelt_list)#强制类型转换
 cnt = 0
