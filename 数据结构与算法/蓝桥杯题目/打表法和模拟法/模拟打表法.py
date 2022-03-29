@@ -14,7 +14,8 @@ def yueshu(a):
 
 #print(yueshu(5))
 for ii in range(1,400000):
-
+    print(yueshu(ii),ii)
     if yueshu(ii) == 100:
         print(('ii:',ii))
         break
+print('end!')
