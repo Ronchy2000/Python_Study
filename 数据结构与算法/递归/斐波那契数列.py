@@ -18,9 +18,19 @@
 
 
 #O（N）
+data = []
 def fibonacci2(n):
-    a , b = 1, 1
-    for i in range(1,n+1):
+    a , b = 0, 1
+    for i in range(0,n):
+        #print(a)
+        data.append(a)
         a,b = b,a+b
-        print(a)
-fibonacci2(5)
+
+fibonacci2(50)
+if __name__ == '__main__':
+
+    m = int(input())
+    while m:
+        m -= 1
+        n = int(input())
+        print(data[n])

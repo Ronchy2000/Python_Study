@@ -17,4 +17,4 @@ year % 12 余数就是对应的地支
 '''
 year = int(input())
 
-print(tg[year%10],dz[year%12])
+print(tg[year%10],dz[year%12],sep = '')
