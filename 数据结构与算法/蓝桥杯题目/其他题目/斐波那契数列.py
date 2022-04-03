@@ -2,7 +2,7 @@
 # @Time    : 2022/2/21 19:41
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : 斐波那契数列.py
+# @File    : 快速指数.py
 # @Software: PyCharm
 '''
 1 1 2 3 5 8 13 21 34 .....

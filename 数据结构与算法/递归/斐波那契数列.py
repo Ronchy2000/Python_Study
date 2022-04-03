@@ -2,7 +2,7 @@
 # @Time    : 2022/2/27 14:04
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : 斐波那契数列.py
+# @File    : 快速指数.py
 # @Software: PyCharm
 
 #时间复杂度 O(2^n)
