@@ -13,7 +13,9 @@
 
 
 '''
-
+###
+#该题类似于平衡二叉树
+#
 cnt = 0
 num = 2
 sum = 0
@@ -23,5 +25,7 @@ for i in range(0,15):
         break
     cnt += 1
     sum += (num**i)
+    print('每层个数',num**i)
 print(sum)
-print('深度',cnt)
+#从0开始，所以要减1
+print('深度',cnt-1)
