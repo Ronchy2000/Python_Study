@@ -9,7 +9,7 @@ import copy
 #列表生成器得到二维列表
 mp = [[0 for i in range(100)] for i in range(100)] #1表示空地，2表示障碍物
 
-v = copy.deepcopy(mp) #访问数组（别名   ->0表示未访问，1表示访问
+v =  [[0 for i in range(100)] for i in range(100)] #访问数组（别名   ->0表示未访问，1表示访问
 #终点坐标 p ,q
 p,q = 4,3
 # p,q = int(input().split())
@@ -22,7 +22,7 @@ def dfs(x,y,step):
     if x == p and y == q:
         if step < min_path:
             min_path = step
-            return
+            return 0
     #clockwise detect
     #右
     if mp[x][y+1] == 1 and v[x][y+1] == 0:
@@ -44,19 +44,21 @@ def dfs(x,y,step):
         v[x-1][y] = 1
         dfs(x-1,y,step+1)
         v[x - 1][y] = 0
-    return
+    return 0
 
 #m x n 大小的地图
 # m,n = int(input().split())
 m = 5
 n = 4
-startx ,starty = 0,0
+startx ,starty = 1,1
 for i in range(1,m+1):
     mp[i][1:n+1] =list( map( int,input().split()) )
-for i in range(1,m+1):
-    for j in range(1,n+1):
-        print(mp[i][j],end=',')
-    print()
+
+#查看输入迷宫
+# for i in range(1,m+1):
+#     for j in range(1,n+1):
+#         print(mp[i][j],end=',')
+#     print()
 
 #起点已访问
 v[startx][starty] = 1
