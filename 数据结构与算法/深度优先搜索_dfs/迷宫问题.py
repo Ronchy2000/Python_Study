@@ -7,16 +7,16 @@
 import copy
 #定义地图
 #列表生成器得到二维列表
-mp = [[0 for i in range(4)] for i in range(5)] #1表示空地，2表示障碍物
+mp = [[0 for i in range(100)] for i in range(100)] #1表示空地，2表示障碍物
 
 v = copy.deepcopy(mp) #访问数组（别名   ->0表示未访问，1表示访问
 #终点坐标 p ,q
-p,q = 3,2
+p,q = 4,3
 # p,q = int(input().split())
 min_path = 99999999
 
 #x , y 为当前坐标
-def dfs(x:int,y:int,step:int):
+def dfs(x,y,step):
     global min_path
     #如果到达终点
     if x == p and y == q:
@@ -51,15 +51,15 @@ def dfs(x:int,y:int,step:int):
 m = 5
 n = 4
 startx ,starty = 0,0
-for i in range(0,m):
-    mp[i] = input().split() #此时是str类型
-    mp[i] = list(map(int , mp[i])) #list中的类型变为int类型
-for i in range(0,m):
-    for j in range(0,n):
+for i in range(1,m+1):
+    mp[i][1:n+1] =list( map( int,input().split()) )
+for i in range(1,m+1):
+    for j in range(1,n+1):
         print(mp[i][j],end=',')
     print()
+
 #起点已访问
-v[startx][starty]  = 1
+v[startx][starty] = 1
 dfs(startx,starty,0)
 print('min_path:',min_path)
 

@@ -30,6 +30,7 @@ for i in range(0,m):
     print(type(mp[i]))
     #转变为list类型！否则使用mp时会报错。map返回迭代器
     mp[i] = list(map(int,mp[i]))
+
 for i in range(0,m):
     print('mp[i]',mp[i])
     for j in range(0,n):
