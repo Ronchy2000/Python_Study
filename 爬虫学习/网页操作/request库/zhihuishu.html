@@ -1,0 +1,96 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	系统错误提示
+</title>
+    <style type="text/css">
+        <!--
+        .err_bg {
+	        background-image: url(Images/error_bg.png);
+	        background-repeat: repeat-x;
+        }
+        .err_msg 
+        {
+        	padding:5px;
+	        font-size: 12px;
+	        line-height:20px;
+	        text-align:left;
+	        color: #333333;
+        }
+        .err_title {
+	        padding-left:10px;
+	        text-align:left;
+	        font-size: 14px;
+	        font-weight: bold;
+	        color: #FFFFFF;
+        }
+        -->
+    </style>
+    <script language="javascript" type="text/javascript">
+        function CloseWaitingDialog() {
+            try {
+                var waitingDialog = top.document.getElementById("WaitingDialog");
+                waitingDialog.style.width = "0%";
+                waitingDialog.style.height = "0%";
+                waitingDialog.style.display = "none";
+            }
+            catch (ex) {
+                return;
+            }
+        }
+    </script>
+</head>
+<body onload="javascript:CloseWaitingDialog();">
+    <form name="form1" method="post" action="error.aspx?Err=&amp;D=1" id="form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE0MzYxODYxNDcPZBYCAgMPZBYCAgEPDxYCHgRUZXh0BT/nmbvlvZXlt7LotoXml7YhPGJyPuivt+mHjeaWsOeZu+W9le+8gTxicj7or7fkuI7nrqHnkIblkZjogZTns7tkZGSTHo/7oIUZHFzjMxyWBDVg0yiXViQ00JZvEIePVv+XkQ==" />
+</div>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="AB827D4F" />
+</div>
+    <div style="text-align: center; margin-top: 18%;">
+        <table width="300" border="0" cellpadding="0" cellspacing="0" align="center">
+            <tr>
+                <td width="10" height="156" align="right" valign="top">
+                    <img alt="" src="Images/error_left.png" width="8" height="156">
+                </td>
+                <td valign="top" class="err_bg">
+                    <table width="300" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td height="24" colspan="2" class="err_title">
+                                警告
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="63" height="90" align="center" valign="middle">
+                                <img alt="" src="Images/Ico/ico_error.png" width="33" height="45">
+                            </td>
+                            <td width="237" class="err_msg">
+                                <span id="lblMessage">登录已超时!<br>请重新登录！<br>请与管理员联系</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="30" colspan="2" align="center">
+                                <div id="plBack">
+	
+                                    <a href="#" onclick="top.location='default.aspx'">
+                                        <img src="Images/button/btn_error_back.png" alt="login" border="0" /></a>
+                                
+</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="10" align="left" valign="top">
+                    <img alt="" src="Images/error_right.png" width="10" height="156">
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</body>
+</html>
