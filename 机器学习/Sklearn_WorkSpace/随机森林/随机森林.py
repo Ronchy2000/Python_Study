@@ -18,6 +18,11 @@ from sklearn.model_selection import train_test_split
 
 
 wine = load_wine()
+
+print(wine.data[0])
+print(wine.target)
+print("wine:",type(wine.data))
+
 Xtrain,Xtest,Ytrain,Ytest = train_test_split(wine.data,wine.target,test_size=0.3)  #测试集 30%
 
 clf = DecisionTreeClassifier(random_state = 0)
@@ -43,6 +48,7 @@ for i in range(10):
     rfc = RandomForestClassifier(n_estimators=25)
     rfc_s = cross_val_score(rfc,wine.data,wine.target,cv=10).mean()
     rfc_l.append(rfc_s)
+
     clf = DecisionTreeClassifier()
     clf_s = cross_val_score(clf,wine.data,wine.target,cv=10).mean()
     clf_l.append(clf_s)
@@ -55,12 +61,12 @@ plt.show()
 
 #n_estimators 的学习曲线
 #----------------------------------------------------------------------
-superpa =[]
-for i in range(20):
-    rfc = RandomForestClassifier(n_estimators=i+1,n_jobs=-1)
-    rfc_s = cross_val_score(rfc,wine.data,wine.target,cv=10).mean()
-    superpa.append(rfc_s)
-print(max(superpa),superpa.index(max(superpa)))
-plt.figure(figsize=[20,5])
-plt.plot(range(1,21),superpa)
-plt.show()
+# superpa =[]
+# for i in range(20):
+#     rfc = RandomForestClassifier(n_estimators=i+1,n_jobs=-1)
+#     rfc_s = cross_val_score(rfc,wine.data,wine.target,cv=10).mean()
+#     superpa.append(rfc_s)
+# print(max(superpa),superpa.index(max(superpa)))
+# plt.figure(figsize=[20,5])
+# plt.plot(range(1,21),superpa)
+# plt.show()

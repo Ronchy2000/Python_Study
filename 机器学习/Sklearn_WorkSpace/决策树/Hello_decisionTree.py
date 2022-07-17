@@ -36,32 +36,37 @@ print("wine.feature_names:",wine.feature_names) #特征的名字
 # print("wine.target_names:",wine.target_names)  #标签的名字  -> ['class_0' 'class_1' 'class_2']
 
 Xtrain , Xtest , Ytrain , Ytest = train_test_split(wine.data,wine.target,test_size = 0.3)  #30% 作为测试集
-# print("Xtrain.shape:",Xtrain.shape)  #124行
-# print("wine.data.shape:",wine.data.shape)  #178行
-
-clf = tree.DecisionTreeClassifier(criterion="entropy",random_state=30 , splitter="random") #random_state， 随机选取特征
-# clf = tree.DecisionTreeClassifier(criterion="entropy")
-clf = clf.fit(Xtrain,Ytrain)
-score = clf.score(Xtest,Ytest)
-print("score:",score)
+print("Xtrain.shape:",Xtrain.shape)  #124行
+print("wine.data.shape:",wine.data.shape)  #178行
+print("Ytrain.shape:",Ytrain.shape)  #124行
+print(Ytrain)
+print("wine.target.shape:",wine.target.shape)  #178行
 
 
-feature_name = ['alcohol', 'malic_acid', 'ash', 'alcalinity_of_ash', 'magnesium', 'total_phenols'
-               ,'flavanoids', 'nonflavanoid_phenols', 'proanthocyanins', 'color_intensity', 'hue', 'od280/od315_of_diluted_wines', 'proline']
-dot_data = tree.export_graphviz(clf
-                                ,feature_names= feature_name
-                                ,class_names=["Gin","Sherry","Vermouth"]
-                                ,filled=True  #颜色
-                                ,rounded=True
-                                )
-graph = graphviz.Source(dot_data)
-graph.view()   #查看流程图
-
-# print(clf.feature_importances_)
-print( [*zip(feature_name,clf.feature_importances_)]  )
-
-
-
+#
+# clf = tree.DecisionTreeClassifier(criterion="entropy",random_state=30 , splitter="random") #random_state， 随机选取特征
+# # clf = tree.DecisionTreeClassifier(criterion="entropy")
+# clf = clf.fit(Xtrain,Ytrain)
+# score = clf.score(Xtest,Ytest)
+# print("score:",score)
+#
+#
+# feature_name = ['alcohol', 'malic_acid', 'ash', 'alcalinity_of_ash', 'magnesium', 'total_phenols'
+#                ,'flavanoids', 'nonflavanoid_phenols', 'proanthocyanins', 'color_intensity', 'hue', 'od280/od315_of_diluted_wines', 'proline']
+# dot_data = tree.export_graphviz(clf
+#                                 ,feature_names= feature_name
+#                                 ,class_names=["Gin","Sherry","Vermouth"]
+#                                 ,filled=True  #颜色
+#                                 ,rounded=True
+#                                 )
+# graph = graphviz.Source(dot_data)
+# graph.view()   #查看流程图
+#
+# # print(clf.feature_importances_)
+# print( [*zip(feature_name,clf.feature_importances_)]  )
+#
+#
+#
 
 
 
