@@ -10,63 +10,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('Salaries.csv')  #DataFrame 格式
+input_file = 'Salaries.csv'
+df = pd.read_csv(input_file,header = 0)  #DataFrame 格式
 
-column_head = list(df.columns.values)  #feature name
-print("column_head: ",column_head)
+original_headers = list(df.columns.values)  #feature name
 
-x= df.iloc[:,:-1]
-y= df.iloc[:, -1 :].astype(int)
+# remove the non-numeric columns
+# df = df._get_numeric_data()
+# put the numeric column names in a python list
+# numeric_headers = list(df.columns.values)
 
-data = x.values.tolist()
-print(data)
-print("---------------------------------------------------")
-target = y["salary"].values.tolist()
-print("target:",target)
+from sklearn.model_selection import train_test_split
 
-#----------------------------------------------------------------------------------
-# Fitting Random Forest Regression to the dataset
-# import the regressor
+X_all = df.drop(['Position','salary'],axis = 1)
+y_all = df['salary']
+num_test = 0.30
+X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_test, random_state=23)
+
 from sklearn.ensemble import RandomForestRegressor
 
-# create regressor object
-regressor = RandomForestRegressor(n_estimators = 100, random_state = 0)
-
-# fit the regressor with x and y data
-regressor.fit(data, target)
-
-print(regressor)
-
-Y_pred = regressor.predict(np.array([6.5]).reshape(1, 1)) # test the output by changing values
-print(Y_pred)
-
-# Visualising the Random Forest Regression results
-
-# arrange for creating a range of values
-# from min value of x to max
-# value of x with a difference of 0.01
-# between two consecutive values
-print("min(x):",min(x))
-print("min(x) type:",type(min(x)))
-print("max(x):",max(x))
-print("max(x) type:",type(max(x)))
-#--------------------------------------
-#str  -> int
-
-X_grid = np.arange(int(min(x)), int(max(x)),0.01)
-
-# reshape for reshaping the data into a len(X_grid)*1 array,
-# i.e. to make a column out of the X_grid value
-X_grid = X_grid.reshape((len(X_grid), 1))
-
-# Scatter plot for original data
-plt.scatter(x, y, color = 'blue')
-
-# plot predicted data
-plt.plot(X_grid, regressor.predict(X_grid),
-		color = 'green')
-plt.title('Random Forest Regression')
-plt.xlabel('Position level')
-plt.ylabel('Salary')
-plt.show()
-
+rf = RandomForestRegressor()
+rf.fit(X_train,y_train)
+predictions = rf.predict(X_test)
+print(predictions)
