@@ -10,20 +10,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('Salaries.csv')
+df = pd.read_csv('Salaries.csv')  #DataFrame 格式
 
-column_head = list(df.columns.values)
+column_head = list(df.columns.values)  #feature name
 print("column_head: ",column_head)
 
+x= df.iloc[:,:-1]
+y= df.iloc[:, -1 :].astype(int)
 
-x= df.iloc[:,1:-1].astype(int)   #ignore last column
-y= df.iloc[:, -1 :].astype(int) #ignore all columns except the last one
-
-print("df['level']:",df['level'])
-print('------------------------------')
-print("df.ix[0]:",df.iloc[0])
-print('------------------------------')
-# print("type(x):",type(x))   #DataFrame
+data = x.values.tolist()
+print(data)
+print("---------------------------------------------------")
+target = y["salary"].values.tolist()
+print("target:",target)
 
 #----------------------------------------------------------------------------------
 # Fitting Random Forest Regression to the dataset
@@ -34,7 +33,7 @@ from sklearn.ensemble import RandomForestRegressor
 regressor = RandomForestRegressor(n_estimators = 100, random_state = 0)
 
 # fit the regressor with x and y data
-regressor.fit(x, y)
+regressor.fit(data, target)
 
 print(regressor)
 
@@ -53,7 +52,7 @@ print("max(x):",max(x))
 print("max(x) type:",type(max(x)))
 #--------------------------------------
 #str  -> int
-'''
+
 X_grid = np.arange(int(min(x)), int(max(x)),0.01)
 
 # reshape for reshaping the data into a len(X_grid)*1 array,
@@ -70,4 +69,4 @@ plt.title('Random Forest Regression')
 plt.xlabel('Position level')
 plt.ylabel('Salary')
 plt.show()
-'''
+
