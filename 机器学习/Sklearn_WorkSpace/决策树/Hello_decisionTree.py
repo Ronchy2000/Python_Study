@@ -24,7 +24,8 @@ result = clf.score(x_test,y_test)  #导入测试集，得到模型评估指标
 '''
 
 wine = load_wine()
-# print("wine_data；",wine.data,end='\n') #数据
+print("wine:",wine)
+print("wine_data；",wine.data,end='\n') #数据
 
 # print("wine_target:",wine.target,end='\n') #标签
 
