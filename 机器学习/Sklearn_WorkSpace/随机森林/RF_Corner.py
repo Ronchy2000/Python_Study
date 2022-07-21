@@ -5,7 +5,6 @@
 # @File    : RF_Corner.py
 # @Software: PyCharm
 
-
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
@@ -39,3 +38,8 @@ print(len(Xtest),len(Ytest))
 
 errors = abs(Ytest-target_predicted)
 print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.') #MAE
+
+
+
+
+
