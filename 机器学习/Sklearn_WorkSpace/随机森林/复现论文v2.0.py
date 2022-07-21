@@ -60,30 +60,64 @@ print("---------------------------------")
 print(Ytest)
 '''
 
-###建模
-model = RandomForestRegressor()
-model.fit(Xtrain,Ytrain)
-score = model.score(Xtrain, Ytrain)
-print("R-squared:", score)
+MAE,MSE,RMSE = [], [], []
+for i in range(y.shape[1]):
+    Xtrain, Xtest, Ytrain, Ytest = train_test_split(x.reshape(-1, 1), y[:, i].reshape(-1, 1),
+                                                    test_size=0.3)  # 30% 作为测试集
+    ###建模
+    model = RandomForestRegressor()
+    model.fit(Xtrain,Ytrain)
+    score = model.score(Xtrain, Ytrain)
+    print("R-squared:", score)
 
-ypred = model.predict(Xtest)
-mse = mean_squared_error(Ytest, ypred)
-mae = mean_absolute_error(Ytest, ypred)
+    ypred = model.predict(Xtest)
+    mse = mean_squared_error(Ytest, ypred)
+    mae = mean_absolute_error(Ytest, ypred)
 
-print("MSE: ", mse)
-print("RMSE: ", mse*(1/2.0))  #均方根误差
-print("MAE:",mae)
+    print("MSE: ", mse)
+    print("RMSE: ", mse*(1/2.0))  #均方根误差
+    print("MAE:",mae)
+    MAE.append(mae)
+    MSE.append(mse)
+    RMSE.append(mse*(1/2.0))
+    print("-------------------")
 
+    ###Plot
+    #画图 -> predict 与 本身相比
+    # x_ax = range(len(Ytest))
+    # plt.plot(x_ax, Ytest, linewidth=1, label="original")
+    # plt.plot(x_ax, ypred, linewidth=1.1, label="predicted")
+    # plt.title("y-test and y-predicted data")
+    # plt.xlabel('X-axis')
+    # plt.ylabel('Y-axis')
+    # plt.legend(loc='best',fancybox=True, shadow=True)
+    # plt.grid(True)
+    # plt.show()
 
+print("=============================================================")
+print("MAE:",MAE)
+print("RMSE:",RMSE)
+print("MSE:",MSE)
 
-###Plot
-#画图 -> predict 与 本身相比
-x_ax = range(len(Ytest))
-plt.plot(x_ax, Ytest, linewidth=1, label="original")
-plt.plot(x_ax, ypred, linewidth=1.1, label="predicted")
-plt.title("y-test and y-predicted data")
-plt.xlabel('X-axis')
-plt.ylabel('Y-axis')
-plt.legend(loc='best',fancybox=True, shadow=True)
-plt.grid(True)
-plt.show()
+#查找最大数
+max_MAE = MAE[0]
+for i in MAE:
+    if i > max_MAE:
+        max_MAE = i
+print("max_MAE:",max_MAE)
+print("max_MAE.index:",MAE.index(max_MAE))
+
+max_RMSE = RMSE[0]
+for i in RMSE:
+    if i > max_RMSE:
+        max_RMSE = i
+print("max_RMSE:",max_RMSE)
+print("max_RMSE.index:",RMSE.index(max_RMSE))
+
+max_MSE = MSE[0]
+for i in MSE:
+    if i > max_MSE:
+        max_MSE = i
+print("max_MSE:",max_MSE)
+print("max_MSE.index:",MSE.index(max_MSE))
+
