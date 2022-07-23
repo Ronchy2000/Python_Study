@@ -83,7 +83,6 @@ max_mae, max_mse, max_rmse = [], [], []
 max_iteration = 7
 iteration = 0
 for j in range(max_iteration):
-
     #iterative process
     print("feature_name:", feature_name)
     print("target_name:", target_name)
@@ -95,6 +94,7 @@ for j in range(max_iteration):
     y = np.array(gama)
     if x.ndim == 1:  # 如果是一维，就变成二维
         x = x.reshape(-1, 1)  # 1D  -> 2D:针对feature只有一维的时候
+    #predicting process
     for i in range(y.shape[1]):
         Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y[:, i].reshape(-1, 1),
                                                         test_size=0.3)  # 30% 作为测试集
