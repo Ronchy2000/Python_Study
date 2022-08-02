@@ -25,7 +25,7 @@ for n in N:
     MEANS.append(mean_x)
 
 ## 导入matplotlib
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 ## 使图形直接插入到jupyter中
 #%matplotlib inline
