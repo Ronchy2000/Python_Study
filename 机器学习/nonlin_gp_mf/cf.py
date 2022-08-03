@@ -174,6 +174,7 @@ def perf_weak(dataset, base_dim=11):
     print('Fetch data set...')
     if dataset.dataset == "movielens":
         norm_coeff = 1.6
+        print("norm_coeff:1.6------------")
     else :
         norm_coeff = 6.67
     print('Data set fetched')
@@ -209,7 +210,7 @@ def perf_weak(dataset, base_dim=11):
 
 # ========================== DEMO ======================================================================================
 def plot_errors_vs_latent_dims():
-    base_dims = range(5, 20)
+    base_dims = range(5, 30)
     rmse_res = []
         #0.9192805345815771, 0.9191762806556765, 0.9298582192495648, 0.9264887573748214, 0.942721413670847,
         #0.9464276649204383, 0.9619938797137044, 0.959524838407498, 0.9637647705458857, 0.9654112679112156,
@@ -254,5 +255,5 @@ if __name__ == "__main__":
     #perf_weak(dataset=DataSet(dataset="toy"))
     # Jester dataset
     #perf_weak(dataset=DataSet(dataset="jester"))
-    # plot_errors_vs_latent_dims()
+    plot_errors_vs_latent_dims()
     print('END')
