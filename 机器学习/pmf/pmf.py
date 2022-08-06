@@ -21,7 +21,7 @@ from numpy import *
 import os
 import sys
 import time
-
+import pandas as pd
 # Add parent directory to python path
 PACKAGE_PARENT = '..'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
@@ -30,7 +30,7 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 from data_fetching.data_set import DataSet
 
 class PMF(object):
-    def __init__(self, num_latent_feat=20, learning_rate=1, _lambda=0.1, momentum=0.95, maxepoch=20, num_batches=100,
+    def __init__(self, num_latent_feat=20, learning_rate=0.73, _lambda=0.1, momentum=0.95, maxepoch=20, num_batches=100,
                  batch_size=1000):
         """
         @Parameters:
@@ -49,7 +49,7 @@ class PMF(object):
         
         self.V = None
         self.U = None  
-        self.num_latent_feat = num_latent_feat  
+        self.num_latent_feat = num_latent_feat
         self.learning_rate = learning_rate
         self._lambda = _lambda  
         self.momentum = momentum  
@@ -73,20 +73,24 @@ class PMF(object):
         self.mean_inv = np.mean(train_set[:, 2]) 
         
         #get the size (number of samples of both training and test sets)
-        tr_shape = train_set.shape[0]
-        te_shape = test_set.shape[0]  
-        
-        num_user = int(max(np.amax(train_set[:, 0]), np.amax(test_set[:, 0]))) + 1  
-        num_item = int(max(np.amax(train_set[:, 1]), np.amax(test_set[:, 1]))) + 1  
+        tr_shape = train_set.shape[0]  #the number of row
+        te_shape = test_set.shape[0]   #the number of column
+        print("tr_shape:",tr_shape)  #tr_shape: 99057
+        print("te_shape:",te_shape)  #te_shape: 943
 
+#因为数据集中的是序号，查找最大的序号作为U，V的行数
+        num_user = int(max(np.amax(train_set[:, 0]), np.amax(test_set[:, 0]))) + 1  
+        num_item = int(max(np.amax(train_set[:, 1]), np.amax(test_set[:, 1]))) + 1
+        print("num_user:", num_user) #944
+        print("num_item:",num_item) #1683
         incremental = False
         if ((not incremental) or (self.V is None)):
             # initialization
             self.epoch = 0
             
             #U and V follow a normal distribution
-            self.V = 0.1 * np.random.randn(num_item, self.num_latent_feat)
-            self.U = 0.1 * np.random.randn(num_user, self.num_latent_feat)  
+            self.V = 0.1 * np.random.randn(num_item, self.num_latent_feat)  # MxD
+            self.U = 0.1 * np.random.randn(num_user, self.num_latent_feat)  # NxD
             # initialization of the increments of U and V used in SGD optimization
             self.V_inc = np.zeros((num_item, self.num_latent_feat))  
             self.U_inc = np.zeros((num_user, self.num_latent_feat))
@@ -96,14 +100,14 @@ class PMF(object):
             self.epoch += 1
             
             # Shuffling for SGD
-            shuffled_order = np.arange(train_set.shape[0])
+            shuffled_order = np.arange(train_set.shape[0])  #99057  ->  【0,1,2...99056】
             np.random.shuffle(shuffled_order)  
 
             # Batch update
-            for batch in range(self.num_batches):
+            for batch in range(self.num_batches):  #batches 数量：100
                 
                 t_i_epoch=time.time()
-                
+#核心
                 batch_idx = np.mod(np.arange(self.batch_size * batch, self.batch_size * (batch + 1)),
                                    shuffled_order.shape[0])  
                 batch_invID = np.array(train_set[shuffled_order[batch_idx], 0], dtype='int32')
@@ -175,8 +179,7 @@ class PMF(object):
     #Predict rating of item for user
     def predict(self, invID):
         return np.dot(self.V, self.U[int(invID), :]) + self.mean_inv  
-        
-        
+
 #-------------------------------------------------------------------------------------------------------------------
 #Main
 """
@@ -197,9 +200,12 @@ if __name__ == "__main__":
     print('Fetch dataset...')
     ds = DataSet(dataset='movielens', size ='S')
     #ds = DataSet(dataset='toy')
-    print('Dataset fetched')
+    print('Dataset fetched.')
     ds_v= ds.get_df()
     ratings = ds_v.values
+    #print("ds_v:",ds_v)
+    print("ratings:",ratings)
+    print("ratings rows:",ratings.shape[0]) #100000 行
     print('Get dataset description...')
     print(ds.get_description())
     #print(len(np.unique(ratings[:, 0])), len(np.unique(ratings[:, 1])), pmf.num_latent_feat)
@@ -208,6 +214,8 @@ if __name__ == "__main__":
     print("Set splitted")
     train = train_init.values
     test = test_init.values
+    # print("train.values:",train)
+    # print("test.values:", test)
     print('Fit the model...')
     pmf.fit(train, test)
     print('Model fitted')
