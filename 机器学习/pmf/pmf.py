@@ -206,7 +206,7 @@ if __name__ == "__main__":
     #ds = DataSet(dataset='toy')
     print('Dataset fetched.')
     ds_v= ds.get_df()
-    #ds_v.to_csv("movielens_S.csv")  #为了直接生成csv，不用每次再去读取
+    #ds_v.to_csv("movielens_S_half.csv")  #为了直接生成csv，不用每次再去读取
     ratings = ds_v.values
     #print("ds_v:",ds_v)
     print("ratings:",ratings)
