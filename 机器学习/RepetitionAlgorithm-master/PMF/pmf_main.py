@@ -44,10 +44,12 @@ feature_name,target_name = [],[]
 header = list(df.columns.values)
 target_name = header[:] #拷贝给target_name
 R = np.array(df.values)
-R[:,[3,11,5,13]] = 0
+R[:,[3-1,11-1,5-1,13-1]] = 0
 
-vali_data = df.values[:,[3,11]]  # path *2
-test_data = df.values[:,[5,13]]  # path *2
+vali_data = df.values[:,[3-1,11-1]]  # path *2
+vali_index = [3-1,11-1]
+test_data = df.values[:,[5-1,13-1]]  # path *2
+test_index = [5-1,13-1]
 '''
 训练集：Corner1-Corner14（除去验证测试）
 验证集：Corner3，Corner11
@@ -58,17 +60,23 @@ test_data = df.values[:,[5,13]]  # path *2
 #----------------------------------------------------------
 # construct model
 print('training model.......')
-lambda_alpha = 0.01
+lambda_alpha = 0.1
 lambda_beta = 0.01
-latent_size = 20
+latent_size = 10
 lr = 3e-5
 iters = 1000
 model = PMF(R=R, lambda_alpha=lambda_alpha, lambda_beta=lambda_beta, latent_size=latent_size, momuntum=0.9, lr=lr, iters=iters, seed=1)
 print('parameters are:ratio={:f}, reg_u={:f}, reg_v={:f}, latent_size={:d}, lr={:f}, iters={:d}'.format(ratio, lambda_alpha, lambda_beta, latent_size,lr, iters))
-# U, V, train_loss_list, vali_rmse_list = model.train(train_data=train_data, vali_data=vali_data)
+U, V, train_loss_list, vali_rmse_list = model.train(train_data=None, vali_data=vali_data,vali_index = vali_index)
 #
-# print('testing model.......')
+print('testing model.......')
 # preds = model.predict(data=test_data)
-# test_rmse = RMSE(preds, test_data[:, 2])
+preds = model.predict(data=test_index,index = test_index)
 
-# print('test rmse:{:f}'.format(test_rmse))
+real_test = test_data.flatten('F')
+test_rmse = RMSE(preds, real_test)
+
+print('test rmse:{:f}'.format(test_rmse))
+
+
+

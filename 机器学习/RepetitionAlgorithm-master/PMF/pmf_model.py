@@ -10,7 +10,7 @@ class PMF():
     a class for this Double Co-occurence Factorization model
     '''
     # initialize some paprameters                                      #原来是50
-    def __init__(self, R, lambda_alpha=1e-2, lambda_beta=1e-2, latent_size=5, momuntum=0.8,
+    def __init__(self, R, lambda_alpha=1e-2, lambda_beta=1e-2, latent_size=10, momuntum=0.8,
                  lr=0.001, iters=200, seed=None):
         #  超参数
         self.lambda_alpha = lambda_alpha
@@ -25,7 +25,7 @@ class PMF():
         self.iterations = iters
         #  学习率
         self.lr = lr
-        #  指示函数，此处用矩阵表示，1表示用户对电影打分，0表示未打分
+        #  指示函数，此处用矩阵表示，1表示用户对电影打分，0表示未打分（1表示有数据，0表示无数据))
         self.I = copy.deepcopy(self.R)
         self.I[self.I != 0] = 1
         #  生成用户和电影的特征矩阵，U的维度是NxD,V的维度是DxM
@@ -39,27 +39,42 @@ class PMF():
         # 也就是论文中的目标函数E，目的是最小化loss
         loss = np.sum(self.I*(self.R-np.dot(self.U, self.V.T))**2) + self.lambda_alpha*np.sum(np.square(self.U)) + self.lambda_beta*np.sum(np.square(self.V))
         return loss
-    def predict(self, data):
+    def predict(self, data, index):
         # data是验证集，取用户和电影这两个维度
-        index_data = np.array([[int(ele[0]), int(ele[1])] for ele in data], dtype=int)  # 维度： len(ele)x2
+        #index_data = np.array([[int(ele[0]), int(ele[1])] for ele in data], dtype=int)  # 维度： len(ele)x2
         # print("index_data:",index_data)
         # print("index_data.shape:",index_data.shape)  #index_data.shape: (20000, 2)
         '''
         self.U.take(index_data.take(0, axis=1), axis=0):根据用户id获得对应的U矩阵，
         '''
-        print("index_data.take(0, axis=1):",index_data.take(0, axis=1))
+        # print("index_data.take(0, axis=1):",index_data.take(0, axis=1))
 
-        u_features = self.U.take(index_data.take(0, axis=1), axis=0)  # U是NxD维度，index_data.take(0, axis=1)取的是用户信息（每一行的第0个值）
-        v_features = self.V.take(index_data.take(1, axis=1), axis=0)  #
-        print("self.U:",self.U[410],self.U[209],self.U[198])
-        print("u_features",u_features)
+        #u_features = self.U.take(index_data.take(0, axis=1), axis=0)  # U是NxD维度，index_data.take(0, axis=1)取的是用户信息（每一行的第0个值）
+        #v_features = self.V.take(index_data.take(1, axis=1), axis=0)  #
+        # u_features = np.r_[self.U,self.U]  #纵向拼接
+        # v_features = np.r_[  np.tile(self.V[3-1],(self.U.shape[0],1) )
+        #                     ,np.tile(self.V[11-1],(self.U.shape[0],1) )
+        #                     ]
+        u_features = np.tile(self.U0-,(len(index),1))
+        v_features =  np.tile(self.V[index[0], :], (self.U.shape[0], 1))
+        if len(index[1:])  > 0:
+            for i in index[1:]:
+                print("i:",i)
+                tmp = np.tile(self.V[i, :], (self.U.shape[0], 1))
+                v_features = np.concatenate((v_features,tmp),axis= 0) #垂直组合
+        print("u_features.shape:",u_features.shape)
+        # print("v_features.shape:",len(v_features[0]),len(v_features))
+        print("v_features.shape:",v_features.shape )
+        # v_features = self.V
+        # print("self.U:",self.U[410],self.U[209],self.U[198])
+        # print("u_features",u_features)
         #print("u_features.shape", u_features.shape) #  (20000, 20)
         #print("v_features.shape", v_features.shape)  # (20000, 20)
         '''
         axis= 0 对a的横轴进行操作，在运算的过程中其运算的方向表现为纵向运算,axis= 1 对a的纵轴进行操作，在运算的过程中其运算的方向表现为横向运算
         '''
-        #按行求和
-        preds_value_array = np.sum(u_features*v_features, 1) # 计算预测的评分,u_features*v_features是NxM维，横向求和之后是Nx1维度
+        #按行求和 ——————问题可能所在
+        preds_value_array = np.sum(u_features*v_features, axis = 1) # 计算预测的评分,u_features*v_features是NxM维，横向求和之后是Nx1维度
         # print("u_features",u_features)
         # print("v_features",v_features)
         # print("u_features*v_features",u_features*v_features)
@@ -67,7 +82,7 @@ class PMF():
         # print("preds_value_array:",preds_value_array)
         return preds_value_array
 
-    def train(self, train_data=None, vali_data=None):
+    def train(self, train_data=None, vali_data=None, vali_index = None):
         '''
         # training process
         :param train_data: train data with [[i,j],...] and this indicates that K[i,j]=rating
@@ -107,9 +122,11 @@ class PMF():
             # 将训练时的损失保存在数组中
             train_loss_list.append(train_loss)
             # 输入验证集对模型进行预测，获得预测的R
-            vali_preds = self.predict(vali_data)
+            vali_preds = self.predict(vali_data,vali_index)
             # 与真实的评分计算均方根误差
-            vali_rmse = RMSE(vali_data[:,2], vali_preds)
+            real = vali_data.flatten('F') #按数值方向展成一维
+
+            vali_rmse = RMSE(real, vali_preds)
             # 将每次的rmse保存到列表中
             vali_rmse_list.append(vali_rmse)
 
