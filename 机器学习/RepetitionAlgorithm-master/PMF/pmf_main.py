@@ -74,8 +74,9 @@ print('testing model.......')
 preds = model.predict(data=test_index,index = test_index)
 
 real_test = test_data.flatten('F')
+print("real_test:",real_test)
 test_rmse = RMSE(preds, real_test)
-
+print('print:',preds)
 print('test rmse:{:f}'.format(test_rmse))
 
 
