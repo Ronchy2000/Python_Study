@@ -41,8 +41,8 @@ print('testing model.......')
 preds = model.predict(data=test_data)
 preds = np.around(preds)
 test_rmse = RMSE(preds, test_data[:, 2])
-
+print(len(preds))
 print('test rmse:{:f}'.format(test_rmse))
 print("----------------------------------")
-for i in range(len(preds)):
-    print("preds 原始数据: {} , {}",preds[i],test_data[:, 2][i])
+# for i in range(len(preds)):
+#     print("preds 原始数据: {} , {}",preds[i],test_data[:, 2][i])

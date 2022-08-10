@@ -39,7 +39,7 @@ NUM_Corner = 14
 #===========================
 R = np.zeros([NUM_PATH,NUM_Corner])
 
-df = pd.read_csv("mydata2_corner1-corner14.csv")
+df = pd.read_csv("mydata2_corner1-corner14_x100.csv")
 feature_name,target_name = [],[]
 header = list(df.columns.values)
 target_name = header[:] #拷贝给target_name
@@ -61,9 +61,9 @@ test_index = [5-1,13-1]
 # construct model
 print('training model.......')
 lambda_alpha = 0.1
-lambda_beta = 0.01
+lambda_beta = 0.1
 latent_size = 10
-lr = 3e-5
+lr = 3e-12
 iters = 1000
 model = PMF(R=R, lambda_alpha=lambda_alpha, lambda_beta=lambda_beta, latent_size=latent_size, momuntum=0.9, lr=lr, iters=iters, seed=1)
 print('parameters are:ratio={:f}, reg_u={:f}, reg_v={:f}, latent_size={:d}, lr={:f}, iters={:d}'.format(ratio, lambda_alpha, lambda_beta, latent_size,lr, iters))

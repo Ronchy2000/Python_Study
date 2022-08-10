@@ -29,8 +29,8 @@ class PMF():
         self.I = copy.deepcopy(self.R)
         self.I[self.I != 0] = 1
         #  生成用户和电影的特征矩阵，U的维度是NxD,V的维度是DxM
-        self.U = 1.5*self.random_state.rand(np.size(R, 0), latent_size)
-        self.V = 1.5*self.random_state.rand(np.size(R, 1), latent_size)
+        self.U = 10*self.random_state.rand(np.size(R, 0), latent_size)
+        self.V = 10*self.random_state.rand(np.size(R, 1), latent_size)
         print("U.shape",self.U.shape) # U.shape (943, 20)
         print("V.shape",self.V.shape) # V.shape (1682, 20)
 
