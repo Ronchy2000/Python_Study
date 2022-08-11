@@ -90,7 +90,7 @@ class PMF(object):
             
             #U and V follow a normal distribution
             self.V = 0.1 * np.random.randn(num_item, self.num_latent_feat)  # MxD
-            self.U = 0.1 * np.random.randn(num_user, self.num_latent_feat)  # NxD
+            self.U = 0.1 * np.random.randn(num_user, self.num_latent_feat)  # DxN
             # initialization of the increments of U and V used in SGD optimization
             self.V_inc = np.zeros((num_item, self.num_latent_feat))  
             self.U_inc = np.zeros((num_user, self.num_latent_feat))
