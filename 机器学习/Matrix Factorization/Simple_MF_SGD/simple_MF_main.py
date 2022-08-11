@@ -8,7 +8,6 @@
 '''
 这种方法最基本的基于SGD的MF方法 ，若是对于矩阵规模大，时间开销很大
 不适用
-
 '''
 
 from math import *
@@ -25,7 +24,7 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):  # �
             for j in range(len(R[i])):  # 取每一行的列数
                 eij = R[i][j] - np.dot(P[i, :], Q[:, j])  # .DOT表示矩阵相乘
                 for k in range(K):
-                    if R[i][j] > 0:  # 限制评分大于零
+                    if R[i][j] > 0:  # 限制评分大于零  #alpha学习率  ，beta正则化参数
                         P[i][k] = P[i][k] + alpha * (2 * eij * Q[k][j] - beta * P[i][k])  # 增加正则化，并对损失函数求导，然后更新变量P
                         Q[k][j] = Q[k][j] + alpha * (2 * eij * P[i][k] - beta * Q[k][j])  # 增加正则化，并对损失函数求导，然后更新变量Q
         eR = np.dot(P, Q)
@@ -37,7 +36,7 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):  # �
                     for k in range(K):
                         e = e + (beta / 2) * (pow(P[i][k], 2) + pow(Q[k][j], 2))  # 加入正则化后的损失函数求和
         result.append(e)
-        if e < 0.1:  # 判断是否收敛，0.001为阈值
+        if e < 0.001:  # 判断是否收敛，0.001为阈值
             break
     return P, Q.T, result
 
@@ -61,6 +60,9 @@ if __name__ == '__main__':  # 主函数
     R_MF = np.dot(nP, nQ.T)  # 矩阵的乘积
     print("输出新矩阵：")
     print(R_MF)  # 输出新矩阵
+    MSE = np.square(np.subtract(R,R_MF)).mean()
+    rsme = sqrt(MSE)
+    print("Root Mean Square Error:",rsme)
     # 画图
     plt.plot(range(len(result)), result)
     plt.xlabel("time")
