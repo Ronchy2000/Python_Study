@@ -8,6 +8,7 @@
 from math import *
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):  # 矩阵因子分解函数，steps：梯度下降次数；alpha：步长；beta：β。
@@ -35,18 +36,14 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):  # �
     return P, Q.T, result
 
 
+df = pd.read_csv("mydata2_corner1-corner14.csv")
+Rin = np.array(df.values)
 if __name__ == '__main__':  # 主函数
-    R = [  # 原始矩阵
-        [5, 3, 0, 1],
-        [4, 0, 0, 1],
-        [1, 1, 0, 5],
-        [1, 0, 0, 4],
-        [0, 1, 5, 4]
-    ]
-    R = np.array(R)
-    N = len(R)  # 原矩阵R的行数
-    M = len(R[0])  # 原矩阵R的列数
-    K = 3  # K值可根据需求改变
+    R = Rin
+    # R = np.array(R)
+    N = R.shape[0] # 原矩阵R的行数
+    M = R.shape[1]  # 原矩阵R的列数
+    K = 10  # K值可根据需求改变
     P = np.random.rand(N, K)  # 随机生成一个 N行 K列的矩阵
     Q = np.random.rand(M, K)  # 随机生成一个 M行 K列的矩阵
     nP, nQ, result = matrix_factorization(R, P, Q, K)  # nP=P，nQ=nQ.T,result=result
