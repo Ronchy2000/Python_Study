@@ -5,6 +5,12 @@
 # @File    : simple_MF_main.py
 # @Software: PyCharm
 
+'''
+这种方法最基本的基于SGD的MF方法 ，若是对于矩阵规模大，时间开销很大
+不适用
+
+'''
+
 from math import *
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,19 +37,22 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):  # �
                     for k in range(K):
                         e = e + (beta / 2) * (pow(P[i][k], 2) + pow(Q[k][j], 2))  # 加入正则化后的损失函数求和
         result.append(e)
-        if e < 0.001:  # 判断是否收敛，0.001为阈值
+        if e < 0.1:  # 判断是否收敛，0.001为阈值
             break
     return P, Q.T, result
 
 
 df = pd.read_csv("mydata2_corner1-corner14.csv")
-Rin = np.array(df.values)
+Rin = np.array(df.values[:100,:])
+print(Rin)
+print(Rin.shape)
 if __name__ == '__main__':  # 主函数
+    print("MF Start!")
     R = Rin
     # R = np.array(R)
     N = R.shape[0] # 原矩阵R的行数
     M = R.shape[1]  # 原矩阵R的列数
-    K = 10  # K值可根据需求改变
+    K = 5  # K值可根据需求改变
     P = np.random.rand(N, K)  # 随机生成一个 N行 K列的矩阵
     Q = np.random.rand(M, K)  # 随机生成一个 M行 K列的矩阵
     nP, nQ, result = matrix_factorization(R, P, Q, K)  # nP=P，nQ=nQ.T,result=result
