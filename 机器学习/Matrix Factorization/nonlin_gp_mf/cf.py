@@ -257,3 +257,11 @@ if __name__ == "__main__":
     #perf_weak(dataset=DataSet(dataset="jester"))
     plot_errors_vs_latent_dims()
     print('END')
+
+
+
+
+
+
+
+
