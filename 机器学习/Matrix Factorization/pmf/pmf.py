@@ -219,8 +219,6 @@ if __name__ == "__main__":
     print("Set splitted")
     train = train_init.values
     test = test_init.values
-    # print("train.values:",train)
-    # print("test.values:", test)
     print('Fit the model...')
     pmf.fit(train, test)
     print('Model fitted')
