@@ -8,8 +8,8 @@ print('PMF Recommendation Model Example')
 # choose dataset name and load dataset, 'ml-1m', 'ml-10m'
 dataset = 'ml-100k'
 processed_data_path = os.path.join(os.getcwd(), 'processed_data', dataset)
-user_id_index = pickle.load(open(os.path.join(processed_data_path, 'user_id_index.pkl'), 'rb'),encoding='bytes')
-item_id_index = pickle.load(open(os.path.join(processed_data_path, 'item_id_index.pkl'), 'rb'),encoding='bytes')
+# user_id_index = pickle.load(open(os.path.join(processed_data_path, 'user_id_index.pkl'), 'rb'),encoding='bytes')
+# item_id_index = pickle.load(open(os.path.join(processed_data_path, 'item_id_index.pkl'), 'rb'),encoding='bytes')
 data = np.loadtxt(os.path.join(processed_data_path, 'data.txt'), dtype=float)
 
 # set split ratio
@@ -39,7 +39,8 @@ NUM_Corner = 14
 #===========================
 R = np.zeros([NUM_PATH,NUM_Corner])
 
-df = pd.read_csv("mydata2_corner1-corner14_x100.csv")
+# df = pd.read_csv("mydata2_corner1-corner14_x100.csv")
+df = pd.read_csv("timing1500x18.csv")
 feature_name,target_name = [],[]
 header = list(df.columns.values)
 target_name = header[:] #拷贝给target_name
@@ -62,9 +63,9 @@ test_index = [5-1,13-1]
 print('training model.......')
 lambda_alpha = 0.1
 lambda_beta = 0.1
-latent_size = 10
+latent_size = 52  #50->325  ,52->307
 lr = 3e-12
-iters = 1000
+iters = 1000  #增加到10000->306
 model = PMF(R=R, lambda_alpha=lambda_alpha, lambda_beta=lambda_beta, latent_size=latent_size, momuntum=0.9, lr=lr, iters=iters, seed=1)
 print('parameters are:ratio={:f}, reg_u={:f}, reg_v={:f}, latent_size={:d}, lr={:f}, iters={:d}'.format(ratio, lambda_alpha, lambda_beta, latent_size,lr, iters))
 U, V, train_loss_list, vali_rmse_list = model.train(train_data=None, vali_data=vali_data,vali_index = vali_index)
