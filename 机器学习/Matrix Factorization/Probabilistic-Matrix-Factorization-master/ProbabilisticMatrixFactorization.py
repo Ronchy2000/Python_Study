@@ -3,7 +3,7 @@ import numpy as np
 
 
 class PMF(object):
-    def __init__(self, num_feat=10, epsilon=1, _lambda=0.1, momentum=0.8, maxepoch=20, num_batches=10, batch_size=1000):
+    def __init__(self, num_feat=10, epsilon=0.0001, _lambda=0.001, momentum=0.008, maxepoch=20, num_batches=100, batch_size=1000):
         self.num_feat = num_feat  # Number of latent features,
         self.epsilon = epsilon  # learning rate,
         self._lambda = _lambda  # L2 regularization,
@@ -28,15 +28,24 @@ class PMF(object):
         pairs_test = test_vec.shape[0]  # testdata中条目数
 
         # 1-p-i, 2-m-c
+        #num_user: 1500 num_item: 18
+        # num_user = int(max(np.amax(train_vec[:, 0]), np.amax(test_vec[:, 0]))) + 1  # 第0列，user总数
+        # num_item = int(max(np.amax(train_vec[:, 1]), np.amax(test_vec[:, 1]))) + 1  # 第1列，movie总数
         num_user = int(max(np.amax(train_vec[:, 0]), np.amax(test_vec[:, 0]))) + 1  # 第0列，user总数
         num_item = int(max(np.amax(train_vec[:, 1]), np.amax(test_vec[:, 1]))) + 1  # 第1列，movie总数
+        print( int(min(np.amin(train_vec[:, 0]), np.amin(test_vec[:, 0]))) + 1 ) # 第0列，user总数
+        print( int(min(np.amin(train_vec[:, 1]), np.amin(test_vec[:, 1]))) + 1 ) # 第1列，movie总数
+
+        # num_user,num_item = 1500, 18
+        print("num_user:",num_user,"num_item:",num_item)
 
         incremental = False  # 增量
         if ((not incremental) or (self.w_Item is None)):
             # initialize
             self.epoch = 0
-            self.w_Item = 0.1 * np.random.randn(num_item, self.num_feat)  # numpy.random.randn 电影 M x D 正态分布矩阵
-            self.w_User = 0.1 * np.random.randn(num_user, self.num_feat)  # numpy.random.randn 用户 N x D 正态分布矩阵
+            self.w_Item =  30*np.random.randn(num_item, self.num_feat)  # numpy.random.randn 电影 M x D 正态分布矩阵
+            self.w_User =  30*np.random.randn(num_user, self.num_feat)  # numpy.random.randn 用户 N x D 正态分布矩阵
+            print("self.w_User:",self.w_User)
 
             self.w_Item_inc = np.zeros((num_item, self.num_feat))  # 创建电影 M x D 0矩阵
             self.w_User_inc = np.zeros((num_user, self.num_feat))  # 创建用户 N x D 0矩阵
@@ -52,22 +61,28 @@ class PMF(object):
             for batch in range(self.num_batches):  # 每次迭代要使用的数据量
                 # print "epoch %d batch %d" % (self.epoch, batch+1)
 
-                test = np.arange(self.batch_size * batch, self.batch_size * (batch + 1))
+                test = np.arange(self.batch_size * batch, self.batch_size * (batch + 1))  #1000个
                 batch_idx = np.mod(test, shuffled_order.shape[0])  # 本次迭代要使用的索引下标
 
-                batch_UserID = np.array(train_vec[shuffled_order[batch_idx], 0], dtype='int32')
-                batch_ItemID = np.array(train_vec[shuffled_order[batch_idx], 1], dtype='int32')
-
+                batch_UserID = np.array(train_vec[shuffled_order[batch_idx], 0], dtype='int32')  #1000个
+                batch_ItemID = np.array(train_vec[shuffled_order[batch_idx], 1], dtype='int32')  #1000个
+                # print("batch_UserID",batch_UserID.shape,"batch_ItemID",batch_ItemID)
                 # Compute Objective Function
+                # print("batch_ItemID:",batch_ItemID)
+                print("w_Item:", self.w_Item.shape)
+                print("self.w_Item[batch_ItemID, :]:",self.w_Item[batch_ItemID, :]) #Nan
                 pred_out = np.sum(np.multiply(self.w_User[batch_UserID, :],
                                               self.w_Item[batch_ItemID, :]),
                                   axis=1)  # mean_inv subtracted # np.multiply对应位置元素相乘
+                # print("self.w_User每次所选",self.w_User[batch_UserID, :].shape)
+                ####出问题
+                # print("self.w_Item每次所选", self.w_Item[batch_UserID, :])
+
 
                 rawErr = pred_out - train_vec[shuffled_order[batch_idx], 2] + self.mean_inv
-
+                print("rawErr:",rawErr)
                 # Compute gradients
-                Ix_User = 2 * np.multiply(rawErr[:, np.newaxis], self.w_Item[batch_ItemID, :]) \
-                       + self._lambda * self.w_User[batch_UserID, :]
+                Ix_User = 2 * np.multiply(rawErr[:, np.newaxis], self.w_Item[batch_ItemID, :]) + self._lambda * self.w_User[batch_UserID, :]
                 Ix_Item = 2 * np.multiply(rawErr[:, np.newaxis], self.w_User[batch_UserID, :]) \
                        + self._lambda * (self.w_Item[batch_ItemID, :])  # np.newaxis :increase the dimension
 
