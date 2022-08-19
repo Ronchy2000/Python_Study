@@ -116,7 +116,8 @@ class GpMf():
 
 
 def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
-    data = dataset.get_df()
+    # data = dataset.get_df()
+    data = dataset.vaules[:,1:]
     param_init = np.zeros((1, 3))
     X_init = np.zeros(model.X.shape)
     for iter in range(nb_iter):
