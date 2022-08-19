@@ -174,20 +174,24 @@ def predict(user, test_items, model, dataset):
 
 def perf_weak(dataset, base_dim=9):
     print('Fetch data set...')
-    if dataset.dataset == "movielens":
-        norm_coeff = 1.6
-        print("norm_coeff:1.6------------")
-    else :
-        norm_coeff = 6.67
+    # if dataset.dataset == "movielens":
+    #     norm_coeff = 1.6
+    #     print("norm_coeff:1.6------------")
+    # else :
+    #     norm_coeff = 6.67
+    norm_coeff = 6.67
     print('Data set fetched')
-    print("Dataset desctiption", dataset.get_description())
-    model_init = GpMf(latent_dim=base_dim, nb_data=dataset.item_index_range)
+    # print("Dataset desctiption", dataset.get_description())
+    # model_init = GpMf(latent_dim=base_dim, nb_data=dataset.item_index_range)
+    num_corner = 18
+    model_init = GpMf(latent_dim=base_dim, nb_data=num_corner)
     print('Fit the model...')
     model = fit(dataset=dataset, model=model_init)
     print('Model fitted')
     predictions = []
     true_ratings = []
     test_users = dataset.get_users_test()
+
     nb_users_test = len(test_users)
     print("nb_users", nb_users_test)
     count = 0

@@ -97,11 +97,11 @@ class DataSet:
 
         # Configure parameters
         if dataset in DataSet.DATASETS_TO_BE_FETCHED:
-            #self.__set_params_online_ds(dataset, size)
-            pass
+            self.__set_params_online_ds(dataset, size)
+            # pass
         else:
-            #self.__set_params_toy_ds(u, i, u_unique, i_unique, density, noise, score_low, score_high)
-            pass
+            self.__set_params_toy_ds(u, i, u_unique, i_unique, density, noise, score_low, score_high)
+            # pass
         self.df, self.df_complete = self.__set_df()
         self.nb_users = len(np.unique(self.df[DataSet.USER_ID]))
         self.nb_items = len(np.unique(self.df[DataSet.ITEM_ID]))
