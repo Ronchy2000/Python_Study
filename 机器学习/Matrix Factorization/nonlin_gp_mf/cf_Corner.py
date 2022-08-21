@@ -27,7 +27,8 @@ class GpMf():
     def __init__(self, latent_dim, nb_data):
         self.latent_dim = latent_dim
         self.nb_data = nb_data
-        self.X = np.random.normal(0, 1e-3, (nb_data, latent_dim))   #a spherical Gaussian prior over the X
+        #self.X = np.random.normal(0, 1e-3, (nb_data, latent_dim))   #a spherical Gaussian prior over the X
+        self.X = np.random.normal(0, 1e-2, (nb_data, latent_dim))   #a spherical Gaussian prior over the X
         self.lin_variance = 1.0
         self.bias_variance = 0.11
         self.white_variance = 5.0
@@ -152,9 +153,9 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
             # update variances
             param_init = param_init * momentum + gradient_param * lr
             param = param + param_init
-            model.lin_variance = math.exp(param[0, 0])
-            model.bias_variance = math.exp(param[0, 1])
-            model.white_variance = math.exp(param[0, 2])
+            model.lin_variance = np.exp(param[0, 0])
+            model.bias_variance = np.exp(param[0, 1])
+            model.white_variance = np.exp(param[0, 2])
             #print("end user", user, "=========================")
 
         print("end iteration", iter,  "=========================")
@@ -174,7 +175,7 @@ def predict(user, test_items, model, dataset):
     return mean
 
 
-def perf_weak(dataset, base_dim=9):
+def perf_weak(dataset, base_dim=5):
     print('Fetch data set...')
     # if dataset.dataset == "movielens":
     #     norm_coeff = 1.6
@@ -195,7 +196,7 @@ def perf_weak(dataset, base_dim=9):
     test_users = dataset.get_users_test()
 
     nb_users_test = len(test_users)
-    print("nb_users", nb_users_test)
+    print("nb_users_test", nb_users_test)
     count = 0
     for user in test_users:
         prediction = predict(user, dataset.get_item_test(user) - 1, model, dataset)
@@ -207,9 +208,10 @@ def perf_weak(dataset, base_dim=9):
         rating = dataset.get_rating_test(user)
         true_ratings.append(rating)
         count += 1
-        print(count, "over ", nb_users_test, "users")
+        #print(count, "over ", nb_users_test, "users")
     predictions = np.asarray(predictions)
     true_ratings = np.asarray(true_ratings)
+    #误差计算
     rmse = np.linalg.norm(predictions - true_ratings) / np.sqrt(nb_users_test)
     nmae = np.sum(np.abs(true_ratings - predictions)) * 1. / (len(predictions) * norm_coeff)
     print("rmse", rmse)
@@ -218,8 +220,7 @@ def perf_weak(dataset, base_dim=9):
 
 # ========================== DEMO ======================================================================================
 def plot_errors_vs_latent_dims():
-    #base_dims = range(5, 30)  #latent feature = 9,最好
-    base_dims = 9
+    base_dims = range(3, 10)  #latent feature ,3的时候最好
     rmse_res = []
         #0.9192805345815771, 0.9191762806556765, 0.9298582192495648, 0.9264887573748214, 0.942721413670847,
         #0.9464276649204383, 0.9619938797137044, 0.959524838407498, 0.9637647705458857, 0.9654112679112156,
@@ -230,9 +231,10 @@ def plot_errors_vs_latent_dims():
         #0.4693989965956004, 0.4749311584164483, 0.47302261002602103, 0.47072878663284334, 0.4775780782441432]
 
     if not len(rmse_res):
-        dataset_movielens_s = DataSet(dataset="movielens", size="S")
+        dataset_Corner = DataSet(dataset="Corner", size="14")
         for dim in base_dims:
-            (rmse, nmae) = perf_weak(dataset=dataset_movielens_s, base_dim=dim)
+            print("the latent-feature:",dim)
+            (rmse, nmae) = perf_weak(dataset=dataset_Corner, base_dim=dim)
             rmse_res.append(rmse)
             nmae_res.append(nmae)
 
@@ -256,15 +258,9 @@ def plot_errors_vs_latent_dims():
 
 if __name__ == "__main__":
     print('START')
-    # MovieLens dataset 100k
-    perf_weak(dataset=DataSet(dataset="Corner", size="14"))
-    # MovieLens dataset 1M
-    #perf_weak(dataset=DataSet(dataset="movielens", size="M"))
-    # Toy dataset
-    #perf_weak(dataset=DataSet(dataset="toy"))
-    # Jester dataset
-    #perf_weak(dataset=DataSet(dataset="jester"))
-    plot_errors_vs_latent_dims()
+    perf_weak(dataset=DataSet(dataset="Corner", size="14"),base_dim=3)
+
+    # plot_errors_vs_latent_dims()
     print('END')
 
 

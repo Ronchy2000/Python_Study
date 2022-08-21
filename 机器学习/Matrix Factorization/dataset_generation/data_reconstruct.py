@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 # df = pd.read_csv("timing1500x18.csv")
-df = pd.read_csv("mydata2_corner1-corner14.csv")
+df = pd.read_csv("timing1500x14.csv")
 
 data = np.array(df.values[:,1:])
 print(data.shape)
@@ -31,4 +31,4 @@ for j in range(data.shape[1]):
 print(output[-1,-1])
 print(output)
 df_out = pd.DataFrame(output,columns=["row","col","value"])
-df_out.to_csv("timing_flattern_3colx13.csv")
+df_out.to_csv("timing1500x14_flattern.csv")
