@@ -56,7 +56,6 @@ class DataSet:
     ####################
     # Static variables #
     ####################
-    #df = pd.read_csv("timing_flattern_3col0_12_x13.csv")
     ## Column names
     #USER_ID = 'user_id'
     USER_ID = 'row'
@@ -117,8 +116,8 @@ class DataSet:
         #self.df, self.df_complete = self.__set_df()
         # 用不上 because: self.df_complete -> Only for toy dataset
         # 我们的数据
-        #self.df = pd.read_csv("timing_flattern_3col0_12_x13.csv")  #row  col  value
-        self.df = pd.read_csv("timing_flattern_3列_x18.csv")  #row  col  value
+        self.df = pd.read_csv("timing_flattern_3col0_12_x13.csv")  #row  col  value
+        #self.df = pd.read_csv("timing1500x14_flattern.csv")  #row  col  value
 
         #从0开始计数
         self.nb_users = len(np.unique(self.df[DataSet.USER_ID]))  #DataSet.USER_ID - row  从0开始计数

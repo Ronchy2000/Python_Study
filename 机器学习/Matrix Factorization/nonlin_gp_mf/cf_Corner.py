@@ -40,6 +40,7 @@ class GpMf():
         Cj_invy, logDetC = self.invert_covariance()
         yj = np.asmatrix(self.y).T
         Nj = len(self.rated_items)
+        #P9 公式20
         likelihood = - 0.5 * (Nj * np.log(2 * math.pi) + logDetC + yj.T.dot(Cj_invy))
         return float(likelihood)
 
@@ -182,12 +183,10 @@ def perf_weak(dataset, base_dim=5):
     #     print("norm_coeff:1.6------------")
     # else :
     #     norm_coeff = 6.67
-    norm_coeff = 6.67
+    norm_coeff = 1.6
     print('Data set fetched')
     # print("Dataset desctiption", dataset.get_description())
     model_init = GpMf(latent_dim=base_dim, nb_data=dataset.item_index_range)
-    #num_corner = 13
-    # model_init = GpMf(latent_dim=base_dim, nb_data=num_corner)
     print('Fit the model...')
     model = fit(dataset=dataset, model=model_init)
     print('Model fitted')
@@ -258,7 +257,7 @@ def plot_errors_vs_latent_dims():
 
 if __name__ == "__main__":
     print('START')
-    perf_weak(dataset=DataSet(dataset="Corner", size="14"),base_dim=3)
+    perf_weak(dataset=DataSet(dataset="Corner", size="14"))
 
     # plot_errors_vs_latent_dims()
     print('END')
