@@ -187,6 +187,10 @@ class DataSet:
     def get_df_complete(self):
         # Only for toy dataset
         return self.df_complete
+##我们自己要去划分数据集和训练集
+    # def spilt_train_test_corner(self):
+
+
 
     def split_train_test(self, strong_generalization=False, train_size=0.8, users_size=1.):
         """
