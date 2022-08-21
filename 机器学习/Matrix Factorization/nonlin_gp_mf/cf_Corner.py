@@ -27,7 +27,7 @@ class GpMf():
     def __init__(self, latent_dim, nb_data):
         self.latent_dim = latent_dim
         self.nb_data = nb_data
-        self.X = np.random.normal(0, 1e-3, (nb_data, latent_dim))
+        self.X = np.random.normal(0, 1e-3, (nb_data, latent_dim))   #a spherical Gaussian prior over the X
         self.lin_variance = 1.0
         self.bias_variance = 0.11
         self.white_variance = 5.0
@@ -121,10 +121,12 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
     param_init = np.zeros((1, 3))
     X_init = np.zeros(model.X.shape)
     for iter in range(nb_iter):
-        print("iteration", iter)
+        print("iteration：", iter)
         tic = time.time()
+        # 随机数要做什么？
         np.random.seed(seed=seed)
         state = np.random.get_state()
+        #每次随机生成的都一样，详见test.py
         users = np.random.permutation(dataset.get_users())
         for user in users:
             #print("begin user", user,  "=========================")

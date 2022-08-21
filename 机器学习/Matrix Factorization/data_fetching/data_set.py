@@ -133,7 +133,7 @@ class DataSet:
         """
         users = self.df_train.groupby([DataSet.USER_ID])
         return users.get_group(user)[DataSet.RATING].values
-
+        # https://zhuanlan.zhihu.com/p/101284491
     def get_users(self):
         return np.unique(self.df_train[DataSet.USER_ID])
 
