@@ -130,7 +130,15 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
             toc = time.time()
             lr = 1e-4
             y = dataset.get_ratings_user(user)
+            print('dataset.get_ratings_user(user):', y)
+            #获取每个人的评分，打印结果如下：
+            #dataset.get_ratings_user(user): [3 5 5 5 5 5 3 4 5 5 5 4 5 4 5 4 5 3 4 4 5 5 4 1 5 5 5 5 4 4 5 5 5 3 5 3 5
+            #                                 3 5 2 5 5 5 5 5 4 4 4 5 5 2 1 1 5 2 5 4 3 3 4 5 5]
+            #dataset.get_ratings_user(user): [3 2 4 4 4 4 3 4 4 3 4 5 4 3 2 1 3 3 5 1 3 2]
+            #dataset.get_ratings_user(user): [5 3 5 4 3 5 5 4 2 4 5 4 5 4 5 4 3 5 3 4]
+            #获取每个人的评分的（影片ID-1）
             rated_items = dataset.get_items_user(user) - 1
+
             model.y = y
             model.rated_items = rated_items
             grad_X, grad_w, grad_b, grad_n = model.log_likelihood_grad()

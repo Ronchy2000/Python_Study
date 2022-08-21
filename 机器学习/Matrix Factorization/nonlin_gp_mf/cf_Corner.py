@@ -20,7 +20,7 @@ PACKAGE_PARENT = '..'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-from data_fetching.data_set import DataSet
+from data_fetching.my_data_set import DataSet
 
 
 class GpMf():
@@ -116,8 +116,7 @@ class GpMf():
 
 
 def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
-    # data = dataset.get_df()
-    data = dataset.vaules[:,1:]
+    data = dataset.get_df()
     param_init = np.zeros((1, 3))
     X_init = np.zeros(model.X.shape)
     for iter in range(nb_iter):
@@ -185,9 +184,9 @@ def perf_weak(dataset, base_dim=9):
     norm_coeff = 6.67
     print('Data set fetched')
     # print("Dataset desctiption", dataset.get_description())
-    # model_init = GpMf(latent_dim=base_dim, nb_data=dataset.item_index_range)
-    num_corner = 18
-    model_init = GpMf(latent_dim=base_dim, nb_data=num_corner)
+    model_init = GpMf(latent_dim=base_dim, nb_data=dataset.item_index_range)
+    #num_corner = 13
+    # model_init = GpMf(latent_dim=base_dim, nb_data=num_corner)
     print('Fit the model...')
     model = fit(dataset=dataset, model=model_init)
     print('Model fitted')
@@ -258,7 +257,7 @@ def plot_errors_vs_latent_dims():
 if __name__ == "__main__":
     print('START')
     # MovieLens dataset 100k
-    perf_weak(dataset=DataSet(dataset="movielens", size="S"))
+    perf_weak(dataset=DataSet(dataset="Corner", size="14"))
     # MovieLens dataset 1M
     #perf_weak(dataset=DataSet(dataset="movielens", size="M"))
     # Toy dataset

@@ -31,4 +31,4 @@ for j in range(data.shape[1]):
 print(output[-1,-1])
 print(output)
 df_out = pd.DataFrame(output,columns=["row","col","value"])
-df_out.to_csv("timing_flattern_3列_Corner1_14.csv")
+df_out.to_csv("timing_flattern_3colx13.csv")
