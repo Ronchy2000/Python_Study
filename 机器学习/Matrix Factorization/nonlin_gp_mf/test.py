@@ -24,9 +24,16 @@ df = pd.read_csv("timing1500x14_flattern.csv")
 #取corner0
 group = df.groupby(['col'])
 
-#按组划分
-df1 = group.get_group(0)
-df2 = group.get_group(1)
-out = pd.concat([df1,df2],axis=0)
-print(out)
+#按组划分  就这样来
+# id = [0,1]
+# out = pd.DataFrame(columns=['row','col','value'])
+# for i in id:
+#     df_tmp = group.get_group(i)
+#     out = pd.concat([out, df_tmp], axis=0)
+# print(out)
 # print( list(df.groupby(['col'])) )
+
+
+#------------------------------------------
+complementart_set_id = [i for i in range(14)]
+print(complementart_set_id)

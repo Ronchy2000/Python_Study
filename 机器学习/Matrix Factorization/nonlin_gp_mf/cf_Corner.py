@@ -48,6 +48,7 @@ class GpMf():
         q = self.latent_dim
         Nj = len(self.rated_items)
         Xj = np.asmatrix(self.X[self.rated_items, :])
+        # Xj = np.asmatrix(self.X[int(self.rated_items), :])
         yj = np.asmatrix(self.y).T
         s_n = self.white_variance
         s_w = self.lin_variance
@@ -102,6 +103,7 @@ class GpMf():
 
         yj = np.asmatrix(self.y).T
         Xj = np.asmatrix(self.X[self.rated_items, :])
+        # Xj = np.asmatrix(self.X[int(self.rated_items), :])
 
         Cinvy, CinvSum, CinvX, CinvTr = self.invert_covariance(gradient=True)
         covGradX = 0.5 * (Cinvy * (Cinvy.T * Xj) - CinvX)
@@ -129,13 +131,20 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
         state = np.random.get_state()
         #每次随机生成的都一样，详见test.py
         users = np.random.permutation(dataset.get_users())
+        print("users:",users.shape)
+
         for user in users:
             #print("begin user", user,  "=========================")
             toc = time.time()
             lr = 1e-4
             y = dataset.get_ratings_user(user)
-            rated_items = dataset.get_items_user(user) - 1
+            print("the user:",user)
+            print("y:",y)
+            # rated_items = dataset.get_items_user(user) - 1
+            rated_items = dataset.get_items_user(user)
+            print("rated_items:",rated_items)
             model.y = y
+            # model.rated_items = rated_items
             model.rated_items = rated_items
             grad_X, grad_w, grad_b, grad_n = model.log_likelihood_grad()
             gradient_param = np.array([grad_w * model.lin_variance,

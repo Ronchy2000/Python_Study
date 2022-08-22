@@ -131,15 +131,18 @@ class DataSet:
         print("self.item_index_range",self.item_index_range)
         # Train and test set
         #返回DataFrame 格式
-        self.df_train, self.df_test, self.df_heldout = self.split_train_test(strong_generalization=strong_gen,
-                                                                             users_size=users_size)
+        #self.df_train, self.df_test, self.df_heldout = self.split_train_test(strong_generalization=strong_gen,
+        #                                                                     users_size=users_size)
+        #应用在Corner上的划分
+        self.df_train, self.df_test = self.spilt_train_test_corner(Corner_id = [0])
+
         self.nb_users_train = len(np.unique(self.df_train[DataSet.USER_ID]))
         self.nb_items_train = len(np.unique(self.df_train[DataSet.ITEM_ID]))
 
         # print("nb_users",self.nb_users) # nb_users 1404-> 0-1403
-        # print("nb_items",self.nb_items) # nb_items 13 -> s0-12
-        # print("self.df_train:",self.df_train)
-        # print("self.df_test:",self.df_test)
+        # print("nb_items",self.nb_items) # nb_items 13 -> 0-12
+        print("self.df_train:",self.df_train)
+        print("self.df_test:",self.df_test)
 
     ##################
     # Public methods #
@@ -187,10 +190,32 @@ class DataSet:
     def get_df_complete(self):
         # Only for toy dataset
         return self.df_complete
+#========================================================================
 ##我们自己要去划分数据集和训练集
-    # def spilt_train_test_corner(self):
+    #Corner_id  从0开始 0-13, total:14
+    def spilt_train_test_corner(self,Corner_id=[0]):
+        #按照Corner分组
+        group = self.df.groupby(['col'])
+        #创建新DataFrame
+        train_out = pd.DataFrame(columns=['row', 'col', 'value'])
+        #训练集
+        for a_corner in Corner_id:
+            df_tmp = group.get_group(a_corner)
+            train_out = pd.concat([train_out, df_tmp], axis=0)
+        #-------------
+        all_corner_id = [i for i in range(self.nb_items)]
+        #取补集
+        test_set_id = list(set(all_corner_id) - set(Corner_id))
+        # 创建新DataFrame
+        test_out = pd.DataFrame(columns=['row', 'col', 'value'])
+        # 测试集
+        for a_corner in test_set_id:
+            df_tmp = group.get_group(a_corner)
+            test_out = pd.concat([test_out, df_tmp], axis=0)
 
+        return train_out, test_out
 
+# ========================================================================
 
     def split_train_test(self, strong_generalization=False, train_size=0.8, users_size=1.):
         """
