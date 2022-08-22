@@ -35,5 +35,14 @@ group = df.groupby(['col'])
 
 
 #------------------------------------------
-complementart_set_id = [i for i in range(14)]
-print(complementart_set_id)
+# complementart_set_id = [i for i in range(14)]
+# print(complementart_set_id)
+#------------------------------------------
+#####
+# #脑残问题：索引必须用list 形式，这里测试时，index用 ndnumpy 与 list 格式都可以，到了代码中，用list才不会报错！
+
+
+rated_item = np.array([0 ,1 ,2])
+print("rated_item:",rated_item)
+X = np.random.normal(0, 1e-1, (13, 5))
+print(X[rated_item,:])

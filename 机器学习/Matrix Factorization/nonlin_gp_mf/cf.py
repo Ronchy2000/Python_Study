@@ -46,6 +46,8 @@ class GpMf():
         q = self.latent_dim
         Nj = len(self.rated_items)
         Xj = np.asmatrix(self.X[self.rated_items, :])
+        print("self.rated_items.shape:",self.rated_items.shape)
+        print("invert_covariance----self.X[self.rated_items, :]:",self.X[self.rated_items, :])
         yj = np.asmatrix(self.y).T
         s_n = self.white_variance
         s_w = self.lin_variance
@@ -141,6 +143,7 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
 
             model.y = y
             model.rated_items = rated_items
+            print("model.rated_items:",model.rated_items)
             grad_X, grad_w, grad_b, grad_n = model.log_likelihood_grad()
             gradient_param = np.array([grad_w * model.lin_variance,
                                grad_b * model.bias_variance,

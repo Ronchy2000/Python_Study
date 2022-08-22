@@ -29,6 +29,7 @@ class GpMf():
         self.nb_data = nb_data
         #self.X = np.random.normal(0, 1e-3, (nb_data, latent_dim))   #a spherical Gaussian prior over the X
         self.X = np.random.normal(0, 1e-2, (nb_data, latent_dim))   #a spherical Gaussian prior over the X
+        print("self.X:",self.X,"self.X.shape:",self.X.shape)
         self.lin_variance = 1.0
         self.bias_variance = 0.11
         self.white_variance = 5.0
@@ -100,11 +101,15 @@ class GpMf():
         s_w = self.lin_variance
         s_b = self.bias_variance
         s_n = self.white_variance
+        #print("invert_covariance----self.X[self.rated_items, :]:", self.X[[0, 1, 2], :])
+        # print("self.rated_items:",self.rated_items,type(self.rated_items),self.rated_items.shape)
+        #到这会出问题。
+        #print("invert_covariance----self.X[self.rated_items, :]:", self.X[self.rated_items,:])
 
         yj = np.asmatrix(self.y).T
         Xj = np.asmatrix(self.X[self.rated_items, :])
         # Xj = np.asmatrix(self.X[int(self.rated_items), :])
-
+        # print("invert_covariance----self.X[self.rated_items, :]:",self.X[self.rated_items, :])
         Cinvy, CinvSum, CinvX, CinvTr = self.invert_covariance(gradient=True)
         covGradX = 0.5 * (Cinvy * (Cinvy.T * Xj) - CinvX)
         gX = s_w * 2.0 * covGradX
@@ -131,20 +136,22 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
         state = np.random.get_state()
         #每次随机生成的都一样，详见test.py
         users = np.random.permutation(dataset.get_users())
-        print("users:",users.shape)
+        #print("users:",users.shape)
 
         for user in users:
             #print("begin user", user,  "=========================")
             toc = time.time()
             lr = 1e-4
             y = dataset.get_ratings_user(user)
-            print("the user:",user)
-            print("y:",y)
+            #print("the user:",user)
+            #print("y:",y)
             # rated_items = dataset.get_items_user(user) - 1
             rated_items = dataset.get_items_user(user)
-            print("rated_items:",rated_items)
+            #print("rated_items:",rated_items,"type:",type(rated_items))
             model.y = y
-            # model.rated_items = rated_items
+            #Ronchy将rated_items ndnumpy格式变成list
+            rated_items = list(rated_items)
+            #========================================
             model.rated_items = rated_items
             grad_X, grad_w, grad_b, grad_n = model.log_likelihood_grad()
             gradient_param = np.array([grad_w * model.lin_variance,
@@ -207,7 +214,7 @@ def perf_weak(dataset, base_dim=5):
     print("nb_users_test", nb_users_test)
     count = 0
     for user in test_users:
-        prediction = predict(user, dataset.get_item_test(user) - 1, model, dataset)
+        prediction = predict(user, dataset.get_item_test(user), model, dataset)
         if prediction > dataset.high_rating:
             prediction = dataset.high_rating
         if prediction < dataset.low_rating:

@@ -134,7 +134,7 @@ class DataSet:
         #self.df_train, self.df_test, self.df_heldout = self.split_train_test(strong_generalization=strong_gen,
         #                                                                     users_size=users_size)
         #应用在Corner上的划分
-        self.df_train, self.df_test = self.spilt_train_test_corner(Corner_id = [0])
+        self.df_train, self.df_test = self.spilt_train_test_corner(Corner_id = [0,1,2])
 
         self.nb_users_train = len(np.unique(self.df_train[DataSet.USER_ID]))
         self.nb_items_train = len(np.unique(self.df_train[DataSet.ITEM_ID]))
