@@ -170,14 +170,12 @@ class DataSet:
         return np.unique(self.df_test[DataSet.USER_ID])
 
     def get_item_test(self, user):
-        #print("get_item_test(self, user)报错:",self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID]  )
-        # return int(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID])
-        return self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID]
-#Ronchy改
+        print("get_item_test(self, user)报错:",self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID]  )
+        return int(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID])
+
     def get_rating_test(self, user):
-        #return float(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING])
-        return self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING]
-# Ronchy改
+        return float(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING])
+
     def get_df(self):
         return self.df
 

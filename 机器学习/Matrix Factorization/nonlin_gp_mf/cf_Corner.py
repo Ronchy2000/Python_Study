@@ -182,7 +182,10 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
 
 def predict(user, test_items, model, dataset):
     y = dataset.get_ratings_user(user)
-    rated_items = dataset.get_items_user(user) - 1
+    # rated_items = dataset.get_items_user(user) - 1
+    rated_items = dataset.get_items_user(user)
+    rated_items = list(rated_items)
+    test_items = list(test_items)
     model.rated_items = rated_items
     model.y = y
     X_test = np.asmatrix(model.X[test_items, :])
@@ -221,6 +224,8 @@ def perf_weak(dataset, base_dim=5):
             prediction = dataset.low_rating
         predictions.append(prediction)
         rating = dataset.get_rating_test(user)
+        #Ronchy加
+        rating = list(rating)
         true_ratings.append(rating)
         count += 1
         #print(count, "over ", nb_users_test, "users")
