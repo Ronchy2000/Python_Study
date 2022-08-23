@@ -220,10 +220,10 @@ def perf_weak(dataset, base_dim=5):
         prediction = predict(user, dataset.get_item_test(user), model, dataset)
         print(prediction)
         #出问题了。
-        if prediction > dataset.high_rating:
-            prediction = dataset.high_rating
-        if prediction < dataset.low_rating:
-            prediction = dataset.low_rating
+        # if prediction > dataset.high_rating:
+        #     prediction = dataset.high_rating
+        # if prediction < dataset.low_rating:
+        #     prediction = dataset.low_rating
         predictions.append(prediction)
         rating = dataset.get_rating_test(user)
         #Ronchy加
