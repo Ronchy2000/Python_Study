@@ -141,9 +141,11 @@ class DataSet:
         return np.unique(self.df_test[DataSet.USER_ID])
 
     def get_item_test(self, user):
+        print("无int操作 get_item_test:",self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID])
         return int(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID])
 
     def get_rating_test(self, user):
+        print("无float操作 get_item_test:", self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING])
         return float(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING])
 
     def get_df(self):

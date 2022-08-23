@@ -128,6 +128,7 @@ class DataSet:
         self.low_rating = np.min(self.df[DataSet.RATING])
         self.high_rating = np.max(self.df[DataSet.RATING])
         self.item_index_range = np.max(self.df[DataSet.ITEM_ID]) - np.min(self.df[DataSet.ITEM_ID]) + 1
+        print("self.low_rating:",self.low_rating,"self.high_rating:",self.high_rating)
         print("self.item_index_range",self.item_index_range)
         # Train and test set
         #返回DataFrame 格式

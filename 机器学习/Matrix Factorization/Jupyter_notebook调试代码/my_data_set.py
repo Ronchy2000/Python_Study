@@ -128,6 +128,7 @@ class DataSet:
         self.low_rating = np.min(self.df[DataSet.RATING])
         self.high_rating = np.max(self.df[DataSet.RATING])
         self.item_index_range = np.max(self.df[DataSet.ITEM_ID]) - np.min(self.df[DataSet.ITEM_ID]) + 1
+        print("self.low_rating:",self.low_rating,"self.high_rating:",self.high_rating)
         print("self.item_index_range",self.item_index_range)
         # Train and test set
         #返回DataFrame 格式
@@ -170,12 +171,14 @@ class DataSet:
         return np.unique(self.df_test[DataSet.USER_ID])
 
     def get_item_test(self, user):
-        print("get_item_test(self, user)报错:",self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID]  )
-        return int(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID])
-
+        #print("get_item_test(self, user)报错:",self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID]  )
+        # return int(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID])
+        return self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.ITEM_ID]
+#Ronchy改
     def get_rating_test(self, user):
-        return float(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING])
-
+        #return float(self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING])
+        return self.df_test.loc[self.df_test[DataSet.USER_ID] == user, DataSet.RATING]
+# Ronchy改
     def get_df(self):
         return self.df
 

@@ -204,6 +204,8 @@ def perf_weak(dataset, base_dim=9):
     count = 0
     for user in test_users:
         prediction = predict(user, dataset.get_item_test(user) - 1, model, dataset)
+        print( "prediction: ",prediction )
+
         if prediction > dataset.high_rating:
             prediction = dataset.high_rating
         if prediction < dataset.low_rating:
