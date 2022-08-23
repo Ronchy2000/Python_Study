@@ -179,6 +179,19 @@ def fit(dataset, model, nb_iter=10, seed=42, momentum=0.9):
         print("duration iteration", time.time() - tic)
     return model
 
+def train_vadidate(user,train_items,model,dateset):
+    y = dateset.get_ratings_user(user)
+    rated_items = dataset.get_items_user(user)
+    rated_items = list(rated_items)
+    train_items = list(train_items)
+    model.rated_items = rated_items
+    model.y = y
+    X_test = np.asmatrix(model.X[train_items, :])
+    X = np.asmatrix(model.X[model.rated_items, :])
+    Cinvy, CinvSum, CinvX, CinvTr = model.invert_covariance(gradient=True)
+    mean = model.lin_variance * X_test * (X.T * Cinvy) + Cinvy.sum() * model.bias_variance
+    return mean
+
 
 def predict(user, test_items, model, dataset):
     y = dataset.get_ratings_user(user)
@@ -232,6 +245,9 @@ def perf_weak(dataset, base_dim=5):
         count += 1
         #print(count, "over ", nb_users_test, "users")
     predictions = np.asarray(predictions)
+    # https://blog.csdn.net/weixin_42317507/article/details/106133046
+    # 数据维度reshape
+    predictions = predictions.reshape(predictions.shape[0], -1)
     true_ratings = np.asarray(true_ratings)
     #误差计算
     rmse = np.linalg.norm(predictions - true_ratings) / np.sqrt(nb_users_test)
