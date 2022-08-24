@@ -13,6 +13,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 import os
 # from torch.autograd import Variable
+import pandas as pd
+
 
 print(torch.__version__)
 # I use torch (1.11.0) for this work. lower version may not work.
@@ -24,12 +26,34 @@ EPS = 1e-10
 PI = 3.1415
 #生成综合数据
 #train_set
-xtr = torch.rand(32, 1)
-ytr = ((6*xtr - 2)**2) * torch.sin(12*xtr - 4) + torch.randn(32, 1) * 1
+# xtr = torch.rand(32, 1)
+# print(xtr,xtr.shape)
+# ytr = ((6*xtr - 2)**2) * torch.sin(12*xtr - 4) + torch.randn(32, 1) * 1
+# print(ytr,ytr.shape)
 
+df = pd.read_csv("timing1500x14.csv")
+# x_path_tr = [i for i in range( df.shape[0]) ]
+# y_corner_tr = np.array(df.values[:,1])
+xtr= np.array( [i for i in range( df.shape[0])]).reshape(-1,1)
+xtr = torch.from_numpy(xtr)
+xtr = xtr.double()
+
+ytr= np.array(df.values[:,1]).reshape(-1,1)
+ytr = torch.from_numpy(ytr)
+ytr = ytr.double()
+print(ytr,ytr.shape)
 #test_set
-xte = torch.linspace(0, 1, 100).view(-1,1)
-yte = ((6*xte - 2)**2) * torch.sin(12*xte - 4)
+# xte = torch.linspace(0, 1, 100).view(-1,1)
+# yte = ((6*xte - 2)**2) * torch.sin(12*xte - 4)
+xte = np.array([i for i in range( df.shape[0]) ]).reshape(-1,1)
+xte = torch.from_numpy(xte)
+xte = xte.double()
+
+yte = np.array(df.values[:,2]).reshape(-1,1)
+yte = torch.from_numpy(yte)
+yte = yte.double()
+# x_path_te = [i for i in range( df.shape[0]) ]
+# y_corner_te = np.array(df.values[:,2])
 
 #plot the data
 print("xtr.size:", xtr.size(), "ytr.size:", ytr.size())
@@ -123,7 +147,9 @@ train_adam(xtr, ytr, log_length_scale, log_scale, log_beta, 50, 0.1)
 with torch.no_grad():
     ypred, yvar = forward(xtr, xte, log_length_scale, log_scale, log_beta, ytr)
 
-plt.errorbar(xte.numpy().reshape(100), ypred.detach().numpy().reshape(100),
+# plt.errorbar(xte.numpy().reshape(100), ypred.detach().numpy().reshape(100),
+#              yerr=yvar.sqrt().squeeze().detach().numpy(), fmt='r-.', alpha=0.2)
+plt.errorbar(xte.numpy().reshape(1500), ypred.detach().numpy().reshape(1500),
              yerr=yvar.sqrt().squeeze().detach().numpy(), fmt='r-.', alpha=0.2)
 plt.plot(xtr.numpy(), ytr.numpy(), 'b+')
 plt.show()
