@@ -42,7 +42,9 @@ del target_name[seed_index]
 # print("target_name:",target_name)
 
 ### belta,gama——划分featrue与target
+# feature
 belta = df[feature_name]
+# target
 gama = df.drop(feature_name, axis=1)
 # print("belta",belta)
 # print("gama",gama)

@@ -22,3 +22,7 @@ print(output)
 col_name = [('Corner' + str(i)) for i in range(1,19)]
 df = pd.DataFrame(output,columns=col_name)
 df.to_csv("timing1500x18.csv")
+
+
+
+
