@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 df = pd.read_csv("mydata2_corner1-corner14.csv")
+df = pd.read_csv("timing1500x14_delete_first_col.csv")
 
 print(df.shape)    #csv的shape
 np_data = np.empty(df.shape,dtype=float) #create a new empty matrix
