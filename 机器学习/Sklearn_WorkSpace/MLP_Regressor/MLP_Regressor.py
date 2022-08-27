@@ -20,20 +20,18 @@ from sklearn import metrics
 
 from sklearn.model_selection import GridSearchCV
 
-df = pd.read_csv('timing1500x14.csv')
-x =
-y =
+df = pd.read_csv("timing1500x14.csv")
+df_data = np.array( df.values[:,1:] )
+#train_data
+x = df_data[:,1].reshape(-1, 1)
+#test_data
+y = df_data[:,2].reshape(-1, 1)
 
-trainX, testX, trainY, testY = train_test_split(x, y, test_size = 0.2)
-sc=StandardScaler()
-scaler = sc.fit(trainX)
-trainX_scaled = scaler.transform(trainX)
-testX_scaled = scaler.transform(testX)
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.30)
+model = MLPRegressor()
+model.fit(X_train, y_train)
 
-mlp_reg = MLPRegressor(hidden_layer_sizes=(150,100,50),
-                       max_iter = 300,activation = 'relu',
-                       solver = 'adam')
-
-mlp_reg.fit(trainX_scaled, trainY)
-
-y_pred = mlp_reg.predict(testX_scaled)
+expected_y = y_test
+predicted_y = model.predict(X_test)
+print(metrics.r2_score(expected_y, predicted_y))
+print(metrics.mean_squared_log_error(expected_y, predicted_y))
