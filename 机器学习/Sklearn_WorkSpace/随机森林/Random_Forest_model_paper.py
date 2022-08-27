@@ -48,3 +48,6 @@ if __name__ == "__main__":
     print("MAE",MAE,"len(MAE)",len(MAE))  # 13*14 次
     print("result",result)
 
+
+
+
