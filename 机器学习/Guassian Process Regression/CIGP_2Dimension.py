@@ -200,21 +200,22 @@ if __name__ == "__main__":
         ypred, ypred_var = model(xte)
 
     # plt.errorbar(xte, ypred.detach(), ypred_var.sqrt().squeeze().detach(),fmt='r-.' ,alpha = 0.2)
-    plt.plot(xte, ypred.detach(), 'r-.')
-    plt.plot(xtr, ytr, 'b+')
-    plt.plot(xte, yte, 'k-')
+    # plt.plot(xte, ypred.detach(), 'r-.')
+    plt.plot(xtr, ytr, 'b+',label = 'train_set')  #plt y是三列，画在一个上
+    plt.plot(xte, yte, 'k-',label = 'test_set')
+    # plt.legend(handles=[dot1,line], labels=['train_set','test_set'], loc='best')
     plt.show()
 
     # plt.close('all')
-    plt.plot(xtr, ytr, 'b+')
-    for i in range(3):
-        plt.plot(xte, yte[:, i], label='truth', color='r')
-        plt.plot(xte, ypred[:, i], label='prediction', color='navy')
-        plt.fill_between(xte.squeeze(-1).detach().numpy(),
-                         ypred[:, i].squeeze(-1).detach().numpy() + torch.sqrt(
-                             ypred_var[:, i].squeeze(-1)).detach().numpy(),
-                         ypred[:, i].squeeze(-1).detach().numpy() - torch.sqrt(
-                             ypred_var[:, i].squeeze(-1)).detach().numpy(),
-                         alpha=0.2)
-    plt.show()
+    # plt.plot(xtr, ytr, 'b+')
+    # for i in range(3):
+    #     plt.plot(xte, yte[:, i], label='truth', color='r')
+    #     plt.plot(xte, ypred[:, i], label='prediction', color='navy')
+    #     plt.fill_between(xte.squeeze(-1).detach().numpy(),
+    #                      ypred[:, i].squeeze(-1).detach().numpy() + torch.sqrt(
+    #                          ypred_var[:, i].squeeze(-1)).detach().numpy(),
+    #                      ypred[:, i].squeeze(-1).detach().numpy() - torch.sqrt(
+    #                          ypred_var[:, i].squeeze(-1)).detach().numpy(),
+    #                      alpha=0.2)
+    # plt.show()
 # %%
