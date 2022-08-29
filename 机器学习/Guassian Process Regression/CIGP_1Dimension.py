@@ -2,7 +2,7 @@
 # @Time    : 2022/8/28 19:14
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : CIGP.py
+# @File    : CIGP_1Dimension.py
 # @Software: PyCharm
 
 # Conditional independent Gaussian process (CIGP) for vector output regression based on pytorch
@@ -20,7 +20,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from matplotlib import pyplot as plt
-
+import pandas as pd
 print(torch.__version__)
 # I use torch (1.11.0) for this work. lower version may not work.
 
@@ -187,15 +187,25 @@ class cigp(nn.Module):
 
 # %%
 if __name__ == "__main__":
-    print('testing')
-    print(torch.__version__)
-
+    df = pd.read_csv("timing1500x14.csv")
     # single output test 1
-    xte = torch.linspace(0, 6, 100).view(-1, 1)
-    yte = torch.sin(xte) + 10
+#test_set
+    # xte = torch.linspace(0, 6, 100).view(-1, 1)
+    # yte = torch.sin(xte) + 10
+    # print("x_test",xte)
+    xte = [i for i in range(1,1500,2)]
+    yte = df.loc[xte]['Corner1'].values
+    yte = torch.Tensor(yte).view(-1, 1)
+    xte = torch.Tensor(xte).view(-1, 1)
 
-    xtr = torch.rand(16, 1) * 6
-    ytr = torch.sin(xtr) + torch.randn(16, 1) * 0.5 + 10
+#train_set
+    # xtr = torch.rand(16, 1) * 6
+    # ytr = torch.sin(xtr) + torch.randn(16, 1) * 0.5 + 10
+    # print("x_train", xtr)
+    xtr = [i for i in range(0, 1500, 2)]
+    ytr = df.loc[xtr]['Corner1'].values
+    ytr = torch.Tensor(ytr).view(-1, 1)
+    xtr = torch.Tensor(xtr).view(-1, 1)
 
     model = cigp(xtr, ytr)
     model.train_adam(200, lr=0.1)
@@ -207,63 +217,63 @@ if __name__ == "__main__":
     plt.errorbar(xte, ypred.reshape(-1).detach(), ypred_var.sqrt().squeeze().detach(), fmt='r-.', alpha=0.2)
     plt.plot(xtr, ytr, 'b+')
     plt.show()
-
-    # single output test 2
-    xte = torch.rand(128, 2) * 2
-    yte = torch.sin(xte.sum(1)).view(-1, 1) + 10
-
-    xtr = torch.rand(32, 2) * 2
-    ytr = torch.sin(xtr.sum(1)).view(-1, 1) + torch.randn(32, 1) * 0.5 + 10
-
-    model = cigp(xtr, ytr)
-    model.train_adam(300, lr=0.1)
-    # model.train_bfgs(50, lr=0.01)
-
-    with torch.no_grad():
-        ypred, ypred_var = model(xte)
-
-    # plt.errorbar(xte.sum(1), ypred.reshape(-1).detach(), ystd.sqrt().squeeze().detach(), fmt='r-.' ,alpha = 0.2)
-    plt.plot(xte.sum(1), yte, 'b+')
-    plt.plot(xte.sum(1), ypred.reshape(-1).detach(), 'r+')
-    # plt.plot(xtr.sum(1), ytr, 'b+')
-    plt.show()
-
-    # multi output test
-    xte = torch.linspace(0, 6, 100).view(-1, 1)
-    yte = torch.hstack([torch.sin(xte),
-                        torch.cos(xte),
-                        xte.tanh()])
-
-    xtr = torch.rand(32, 1) * 6
-    ytr = torch.sin(xtr) + torch.rand(32, 1) * 0.5
-    ytr = torch.hstack([torch.sin(xtr),
-                        torch.cos(xtr),
-                        xtr.tanh()]) + torch.randn(32, 3) * 0.2
-
-    model = cigp(xtr, ytr, 1)
-    model.train_adam(100, lr=0.1)
-    # model.train_bfgs(50, lr=0.001)
-
-    with torch.no_grad():
-        ypred, ypred_var = model(xte)
-
-    # plt.errorbar(xte, ypred.detach(), ypred_var.sqrt().squeeze().detach(),fmt='r-.' ,alpha = 0.2)
-    plt.plot(xte, ypred.detach(), 'r-.')
-    plt.plot(xtr, ytr, 'b+')
-    plt.plot(xte, yte, 'k-')
-    plt.show()
-
-    # plt.close('all')
-    plt.plot(xtr, ytr, 'b+')
-    for i in range(3):
-        plt.plot(xte, yte[:, i], label='truth', color='r')
-        plt.plot(xte, ypred[:, i], label='prediction', color='navy')
-        plt.fill_between(xte.squeeze(-1).detach().numpy(),
-                         ypred[:, i].squeeze(-1).detach().numpy() + torch.sqrt(
-                             ypred_var[:, i].squeeze(-1)).detach().numpy(),
-                         ypred[:, i].squeeze(-1).detach().numpy() - torch.sqrt(
-                             ypred_var[:, i].squeeze(-1)).detach().numpy(),
-                         alpha=0.2)
-    plt.show()
+    #
+    # # single output test 2
+    # xte = torch.rand(128, 2) * 2
+    # yte = torch.sin(xte.sum(1)).view(-1, 1) + 10
+    #
+    # xtr = torch.rand(32, 2) * 2
+    # ytr = torch.sin(xtr.sum(1)).view(-1, 1) + torch.randn(32, 1) * 0.5 + 10
+    #
+    # model = cigp(xtr, ytr)
+    # model.train_adam(300, lr=0.1)
+    # # model.train_bfgs(50, lr=0.01)
+    #
+    # with torch.no_grad():
+    #     ypred, ypred_var = model(xte)
+    #
+    # # plt.errorbar(xte.sum(1), ypred.reshape(-1).detach(), ystd.sqrt().squeeze().detach(), fmt='r-.' ,alpha = 0.2)
+    # plt.plot(xte.sum(1), yte, 'b+')
+    # plt.plot(xte.sum(1), ypred.reshape(-1).detach(), 'r+')
+    # # plt.plot(xtr.sum(1), ytr, 'b+')
+    # plt.show()
+    #
+    # # multi output test
+    # xte = torch.linspace(0, 6, 100).view(-1, 1)
+    # yte = torch.hstack([torch.sin(xte),
+    #                     torch.cos(xte),
+    #                     xte.tanh()])
+    #
+    # xtr = torch.rand(32, 1) * 6
+    # ytr = torch.sin(xtr) + torch.rand(32, 1) * 0.5
+    # ytr = torch.hstack([torch.sin(xtr),
+    #                     torch.cos(xtr),
+    #                     xtr.tanh()]) + torch.randn(32, 3) * 0.2
+    #
+    # model = cigp(xtr, ytr, 1)
+    # model.train_adam(100, lr=0.1)
+    # # model.train_bfgs(50, lr=0.001)
+    #
+    # with torch.no_grad():
+    #     ypred, ypred_var = model(xte)
+    #
+    # # plt.errorbar(xte, ypred.detach(), ypred_var.sqrt().squeeze().detach(),fmt='r-.' ,alpha = 0.2)
+    # plt.plot(xte, ypred.detach(), 'r-.')
+    # plt.plot(xtr, ytr, 'b+')
+    # plt.plot(xte, yte, 'k-')
+    # plt.show()
+    #
+    # # plt.close('all')
+    # plt.plot(xtr, ytr, 'b+')
+    # for i in range(3):
+    #     plt.plot(xte, yte[:, i], label='truth', color='r')
+    #     plt.plot(xte, ypred[:, i], label='prediction', color='navy')
+    #     plt.fill_between(xte.squeeze(-1).detach().numpy(),
+    #                      ypred[:, i].squeeze(-1).detach().numpy() + torch.sqrt(
+    #                          ypred_var[:, i].squeeze(-1)).detach().numpy(),
+    #                      ypred[:, i].squeeze(-1).detach().numpy() - torch.sqrt(
+    #                          ypred_var[:, i].squeeze(-1)).detach().numpy(),
+    #                      alpha=0.2)
+    # plt.show()
 
 # %%
