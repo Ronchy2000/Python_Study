@@ -13,5 +13,7 @@ df = pd.read_csv("timing1500x14.csv")
 xte = [i for i in range(1,1500,2)]
 
 yte = df.loc[xte]['Corner1']
+yte = df['Corner1']  #索引列
 xte = torch.Tensor(xte).view(-1,1)
+
 print(yte)
