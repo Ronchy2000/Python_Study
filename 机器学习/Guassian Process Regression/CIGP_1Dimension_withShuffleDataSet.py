@@ -191,38 +191,24 @@ class cigp(nn.Module):
 if __name__ == "__main__":
     df = pd.read_csv("timing1500x14.csv")
     # single output test 1
-#test_set
-    # xte = torch.linspace(0, 6, 100).view(-1, 1)
-    # yte = torch.sin(xte) + 10
-    # print("x_test",xte)
-    #---
-    # xte = [i for i in range(1,1500,2)]
-    # yte = df.loc[xte]['Corner1'].values
-    # yte = torch.Tensor(yte).view(-1, 1)
-    # xte = torch.Tensor(xte).view(-1, 1)
 
-#train_set
-    # xtr = torch.rand(16, 1) * 6
-    # ytr = torch.sin(xtr) + torch.randn(16, 1) * 0.5 + 10
-    # print("x_train", xtr)
-    # ---
-    # xtr = [i for i in range(0, 1500, 2)]
-    # ytr = df.loc[xtr]['Corner1'].values
-    # ytr = torch.Tensor(ytr).view(-1, 1)
-    # xtr = torch.Tensor(xtr).view(-1, 1)
-#
     x = [i for i in range(1500)]
     x = np.array(x).reshape(-1,1)
     y = df['Corner1'].values
     y = np.array(y).reshape(-1,1)
-    xtr,xte,ytr,yte = train_test_split(x,y,test_size = 0.3)
+    y2 = df['Corner2'].values
+    y2 = np.array(y2).reshape(-1,1)
+
+    # xtr,xte,ytr,yte = train_test_split(x,y,test_size = 0.3)
+    xtr,xte,ytr,yte = train_test_split(y2,y,test_size = 0.3)
+
     xtr = torch.Tensor(xtr).view(-1, 1)
     xte = torch.Tensor(xte).view(-1, 1)
     ytr = torch.Tensor(ytr).view(-1, 1)
     yte = torch.Tensor(yte).view(-1, 1)
 
     model = cigp(xtr, ytr)
-    model.train_adam(200, lr=0.3)
+    model.train_adam(180, lr=0.03)
     # model.train_bfgs(50, lr=0.1)
 
     with torch.no_grad():
@@ -233,7 +219,9 @@ if __name__ == "__main__":
 
     plt.errorbar(xte, ypred.reshape(-1).detach(), ypred_var.sqrt().squeeze().detach(), fmt='r-.', alpha=0.2)
     plt.plot(xtr, ytr, 'b+')
-    plt.xlabel('path')
-    plt.ylabel('timing')
+    # plt.xlabel('path')
+    # plt.ylabel('timing')
+    plt.xlabel("Corner1")
+    plt.ylabel('Corner2')
     plt.show()
 #=======================================================================================================================
