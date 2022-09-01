@@ -194,6 +194,7 @@ if __name__ == "__main__":
 
     x = [i for i in range(1500)]
     x = np.array(x).reshape(-1,1)
+
     y = df['Corner1'].values
     y = np.array(y).reshape(-1,1)
     y2 = df['Corner2'].values
@@ -208,20 +209,33 @@ if __name__ == "__main__":
     yte = torch.Tensor(yte).view(-1, 1)
 
     model = cigp(xtr, ytr)
-    model.train_adam(180, lr=0.03)
+
+    # model.train_adam(180, lr=0.03)  #MAE最小
+    model.train_adam(189, lr=0.03)
     # model.train_bfgs(50, lr=0.1)
 
     with torch.no_grad():
         ypred, ypred_var = model(xte)
 
     MAE = metrics.mean_absolute_error(yte, ypred)
+    print("ypred_var.sqrt():",ypred_var.sqrt())
     print("MAE:",MAE)
 
+    plt.subplot(2, 2, 1)
+    plt.plot(xtr, ytr, 'g+')
+    plt.xlabel("Corner1")
+    plt.ylabel('Corner2')
+
+    plt.subplot(2, 2, 2)  # 两行两列,这是第二个图
     plt.errorbar(xte, ypred.reshape(-1).detach(), ypred_var.sqrt().squeeze().detach(), fmt='r-.', alpha=0.2)
-    plt.plot(xtr, ytr, 'b+')
-    # plt.xlabel('path')
-    # plt.ylabel('timing')
+    plt.xlabel("Corner1")
+    plt.ylabel('Corner2')
+
+    plt.subplot(2, 2, 3)  # 两行两列,这是第三个图
+    plt.plot(xtr, ytr, 'g+')
+    plt.errorbar(xte, ypred.reshape(-1).detach(), ypred_var.sqrt().squeeze().detach(), fmt='r-.', alpha=0.2)
     plt.xlabel("Corner1")
     plt.ylabel('Corner2')
     plt.show()
 #=======================================================================================================================
+# %%
