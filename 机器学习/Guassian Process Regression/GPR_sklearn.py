@@ -32,11 +32,18 @@ model = gp.GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=10, alph
 model.fit(xtr,ytr)
 
 y_pred,sigma_1 = model.predict(xte,return_std=True)
+# print("y_pred:",y_pred)
+# print("sigma_1:",sigma_1)
 #--------------------------------------------------
 MAE = metrics.mean_absolute_error(yte, y_pred)
 print("MAE:",MAE)
-plt.plot(xtr, ytr, 'g+')
-plt.errorbar(xte, y_pred.reshape(-1), sqrt(sigma_1.squeeze()), fmt='r-.', alpha=0.2)
+
+
+xte = xte.reshape(-1)
+y_pred = y_pred.reshape(-1)
+print(xte.shape,y_pred.shape,sigma_1.shape)
+# plt.plot(xtr, ytr, 'b+')
+plt.errorbar(xte, y_pred, yerr = np.sqrt(sigma_1), fmt='r-.', alpha=0.2)
 plt.xlabel("Corner1")
 plt.ylabel('Corner2')
 plt.show()
