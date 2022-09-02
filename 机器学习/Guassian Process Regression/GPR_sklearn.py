@@ -5,7 +5,6 @@
 # @File    : GPR_sklearn.py
 # @Software: PyCharm
 
-#https://www.youtube.com/watch?v=QvcHrwXS4_U
 
 import numpy as np
 import pandas as pd
@@ -14,6 +13,8 @@ from matplotlib import pyplot as  plt
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF,ConstantKernel as C,RationalQuadratic as RQ,WhiteKernel,ExpSineSquared as Exp
 from sklearn.model_selection import train_test_split
+import sklearn.gaussian_process as gp
+from sklearn import metrics
 
 
 df = pd.read_csv("timing1500x14.csv")
@@ -23,26 +24,24 @@ Corner2 = df_array[:,2].reshape(-1,1)
 xtr,xte,ytr,yte = train_test_split(Corner1,Corner2,test_size = 0.3)
 
 #--------------------------------------------------
-kernel = C()*Exp(length_scale = 24,periodicity = 1)
+kernel = gp.kernels.ConstantKernel(1.0, (1e-1, 1e3)) * gp.kernels.RBF(10.0, (1e-3, 1e3))
 # length_scale_bounds=(1e-05,2), alpha_bounds=(1e-05,100000.0) + Exp(length_scale=1,periodicity=1)
 
-gp = GaussianProcessRegressor(kernel = kernel,n_restarts_optimizer=4)
+model = gp.GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=10, alpha=0.1, normalize_y=True)
 
-gp.fit(xtr,ytr)
+model.fit(xtr,ytr)
 
-y_pred,sigma_1 = gp.predict(xte,return_std=True)
+y_pred,sigma_1 = model.predict(xte,return_std=True)
 #--------------------------------------------------
+MAE = metrics.mean_absolute_error(yte, y_pred)
+print("MAE:",MAE)
+plt.plot(xtr, ytr, 'g+')
+plt.errorbar(xte, y_pred.reshape(-1), sqrt(sigma_1.squeeze()), fmt='r-.', alpha=0.2)
+plt.xlabel("Corner1")
+plt.ylabel('Corner2')
+plt.show()
+#plot figure
 
-fig = plt.figure(num=1,figsize=(11,0.8),dpi=300,facecolor='w',edgecolor='k')
-fig.text(0.5,-1,'$Time\[hours]$',ha = 'center')
-fig.text(0.04,10,'$Globa\horizontal\irrandiance\[W/m^2]$',va = 'center',rotation = 'vertical')
-# plt.subplot(4,1,1)
-plt.plot(xtr,ytr,'b.',markersize=5,label=u'obervation')
-plt.plot(xte,y_pred,'b-',linewidth =1,label=u'Prediction')
-# plt.fill_between()
-plt.xlabel('(a)')
-plt.legend(loc='upper right',fontsize=10)
-plt.ylim(-750,1750)
 
 
 
