@@ -1,19 +1,9 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2022/8/29 14:06
+# @Time    : 2022/9/5 10:25
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : CIGP_1Dimension_withShuffleDataSet.py
+# @File    : CIGP_all_combination.py
 # @Software: PyCharm
-
-# Conditional independent Gaussian process (CIGP) for vector output regression based on pytorch
-# CIGP use a single kernel for each output. Thus the log likelihood is simply a sum of the log likelihood of each output.
-#
-# v10: A stable version. improve over the v02 version to fix nll bug; adapt to torch 1.11.0.
-#
-# Author: Wei W. Xing (wxing.me)
-# Email: wayne.xingle@gmail.com
-# Date: 2022-03-23
-
 
 # %%
 import torch
@@ -190,53 +180,32 @@ class cigp(nn.Module):
 
 if __name__ == "__main__":
     df = pd.read_csv("timing1500x14.csv")
-    # single output test 1
+    df_data = np.array(df.values[:, 1:])
+    MAE = []
+    for i in range(df_data.shape[1]):
+        data_feature = df_data[:,i].reshape(-1,1)  #第 i 列
+        data_target = np.delete(df_data,i,axis=1)  #del 第 i 列
+        for j in data_target.T:  #对 列 进行迭代
+            # tmp = myMLPRegressor(data_feature,j.reshape(-1,1))
+            xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=0.3)
+            xtr = torch.Tensor(xtr).view(-1, 1)
+            xte = torch.Tensor(xte).view(-1, 1)
+            ytr = torch.Tensor(ytr).view(-1, 1)
+            yte = torch.Tensor(yte).view(-1, 1)
+            model = cigp(xtr, ytr)
+            model.train_adam(175, lr=0.03)
+            with torch.no_grad():
+                ypred, ypred_var = model(xte)
+            each_mae = metrics.mean_absolute_error(yte, ypred)
+            MAE.append(each_mae)
+            print("result:", sum(MAE) / len(MAE))
 
-    x = [i for i in range(1500)]
-    x = np.array(x).reshape(-1,1)
-
-    y = df[['Corner1','Corner3']].values
-    #y = np.array(y).reshape(-1,1)
-    y = np.array(y)
-    y2 = df['Corner2'].values
-    y2 = np.array(y2).reshape(-1,1)
-    print(y.shape,y2.shape)
-    # xtr,xte,ytr,yte = train_test_split(x,y,test_size = 0.3)
-    xtr,xte,ytr,yte = train_test_split(y2,y,test_size = 0.3)
-
-    xtr = torch.Tensor(xtr).view(-1, 1)
-    xte = torch.Tensor(xte).view(-1, 1)
-    ytr = torch.Tensor(ytr).view(-1, 1)
-    yte = torch.Tensor(yte).view(-1, 1)
-
-    model = cigp(xtr, ytr)
-
-    # model.train_adam(180, lr=0.03)  #MAE最小
-    model.train_adam(189, lr=0.03)
-    # model.train_bfgs(50, lr=0.1)
-
-    with torch.no_grad():
-        ypred, ypred_var = model(xte)
-
-    MAE = metrics.mean_absolute_error(yte, ypred)
-    print("ypred_var.sqrt():",ypred_var.sqrt())
-    print("MAE:",MAE)
-
-    # plt.subplot(2, 2, 1)
+    result = sum(MAE) / len(MAE)
+    print("Final result:",result)
     # plt.plot(xtr, ytr, 'g+')
-    # plt.xlabel("Corner1")
-    # plt.ylabel('Corner2')
-    #
-    # plt.subplot(2, 2, 2)  # 两行两列,这是第二个图
     # plt.errorbar(xte, ypred.reshape(-1).detach(), ypred_var.sqrt().squeeze().detach(), fmt='r-.', alpha=0.2)
-    # plt.xlabel("Corner1")
-    # plt.ylabel('Corner2')
-
-    plt.subplot(2, 2, 3)  # 两行两列,这是第三个图
-    plt.plot(xtr, ytr, 'g+')
-    plt.errorbar(xte, ypred.reshape(-1).detach(), ypred_var.sqrt().squeeze().detach(), fmt='r-.', alpha=0.2)
-    plt.xlabel("Corner1")
-    plt.ylabel('Corner2')
-    plt.show()
+    # plt.xlabel("Corner_x")
+    # plt.ylabel('Corner_y')
+    # plt.show()
 #=======================================================================================================================
 # %%
