@@ -36,7 +36,6 @@ def RF_regression(data_feature,data_target):
 
 MAE = []
 result_MAE_plot = []
-
 if __name__ == "__main__":
     df1 = pd.read_csv("..\\..\\Benchmark\\timing1500x14.csv")
     df2 = pd.read_csv("..\\..\\Benchmark\\timing3700x14.csv")
