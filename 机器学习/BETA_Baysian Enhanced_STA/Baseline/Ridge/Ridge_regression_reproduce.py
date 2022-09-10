@@ -16,7 +16,7 @@ from sklearn.metrics import mean_absolute_error
 
 
 def linear3(data_feature,data_target):
-    x_train,x_test,y_train,y_test = train_test_split(data_feature,data_target,random_state=22)
+    x_train,x_test,y_train,y_test = train_test_split(data_feature,data_target,random_state=22,test_size=0.25) #test_size 默认值：0.25
 
     transfer = StandardScaler()
     x_train = transfer.fit_transform(x_train)
@@ -30,14 +30,23 @@ def linear3(data_feature,data_target):
 
     y_predict = estimator.predict(x_test)
     #print("预测值:",y_predict)
-    RMSE =  mean_squared_error(y_test,y_predict)
-    MAE = mean_absolute_error(y_test,y_predict)
-    print("RMSE",RMSE)
-    print("MAE", MAE)
-    return MAE
+    rmse =  mean_squared_error(y_test,y_predict)
+    mae = mean_absolute_error(y_test,y_predict)
+    Epsilon = y_test - y_predict
+    abs_Epsilon = np.maximum(Epsilon,-Epsilon)
+    # print("abs_Epsilon",len(abs_Epsilon))
+    less10 = len( abs_Epsilon[abs_Epsilon < 10] )
+    print("MAE:", mae)
+    print("RMSE:", rmse)
+    print("the num of less10:", less10)   #返回的是满足条件的个数
+    return mae, rmse, less10
 
 MAE = []
+RMSE = []
+LESS10 = 0
 result_MAE_plot = []
+result_RMSE_plot = []
+result_LESS10_plot = []
 if __name__ == "__main__":
     df1 = pd.read_csv("..\\..\\Benchmark\\timing1500x14.csv")
     df2 = pd.read_csv("..\\..\\Benchmark\\timing3700x14.csv")
@@ -52,104 +61,250 @@ if __name__ == "__main__":
     df_data5 = np.array(df5.values[:, 1:])
     df_data6 = np.array(df6.values[:, 1:])
     # print(df_data1)
-
 #--------------------------------------
+# '''
+# b17
+# '''
+    list_result_less10 =[]
     for i in range(df_data1.shape[1]):
         data_feature = df_data1[:,i].reshape(-1,1)  #第 i 列
         data_target = np.delete(df_data1,i,axis=1)  #del 第 i 列
         for j in data_target.T:  #对 列 进行迭代
-            tmp = linear3(data_feature,j.reshape(-1,1))
-            MAE.append(tmp)
-    result = sum(MAE)/len(MAE)
-    print("len(MAE)",len(MAE))  # 13*14 次
-    print("result",result)
+            tmp_mae,tmp_rmse,len_less10 = linear3(data_feature,j.reshape(-1,1))
+            MAE.append(tmp_mae)
+            RMSE.append(tmp_rmse)
+            LESS10 += len_less10
+        one_LESS10 = LESS10 / (df_data1.shape[0]*(df_data1.shape[1]-1) * 0.25) # 乘以 test_size
+        LESS10 = 0  #每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE)/len(MAE)
+    print("MAE", result_mae)
 
-    result_MAE_plot.append(result)
+    result_rmse = sum(RMSE)/len(RMSE)
+    print("RMSE", result_rmse)
+
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
     MAE.clear()
-    result = 0
-# --------------------------------------
+    RMSE.clear()
+    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+
+    # --------------------------------------
+    # '''
+    # b18
+    # '''
+    list_result_less10 = []
     for i in range(df_data2.shape[1]):
-        data_feature = df_data2[:,i].reshape(-1,1)  #第 i 列
-        data_target = np.delete(df_data2,i,axis=1)  #del 第 i 列
-        for j in data_target.T:  #对 列 进行迭代
-            tmp = linear3(data_feature,j.reshape(-1,1))
-            MAE.append(tmp)
-    result = sum(MAE)/len(MAE)
-    print("len(MAE)",len(MAE))  # 13*14 次
-    print("result",result)
+        data_feature = df_data2[:, i].reshape(-1, 1)  # 第 i 列
+        data_target = np.delete(df_data2, i, axis=1)  # del 第 i 列
+        for j in data_target.T:  # 对 列 进行迭代
+            tmp_mae, tmp_rmse, len_less10 = linear3(data_feature, j.reshape(-1, 1))
+            MAE.append(tmp_mae)
+            RMSE.append(tmp_rmse)
+            LESS10 += len_less10
+        one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
 
-    result_MAE_plot.append(result)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
     MAE.clear()
-    result = 0
-# --------------------------------------
+    RMSE.clear()
+
+    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+
+    # --------------------------------------
+    # '''
+    # b19
+    # '''
+    list_result_less10 = []
     for i in range(df_data3.shape[1]):
         data_feature = df_data3[:, i].reshape(-1, 1)  # 第 i 列
         data_target = np.delete(df_data3, i, axis=1)  # del 第 i 列
         for j in data_target.T:  # 对 列 进行迭代
-            tmp = linear3(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp)
-    result = sum(MAE) / len(MAE)
-    print("len(MAE)", len(MAE))  # 13*14 次
-    print("result", result)
+            tmp_mae, tmp_rmse, len_less10 = linear3(data_feature, j.reshape(-1, 1))
+            MAE.append(tmp_mae)
+            RMSE.append(tmp_rmse)
+            LESS10 += len_less10
+        one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
 
-    result_MAE_plot.append(result)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
     MAE.clear()
-    result = 0
-# --------------------------------------
+    RMSE.clear()
+
+    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+
+    # --------------------------------------
+    # '''
+    # b20
+    # '''
+    list_result_less10 = []
     for i in range(df_data4.shape[1]):
         data_feature = df_data4[:, i].reshape(-1, 1)  # 第 i 列
         data_target = np.delete(df_data4, i, axis=1)  # del 第 i 列
         for j in data_target.T:  # 对 列 进行迭代
-            tmp = linear3(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp)
-    result = sum(MAE) / len(MAE)
-    print("len(MAE)", len(MAE))  # 13*14 次
-    print("result", result)
+            tmp_mae, tmp_rmse, len_less10 = linear3(data_feature, j.reshape(-1, 1))
+            MAE.append(tmp_mae)
+            RMSE.append(tmp_rmse)
+            LESS10 += len_less10
+        one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
 
-    result_MAE_plot.append(result)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
     MAE.clear()
-    result = 0
-# --------------------------------------
+    RMSE.clear()
+    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+
+    # --------------------------------------
+    # '''
+    # b21
+    # '''
+    list_result_less10 = []
     for i in range(df_data5.shape[1]):
         data_feature = df_data5[:, i].reshape(-1, 1)  # 第 i 列
         data_target = np.delete(df_data5, i, axis=1)  # del 第 i 列
         for j in data_target.T:  # 对 列 进行迭代
-            tmp = linear3(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp)
-    result = sum(MAE) / len(MAE)
-    print("len(MAE)", len(MAE))  # 13*14 次
-    print("result", result)
+            tmp_mae, tmp_rmse, len_less10 = linear3(data_feature, j.reshape(-1, 1))
+            MAE.append(tmp_mae)
+            RMSE.append(tmp_rmse)
+            LESS10 += len_less10
+        one_LESS10 = LESS10 / (df_data5.shape[0] * (df_data5.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
 
-    result_MAE_plot.append(result)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
     MAE.clear()
-    result = 0
-# --------------------------------------
+    RMSE.clear()
+    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+
+    # --------------------------------------
+    # '''
+    # b22
+    # '''
+    list_result_less10 = []
     for i in range(df_data6.shape[1]):
         data_feature = df_data6[:, i].reshape(-1, 1)  # 第 i 列
         data_target = np.delete(df_data6, i, axis=1)  # del 第 i 列
         for j in data_target.T:  # 对 列 进行迭代
-            tmp = linear3(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp)
-    result = sum(MAE) / len(MAE)
-    print("len(MAE)", len(MAE))  # 13*14 次
-    print("result", result)
+            tmp_mae, tmp_rmse, len_less10 = linear3(data_feature, j.reshape(-1, 1))
+            MAE.append(tmp_mae)
+            RMSE.append(tmp_rmse)
+            LESS10 += len_less10
+        one_LESS10 = LESS10 / (df_data6.shape[0] * (df_data6.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
 
-    result_MAE_plot.append(result)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
     MAE.clear()
-    result = 0
+    RMSE.clear()
+    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
 
 ##plot
+    print("---------------------------------------------")
     print("result_MAE_plot",result_MAE_plot)
+    print("result_RMSE_plot", result_RMSE_plot)
+    print("result_LESS10_plot", result_LESS10_plot)
 
+    ##figure - MAE
+    plt.figure(1)
     x_ax = range(1, len(result_MAE_plot) + 1)
     plt.plot(x_ax, result_MAE_plot, color="green", marker='o', linewidth=1, label="MAE")
     plt.title("MAE")
     plt.xlabel('benchmark')
     plt.ylabel('MAE_value')
     plt.legend(loc='best', fancybox=True, shadow=True)
-    plt.grid(True)
-    plt.show()
+    plt.grid(0) #不显示网格线
+    # plt.show()
 
+    ##figure - RMSE
+    plt.figure(2)
+    #x_ax = range(1, len(result_RMSE_plot) + 1)
+    plt.plot(x_ax, result_RMSE_plot, color="green", marker='o', linewidth=1, label="RMSE")
+    plt.title("RMSE")
+    plt.xlabel('benchmark')
+    plt.ylabel('RMSE_value')
+    plt.legend(loc='best', fancybox=True, shadow=True)
+    plt.grid(0)  # 不显示网格线
+
+    ##figure - LESS10
+    plt.figure(3)
+    # x_ax = range(1, len(result_RMSE_plot) + 1)
+    plt.plot(x_ax, np.array(result_LESS10_plot)*100, color="green", marker='o', linewidth=1, label="LESS10")
+    plt.title("LESS10")
+    plt.xlabel('benchmark')
+    plt.ylabel('LESS10(%))')
+    plt.legend(loc='best', fancybox=True, shadow=True)
+    plt.grid(0)  # 不显示网格线
+
+    plt.show()
 
 #result
 '''
