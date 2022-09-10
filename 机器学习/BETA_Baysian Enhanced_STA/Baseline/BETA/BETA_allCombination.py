@@ -152,7 +152,7 @@ class cigp(nn.Module):
             optimizer.step()
             # print('loss_nll:', loss.item())
             # print('iter', i, ' nll:', loss.item())
-            print('iter', i, 'nll:{:.5f}'.format(loss.item()))
+            #print('iter', i, 'nll:{:.5f}'.format(loss.item()))
 
     def train_bfgs(self, niteration=50, lr=0.1):
         # LBFGS optimizer
