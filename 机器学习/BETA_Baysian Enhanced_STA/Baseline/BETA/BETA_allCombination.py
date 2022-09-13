@@ -168,7 +168,7 @@ class cigp(nn.Module):
                 loss.backward()
                 # print('nll:', loss.item())
                 # print('iter', i, ' nll:', loss.item())
-                # print('iter', i, 'nll:{:.5f}'.format(loss.item()))
+                print('iter', i, 'nll:{:.5f}'.format(loss.item()))
                 return loss
 
             # optimizer.zero_grad()
@@ -195,14 +195,14 @@ if __name__ == "__main__":
     df5 = pd.read_csv("..\\..\\Benchmark\\timing50000x14.csv")
     df6 = pd.read_csv("..\\..\\Benchmark\\timing100000x14.csv")
     df_data1 = np.array(df1.values[:, 1:])
-    df_data2 = np.array(df2.values[:, 1:])
-    df_data3 = np.array(df3.values[:, 1:])
-    df_data4 = np.array(df4.values[:, 1:])
-    df_data5 = np.array(df5.values[:, 1:])
-    df_data6 = np.array(df6.values[:, 1:])
+    df_data2 = np.array(df2.values[:1500, 1:])
+    df_data3 = np.array(df3.values[:1500, 1:])
+    df_data4 = np.array(df4.values[:1500, 1:])
+    df_data5 = np.array(df5.values[:1500, 1:])
+    df_data6 = np.array(df6.values[:1500, 1:])
 
 
-# --------------------------------------------------------------
+#--------------------------------------------------------------
     #b17
     list_result_less10 = []
     for i in range(df_data1.shape[1]):
