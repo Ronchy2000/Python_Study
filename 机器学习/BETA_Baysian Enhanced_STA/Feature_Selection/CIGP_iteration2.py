@@ -257,7 +257,7 @@ if __name__ == "__main__":
         # print("方差:",ypred_var.sqrt())
         print("MAE:",MAE)
 
-#找最小数
+#找最大数
     max_MAE = MAE[0]
     for i in MAE:
         if i > max_MAE:
@@ -274,8 +274,6 @@ if __name__ == "__main__":
     MAE.clear()
     print('==========================================================================')
     print("迭代完成")
-    print("feature_name:", feature_name)
-    print("target_name:", target_name)
 
 #-------------
 #feature >= 2
@@ -291,21 +289,49 @@ if __name__ == "__main__":
         gama = df_data2[target_name]
         x = np.array(belta)
         y = np.array(gama)
+        for i in range(y.shape[1]):  # 获取列
+            Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y[:, i].reshape(-1, 1),
+                                                            test_size=0.25)  # 30% 作为测试集
+            xtr = torch.Tensor(Xtrain).view(-1, 1)
+            xte = torch.Tensor(Xtest).view(-1, 1)
+            ytr = torch.Tensor(Ytrain).view(-1, 1)
+            yte = torch.Tensor(Ytest).view(-1, 1)
 
-        MAE, MSE, RMSE = [], [], []
-        # max_mae, max_mse, max_rmse = [], [], []
-        min_mae, min_mse, min_rmse = [], [], []
+            model = cigp(xtr, ytr)
+            model.train_adam(189, lr=0.03)
+            with torch.no_grad():
+                ypred, ypred_var = model(xte)
 
-        model = cigp(xtr, ytr)
-        model.train_adam(189, lr=0.03)
-        with torch.no_grad():
-            ypred, ypred_var = model(xte)
+            MAE.append(metrics.mean_absolute_error(yte, ypred))
+            RMSE.append(ypred_var.sqrt())
+            # print("方差:",ypred_var.sqrt())
+            print("MAE:", MAE)
+        # 找最大数
+        max_MAE = MAE[0]
+        for i in MAE:
+            if i > max_MAE:
+                max_MAE = i
+        print("max_MAE:", max_MAE)
+        print("max_MAE.index:", MAE.index(max_MAE))
+        max_mae.append(max_MAE)  # domimant 一轮迭代完成 ,plot用
+        ###-update feature and target-----------------------
+        feature_name.append(target_name[MAE.index(max_MAE)])
+        del target_name[MAE.index(max_MAE)]
+        MAE.clear()
+        print('==========================================================================')
+        print("迭代完成")
 
-        MAE.append(metrics.mean_absolute_error(yte, ypred))
-        RMSE.append(ypred_var.sqrt())
-        print("方差:", ypred_var.sqrt())
-        print("MAE:", MAE)
 
-
+### Plot
+    print("max_mae",max_mae)
+    x_ax = range(1,len(max_mae)+1)
+    plt.plot(x_ax, max_mae, linewidth=1, label="max_mae")
+    # plt.plot(x_ax, min_mae, linewidth=1, label="min_mae")
+    plt.title("MAE")
+    plt.xlabel('the num of dominant Corner')
+    plt.ylabel('MAE(ps)')
+    plt.legend(loc='best',fancybox=True, shadow=True)
+    plt.grid(True)
+    plt.show()
 
 
