@@ -204,7 +204,7 @@ if __name__ == "__main__":
     # xtr = torch.rand(32, 2) * 2
     # ytr = torch.sin(xtr.sum(1)).view(-1, 1) + torch.randn(32, 1) * 0.5 + 10
     model = cigp(xtr, ytr)
-    model.train_adam(300, lr=0.03)
+    model.train_adam(210, lr=0.03)
     # model.train_bfgs(50, lr=0.01)
 
     with torch.no_grad():
@@ -217,7 +217,7 @@ if __name__ == "__main__":
     plt.show()
 
     MAE = metrics.mean_absolute_error(yte, ypred)
-    # print("标准差", ypred_var.sqrt())
+    print("标准差", ypred_var.sqrt())
     print("MAE:", MAE)
 
 # %%

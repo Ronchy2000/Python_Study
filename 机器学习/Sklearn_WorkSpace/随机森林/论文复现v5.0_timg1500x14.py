@@ -26,7 +26,8 @@ import matplotlib.pyplot as plt
 ###
 # 数据导入及处理
 
-df = pd.read_csv("timing1500x14_delete_first_col.csv")
+# df = pd.read_csv("timing1500x14_delete_first_col.csv")
+df = pd.read_csv("timing3700x14_delete_first_col.csv")
 # df = pd.read_csv("mydata2_corner1-corner14.csv")
 
 feature_name,target_name = [],[]
@@ -34,7 +35,7 @@ header = list(df.columns.values)
 target_name = header[:] #拷贝给target_name
 
 # Corner2 作为 Seed
-seed_index = 0
+seed_index = 1
 feature_name.append(header[seed_index])
 # target_name.remove(feature_name) #用index的方式删除
 del target_name[seed_index]
@@ -142,7 +143,7 @@ for j in range(max_iteration):
     print("max_MAE.index:", MAE.index(max_MAE))
 #---
     for i in MAE:
-        if i < max_MAE:
+        if i < min_MAE:
             min_MAE = i
     print("min_MAE:", min_MAE)
     print("min_MAE.index:", MAE.index(min_MAE))
