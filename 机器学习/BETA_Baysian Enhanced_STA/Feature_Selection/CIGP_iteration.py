@@ -276,36 +276,6 @@ if __name__ == "__main__":
     print("feature_name:", feature_name)
     print("target_name:", target_name)
 
-#-------------
-#feature >= 2
-    max_iteration = 7
-    iteration = 1
-    for j in range(max_iteration):
-        # iterative process
-        print("feature_name:", feature_name)
-        print("target_name:", target_name)
-        iteration += 1
-        print("iteration:", iteration)
-        belta = df_data2[feature_name]
-        gama = df_data2[target_name]
-        x = np.array(belta)
-        y = np.array(gama)
-
-        MAE, MSE, RMSE = [], [], []
-        # max_mae, max_mse, max_rmse = [], [], []
-        min_mae, min_mse, min_rmse = [], [], []
-
-        model = cigp(xtr, ytr)
-        model.train_adam(189, lr=0.03)
-        with torch.no_grad():
-            ypred, ypred_var = model(xte)
-
-        MAE.append(metrics.mean_absolute_error(yte, ypred))
-        RMSE.append(ypred_var.sqrt())
-        print("方差:", ypred_var.sqrt())
-        print("MAE:", MAE)
-
-
 
 
 
