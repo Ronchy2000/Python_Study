@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import LIRU_SparseGP as sGP
+from sklearn import metrics
 """
 This code runs a 1D GP regression example using the module LIRU_SparseGP
 P.L.Green
@@ -21,7 +22,7 @@ L0 = 0.5        # Lengthscale
 Sigma0 = 0.2    # Noise standard deviation
 
 # Train sparse GP
-M = 100                  # No. sparse points
+M = 10                  # No. sparse points
 NoCandidates = 100      # No. of candidate sets of sparse points analysed
 (L, Sigma, K, C, InvC, Xs, Ys, LB_best, elapsed_time) = sGP.Train(L0, Sigma0,
                                                                   X, Y, N, M,
@@ -43,10 +44,15 @@ for n in range(N_Star):
                                               Ys, K, C, InvC, M)
 
 
+print("Y_StarMean:",Y_StarMean.shape)
+print("Y_StarStd:",Y_StarStd.shape)
+MAE = metrics.mean_absolute_error(Y_StarMean,)
+print("MAE:",MAE)
+MSE = metrics.mean_squared_error(Y_StarStd,)
+RMSE = np.sqrt(MSE)
+print("RMSE:",RMSE)
 
 
-print("Y_StarMean:",Y_StarMean)
-print("Y_StarStd:",Y_StarStd)
 # Plot results
 plt.figure()
 plt.plot(X_Star, Y_StarMean, 'black', label='Sparse GP')

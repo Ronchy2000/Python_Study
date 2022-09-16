@@ -109,11 +109,21 @@ train()
 model.eval()
 likelihood.eval()
 with gpytorch.settings.max_preconditioner_size(10), torch.no_grad():
-    preds = model(test_x)
+    preds, covar= model(test_x)
 print('Test MAE: {}'.format(torch.mean(torch.abs(preds.mean - test_y))))
 
 
-
+#plot
+plt.figure()
+plt.plot(test_x, preds, 'black', label='Sparse GP')
+plt.plot(test_x, preds + 3 * covar, 'black')
+plt.plot(test_x, preds - 3 * covar, 'black')
+plt.plot(X, y, '.', color='blue', label='Full dataset')
+# plt.plot(Xs, Ys, 'o', markeredgecolor='black', markerfacecolor='red',
+#          markeredgewidth=1.5, markersize=10, label='Sparse dataset')
+plt.xlabel('x')
+plt.legend()
+plt.show()
 
 
 
