@@ -6,13 +6,17 @@
 # @Software: PyCharm
 # @Github_link: https://github.com/riken-aip/pyHSICLasso
 '''
-        皮尔逊 - 结果       HSIC
+Feature selection.
+        皮尔逊-结果       HSIC
 data2    Corner2
 data3    Corner14
 data4    Corner1
 data5    Corner5
 data6    Corner4
 '''
+
+
+
 from pyHSICLasso import HSICLasso
 import pandas as pd
 import numpy as np

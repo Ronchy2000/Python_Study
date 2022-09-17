@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2022/9/16 19:44
+# @Time    : 2022/9/17 1:34
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : CIGP_iteration2.py
+# @File    : Transfer_prediction.py
 # @Software: PyCharm
 
 import torch
@@ -182,157 +182,51 @@ class cigp(nn.Module):
 
 
 
-
-
 if __name__ == "__main__":
     # df1 = pd.read_csv("..\\Benchmark\\timing1500x14.csv")
     # df2 = pd.read_csv("..\\Benchmark\\timing3700x14.csv")
-    df2 = pd.read_csv("timing3700x14_delete_first_col.csv")
-    # df3 = pd.read_csv("..\\Benchmark\\timing9500x14.csv")
-    # df4 = pd.read_csv("..\\Benchmark\\timing20000x14.csv")
-    # df5 = pd.read_csv("..\\Benchmark\\timing50000x14.csv")
-    # df6 = pd.read_csv("..\\Benchmark\\timing100000x14.csv")
+    df2 = pd.read_csv("..\\..\\Benchmark\\timing3700x14.csv")
+    df3 = pd.read_csv("..\\..\\Benchmark\\timing9500x14.csv")
+    df4 = pd.read_csv("..\\..\\Benchmark\\timing20000x14.csv")
+    df5 = pd.read_csv("..\\..\\Benchmark\\timing50000x14.csv")
+    df6 = pd.read_csv("..\\..\\Benchmark\\timing100000x14.csv")
 
-# 用前1500行 做实验
-#     df_data1 = np.array(df1.values[:, 1:])
-#     df_data2 = np.array(df2.values[:1500, 1:])
-    df_data2 = df2.loc[:1499,:]
-    # df_data3 = np.array(df3.values[:1500, 1:])
-    # df_data4 = np.array(df4.values[:1500, 1:])
-    # df_data5 = np.array(df5.values[:1500, 1:])
-    # df_data6 = np.array(df6.values[:1500, 1:])
-    # print("df_data2",df_data2)
+    df_data2 = np.array(df2.iloc[:500, 1:]).reshape(-1,1,order='F')  #按列reshape
+    df_data3 = np.array(df3.iloc[:500, 1:]).reshape(-1,1,order='F')
+    df_data4 = np.array(df4.iloc[:500, 1:]).reshape(-1,1,order='F')
+    df_data5 = np.array(df5.iloc[:500, 1:]).reshape(-1,1,order='F')
+    df_data6 = np.array(df6.iloc[:500, 1:]).reshape(-1,1,order='F')
+    # print("df2.iloc[:500, :]:", df2.iloc[:500, 1:])
+    # print("df_data2:",df_data2[500][0])
 
-    # # 以data2做实验
-    seed = 'Corner2'
+    #Transfer方法
+    xtr, xte, ytr, yte = train_test_split(df_data2, df_data3, test_size=0.3)
+    xtr = torch.Tensor(xtr).view(-1, 1)
+    xte = torch.Tensor(xte).view(-1, 1)
+    ytr = torch.Tensor(ytr).view(-1, 1)
+    yte = torch.Tensor(yte).view(-1, 1)
 
-    feature_name,target_name = [],[]
-    header = list(df2.columns.values)  #dataFrame2 的表头
-    # Corner2
-    seed_index = 1
-    ## feature
-    feature_name.append(header[seed_index])
-    ## target
-    target_name = header[:] #拷贝给target_name
-    del target_name[seed_index]
-    print(df_data2[target_name])
+    model = cigp(xtr, ytr)
+    model.train_adam(189, lr=0.03)
 
-    # feature
-    belta = df_data2[feature_name]
-    # target
-    # gama = df_data2.drop(feature_name, axis=1)
-    gama = df_data2[target_name]
+    with torch.no_grad():
+        ypred, ypred_var = model(xte)
 
-    x = np.array(belta)
-    y = np.array(gama)
-    if x.ndim == 1:  # 如果是一维，就变成二维
-        x = x.reshape(-1, 1)  # 1D  -> 2D:针对feature只有一维的时候
+    MAE = metrics.mean_absolute_error(yte, ypred)
+    print("ypred_var.sqrt():",ypred_var.sqrt())
+    print("MAE:",MAE)
 
-    # Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y[:, 0], test_size=0.25)  # 30% 作为测试集
-    #转化为 tensor
-    # xtr = torch.Tensor(xtr).view(-1, 1)
-    # xte = torch.Tensor(xte).view(-1, 1)
-    # ytr = torch.Tensor(ytr).view(-1, 1)
-    # yte = torch.Tensor(yte).view(-1, 1)
-
-    MAE, MSE, RMSE = [], [], []
-    max_mae, max_mse, max_rmse = [], [], []
-    # min_mae, min_mse, min_rmse = [], [], []
-
-    for i in range(y.shape[1]): #获取列
-        Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y[:, i].reshape(-1,1),
-                                                                    test_size=0.25)  # 30% 作为测试集
-        xtr = torch.Tensor(Xtrain).view(-1, 1)
-        xte = torch.Tensor(Xtest).view(-1, 1)
-        ytr = torch.Tensor(Ytrain).view(-1, 1)
-        yte = torch.Tensor(Ytest).view(-1, 1)
-
-        model = cigp(xtr, ytr)
-        model.train_adam(189, lr=0.03)
-        with torch.no_grad():
-            ypred, ypred_var = model(xte)
-
-        MAE.append( metrics.mean_absolute_error(yte, ypred) )
-        RMSE.append(ypred_var.sqrt())
-        # print("方差:",ypred_var.sqrt())
-        print("MAE:",MAE)
-
-#找最大数
-    max_MAE = MAE[0]
-    for i in MAE:
-        if i > max_MAE:
-            max_MAE = i
-    print("max_MAE:", max_MAE)
-    print("max_MAE.index:", MAE.index(max_MAE))
-
-    max_mae.append(max_MAE)  # domimant 一轮迭代完成 ,plot用
-
-    ###-update feature and target-----------------------
-    feature_name.append(target_name[MAE.index(max_MAE)])
-    del target_name[MAE.index(max_MAE)]
-
-    MAE.clear()
-    print('==========================================================================')
-    print("迭代完成")
-
-#-------------
-#feature >= 2
-    max_iteration = 7
-    iteration = 1
-    for j in range(max_iteration):
-        # iterative process
-        print("feature_name:", feature_name)
-        print("target_name:", target_name)
-        iteration += 1
-        print("iteration:", iteration)
-        belta = df_data2[feature_name]
-        gama = df_data2[target_name]
-        x = np.array(belta)
-        y = np.array(gama)
-        for i in range(y.shape[1]):  # 获取列
-            Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y[:, i].reshape(-1, 1),
-                                                            test_size=0.25)  # 30% 作为测试集
-            xtr = torch.Tensor(Xtrain)
-            xte = torch.Tensor(Xtest)
-            ytr = torch.Tensor(Ytrain).view(-1, 1)
-            yte = torch.Tensor(Ytest).view(-1, 1)
-
-            model = cigp(xtr, ytr)
-            model.train_adam(189, lr=0.03)
-            with torch.no_grad():
-                ypred, ypred_var = model(xte)
-
-            MAE.append(metrics.mean_absolute_error(yte, ypred))
-            RMSE.append(ypred_var.sqrt())
-            # print("方差:",ypred_var.sqrt())
-            print("MAE:", MAE)
-        # 找最大数
-        max_MAE = MAE[0]
-        for i in MAE:
-            if i > max_MAE:
-                max_MAE = i
-        print("max_MAE:", max_MAE)
-        print("max_MAE.index:", MAE.index(max_MAE))
-        max_mae.append(max_MAE)  # domimant 一轮迭代完成 ,plot用
-        ###-update feature and target-----------------------
-        feature_name.append(target_name[MAE.index(max_MAE)])
-        del target_name[MAE.index(max_MAE)]
-        MAE.clear()
-        print('==========================================================================')
-        print("迭代完成")
-
-
-
-### Plot
-    print("max_mae",max_mae)
-    x_ax = range(1,len(max_mae)+1)
-    plt.plot(x_ax, max_mae, linewidth=1, label="max_mae")
-    # plt.plot(x_ax, min_mae, linewidth=1, label="min_mae")
-    plt.title("MAE")
-    plt.xlabel('the num of dominant Corner')
-    plt.ylabel('MAE(ps)')
-    plt.legend(loc='best',fancybox=True, shadow=True)
-    plt.grid(True)
+    plt.plot(xtr, ytr, 'g+')
+    plt.errorbar(xte, ypred.reshape(-1).detach(), ypred_var.sqrt().squeeze().detach(), fmt='r-.', alpha=0.2)
+    plt.xlabel("design1")
+    plt.ylabel('design2')
     plt.show()
+
+
+
+
+
+
+
 
 
