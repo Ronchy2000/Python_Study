@@ -50,18 +50,20 @@ result_MAE_plot = []
 result_RMSE_plot = []
 result_LESS10_plot = []
 if __name__ == "__main__":
-    df1 = pd.read_csv("..\\..\\Benchmark\\timing1500x14.csv")
-    df2 = pd.read_csv("..\\..\\Benchmark\\timing3700x14.csv")
-    df3 = pd.read_csv("..\\..\\Benchmark\\timing9500x14.csv")
-    df4 = pd.read_csv("..\\..\\Benchmark\\timing20000x14.csv")
-    df5 = pd.read_csv("..\\..\\Benchmark\\timing50000x14.csv")
-    df6 = pd.read_csv("..\\..\\Benchmark\\timing100000x14.csv")
+    # df1 = pd.read_csv("..\\..\\Benchmark\\timing1500x14.csv")
+    # df2 = pd.read_csv("..\\..\\Benchmark\\timing3700x14.csv")
+    # df3 = pd.read_csv("..\\..\\Benchmark\\timing9500x14.csv")
+    # df4 = pd.read_csv("..\\..\\Benchmark\\timing20000x14.csv")
+    # df5 = pd.read_csv("..\\..\\Benchmark\\timing50000x14.csv")
+    # df6 = pd.read_csv("..\\..\\Benchmark\\timing100000x14.csv")
+    df1 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_timingAnalysis1500x5.csv")
+    df2 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_timingAnalysis7200x5.csv")
     df_data1 = np.array(df1.values[:, 1:])
     df_data2 = np.array(df2.values[:, 1:])
-    df_data3 = np.array(df3.values[:, 1:])
-    df_data4 = np.array(df4.values[:, 1:])
-    df_data5 = np.array(df5.values[:, 1:])
-    df_data6 = np.array(df6.values[:, 1:])
+    # df_data3 = np.array(df3.values[:, 1:])
+    # df_data4 = np.array(df4.values[:, 1:])
+    # df_data5 = np.array(df5.values[:, 1:])
+    # df_data6 = np.array(df6.values[:, 1:])
 
     # --------------------------------------
     # '''

@@ -189,20 +189,19 @@ class cigp(nn.Module):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("timing1500x14.csv")
+    # df = pd.read_csv("timing1500x14.csv")
+    df1 = pd.read_csv("..\\BETA_Baysian Enhanced_STA\\Benchmark\\Benchmark\\b17_timingAnalysis1500x5.csv")
+    df2 = pd.read_csv("..\\BETA_Baysian Enhanced_STA\\Benchmark\\Benchmark\\b18_timingAnalysis7200x5.csv")
     # single output test 1
 
-    x = [i for i in range(1500)]
-    x = np.array(x).reshape(-1,1)
 
-    y = df[['Corner1','Corner3']].values
-    #y = np.array(y).reshape(-1,1)
-    y = np.array(y)
-    y2 = df['Corner2'].values
+    y = df1['Corner1'].values
+    y = np.array(y).reshape(-1,1)
+    y2 = df1['Corner2'].values
     y2 = np.array(y2).reshape(-1,1)
     print(y.shape,y2.shape)
     # xtr,xte,ytr,yte = train_test_split(x,y,test_size = 0.3)
-    xtr,xte,ytr,yte = train_test_split(y2,y,test_size = 0.3)
+    xtr,xte,ytr,yte = train_test_split(y,y2,test_size = 0.3)
 
     xtr = torch.Tensor(xtr).view(-1, 1)
     xte = torch.Tensor(xte).view(-1, 1)
@@ -212,7 +211,7 @@ if __name__ == "__main__":
     model = cigp(xtr, ytr)
 
     # model.train_adam(180, lr=0.03)  #MAE最小
-    model.train_adam(189, lr=0.03)
+    model.train_adam(300, lr=0.01)
     # model.train_bfgs(50, lr=0.1)
 
     with torch.no_grad():
