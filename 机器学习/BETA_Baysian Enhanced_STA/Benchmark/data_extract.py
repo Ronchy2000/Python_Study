@@ -2,7 +2,7 @@
 # @Time    : 2022/9/18 18:17
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : data_extract.py
+# @File    : data_extract_b17_迭代1.py
 # @Software: PyCharm
 import os
 import numpy as np
@@ -152,6 +152,7 @@ if len(start_right) == len(end_right):
 
 else:
     print("error，有end不一致")
+    #用cnt删掉不一致的路径
     #留坑待填...
 
 
