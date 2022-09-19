@@ -47,11 +47,11 @@ def extract_file_data(path):
     return timing_slack,Start_point,End_point
 
 
-file1_path = "b18_tt_VTL.log"
-file2_path = "b18_ff_VTL.log"
-file3_path = "b18_fs_VTL.log"
-file4_path = "b18_sf_VTL.log"
-file5_path = "b18_ss_VTL.log"
+file1_path = "b17_15_fast3.log"
+file2_path = "b17_15_lowtemp3.log"
+file3_path = "b17_15_slow3.log"
+file4_path = "b17_15_typical3.log"
+file5_path = "b17_15_worst3.log"
 # file1_path = "E:\Developer\Python\Myworkshop\Python_Study\机器学习\BETA_Baysian Enhanced_STA\Benchmark\Benchmark\\b17\迭代\\b17_迭代3\\b17_ff_VTG3.log"
 
 
@@ -148,11 +148,11 @@ if len(start_right) == len(end_right):
     header = [('Corner' + str(i)) for i in range(1,np_tmp_timing.shape[1]+1)]
     df = pd.DataFrame(np_tmp_timing, columns=header)
 
-    df.to_excel("b18_VTLx5.xls", sheet_name='Sheet1', index=True)
+    df.to_excel("b17_15nm_v1_x3.xls", sheet_name='Sheet1', index=True)
     print("=========Done!=========")
 else:
-    print("error,有path不一致")
-    #用cnt删掉不一致的路径,目前没发现
+    print("error，有end不一致")
+    #用cnt删掉不一致的路径
     #留坑待填...
 
 
