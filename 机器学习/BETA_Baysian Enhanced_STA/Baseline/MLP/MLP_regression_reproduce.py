@@ -34,7 +34,7 @@ def myMLPRegressor(x,y):
     Epsilon = testY.reshape(-1) - y_pred
     abs_Epsilon = np.maximum(Epsilon, -Epsilon)
 
-    less10 = len(abs_Epsilon[abs_Epsilon < 10])
+    less10 = len(abs_Epsilon[abs_Epsilon < 30])
     print("testY:",testY.shape,"y_pred",y_pred.shape)
     print("abs_Epsilon", abs_Epsilon.shape)
     print("MAE:", mae)
@@ -54,18 +54,19 @@ result_MAE_plot = []
 result_RMSE_plot = []
 result_LESS10_plot = []
 if __name__ == "__main__":
-    df1 = pd.read_csv("..\\..\\Benchmark\\timing1500x14.csv")
-    df2 = pd.read_csv("..\\..\\Benchmark\\timing3700x14.csv")
-    df3 = pd.read_csv("..\\..\\Benchmark\\timing9500x14.csv")
-    df4 = pd.read_csv("..\\..\\Benchmark\\timing20000x14.csv")
-    df5 = pd.read_csv("..\\..\\Benchmark\\timing50000x14.csv")
-    df6 = pd.read_csv("..\\..\\Benchmark\\timing100000x14.csv")
+    df1 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL1x5.csv")
+    df2 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL2x5.csv")
+    df3 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL3x5.csv")
+
+    df4 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_VTLx5.csv")
+    df5 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b19_VTLx5.csv")
+
     df_data1 = np.array(df1.values[:, 1:])
     df_data2 = np.array(df2.values[:, 1:])
     df_data3 = np.array(df3.values[:, 1:])
     df_data4 = np.array(df4.values[:, 1:])
     df_data5 = np.array(df5.values[:, 1:])
-    df_data6 = np.array(df6.values[:, 1:])
+    # df_data6 = np.array(df6.values[:, 1:])
 
     # print(df_data1)
     # --------------------------------------
@@ -84,7 +85,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * 0.25)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        break  #测试 一次
+        #break  #测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -116,7 +117,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * 0.25)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        break  #测试 一次
+        #break  #测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -152,7 +153,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * 0.25)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        break  # 测试 一次
+        #break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -188,7 +189,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * 0.25)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        break  # 测试 一次
+        #break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -223,7 +224,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data5.shape[0] * (df_data5.shape[1] - 1) * 0.25)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        break  # 测试 一次
+        #break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -246,36 +247,36 @@ if __name__ == "__main__":
     # '''
     # b22
     # '''
-    list_result_less10 = []
-    for i in range(df_data6.shape[1]):
-        data_feature = df_data6[:, i].reshape(-1, 1)  # 第 i 列
-        data_target = np.delete(df_data6, i, axis=1)  # del 第 i 列
-        for j in data_target.T:  # 对 列 进行迭代
-            tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp_mae)
-            RMSE.append(tmp_rmse)
-            LESS10 += len_less10
-        one_LESS10 = LESS10 / (df_data6.shape[0] * (df_data6.shape[1] - 1) * 0.25)  # 乘以 test_size
-        LESS10 = 0  # 每一轮记得清零！
-        list_result_less10.append(one_LESS10)
-        break  # 测试 一次
-    print("==================================================================")
-    print("pridiction siteration:", len(MAE))  # 13*14 次
-    result_mae = sum(MAE) / len(MAE)
-    print("MAE", result_mae)
-
-    result_rmse = sum(RMSE) / len(RMSE)
-    print("RMSE", result_rmse)
-
-    result_less10 = sum(list_result_less10) / len(list_result_less10)
-    print("LESS10:", result_less10)
-
-    result_MAE_plot.append(result_mae)
-    result_RMSE_plot.append(result_rmse)
-    result_LESS10_plot.append(result_less10)
-    MAE.clear()
-    RMSE.clear()
-    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+    # list_result_less10 = []
+    # for i in range(df_data6.shape[1]):
+    #     data_feature = df_data6[:, i].reshape(-1, 1)  # 第 i 列
+    #     data_target = np.delete(df_data6, i, axis=1)  # del 第 i 列
+    #     for j in data_target.T:  # 对 列 进行迭代
+    #         tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
+    #         MAE.append(tmp_mae)
+    #         RMSE.append(tmp_rmse)
+    #         LESS10 += len_less10
+    #     one_LESS10 = LESS10 / (df_data6.shape[0] * (df_data6.shape[1] - 1) * 0.25)  # 乘以 test_size
+    #     LESS10 = 0  # 每一轮记得清零！
+    #     list_result_less10.append(one_LESS10)
+    #     break  # 测试 一次
+    # print("==================================================================")
+    # print("pridiction siteration:", len(MAE))  # 13*14 次
+    # result_mae = sum(MAE) / len(MAE)
+    # print("MAE", result_mae)
+    #
+    # result_rmse = sum(RMSE) / len(RMSE)
+    # print("RMSE", result_rmse)
+    #
+    # result_less10 = sum(list_result_less10) / len(list_result_less10)
+    # print("LESS10:", result_less10)
+    #
+    # result_MAE_plot.append(result_mae)
+    # result_RMSE_plot.append(result_rmse)
+    # result_LESS10_plot.append(result_less10)
+    # MAE.clear()
+    # RMSE.clear()
+    # result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
 
 
 
@@ -287,6 +288,8 @@ if __name__ == "__main__":
     print("result_RMSE_plot", result_RMSE_plot)
     print("result_LESS10_plot", result_LESS10_plot)
 
+    values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18', 'b19']
+
     ##figure - MAE
     plt.figure(1)
     x_ax = range(1, len(result_MAE_plot) + 1)
@@ -296,7 +299,8 @@ if __name__ == "__main__":
     plt.ylabel('MAE_value')
     plt.legend(loc='best', fancybox=True, shadow=True)
     plt.grid(0) #不显示网格线
-    # plt.show()
+    plt.xticks(x_ax,values)
+    plt.show()
 
     ##figure - RMSE
     plt.figure(2)
@@ -307,6 +311,8 @@ if __name__ == "__main__":
     plt.ylabel('RMSE_value')
     plt.legend(loc='best', fancybox=True, shadow=True)
     plt.grid(0)  # 不显示网格线
+    plt.xticks(x_ax, values)
+    plt.show()
 
     ##figure - LESS10
     plt.figure(3)
@@ -314,10 +320,10 @@ if __name__ == "__main__":
     plt.plot(x_ax, np.array(result_LESS10_plot)*100, color="blue", marker='v', linewidth=1, label="LESS10")
     plt.title("LESS10")
     plt.xlabel('benchmark')
-    plt.ylabel('LESS10(%))')
+    plt.ylabel('LESS30(%))')
     plt.legend(loc='best', fancybox=True, shadow=True)
     plt.grid(0)  # 不显示网格线
-
+    plt.xticks(x_ax, values)
     plt.show()
 
 '''
@@ -325,5 +331,5 @@ result_MAE_plot [1.82349204425622, 74.72664731060954, 50.28310123823295, 75.0690
 
 #要开方！ 下面这个是MSE
 result_RMSE_plot [5.847694591286665, 7455.867916276916, 3364.560440910698, 7525.512498347117, 187727.88428359214, 13332.76992869297]
-result_LESS10_plot [0.9977435897435898, 0.0695552788946262, 0.0977371788182599, 0.06731797090667033, 0.0130784924960226, 0.0500640157803493]
+result_LESS30_plot [0.9977435897435898, 0.0695552788946262, 0.0977371788182599, 0.06731797090667033, 0.0130784924960226, 0.0500640157803493]
 '''
