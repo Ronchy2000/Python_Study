@@ -15,6 +15,10 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 
 test_size = 0.25
+values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18_v1', 'b18_v2', 'b18_v3', 'b19']
+
+
+
 def linear3(data_feature,data_target):
     x_train,x_test,y_train,y_test = train_test_split(data_feature,data_target,random_state=22,test_size= test_size) #test_size 默认值：0.25
 
@@ -331,7 +335,7 @@ if __name__ == "__main__":
     print("result_RMSE_plot", result_RMSE_plot)
     print("result_LESS10_plot", result_LESS10_plot)
 
-    values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18_v1', 'b18_v2', 'b18_v3', 'b19']
+
     ##figure - MAE
     plt.figure(1)
     x_ax = range(1, len(result_MAE_plot) + 1)
