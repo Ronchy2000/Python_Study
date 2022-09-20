@@ -66,9 +66,9 @@ if __name__ == "__main__":
 
 
 
-    df_data1 = np.array(df1.values[:, 1:])
-    df_data2 = np.array(df2.values[:, 1:])
-    df_data3 = np.array(df3.values[:, 1:])
+    df_data1 = 2000 - np.array(df1.values[:, 1:])
+    df_data2 = 1000 - np.array(df2.values[:, 1:])
+    df_data3 = 500-np.array(df3.values[:, 1:])
     df_data4 = np.array(df4.values[:, 1:])
     df_data5 = np.array(df5.values[:, 1:])
     # df_data3 = np.array(df3.values[:, 1:])
