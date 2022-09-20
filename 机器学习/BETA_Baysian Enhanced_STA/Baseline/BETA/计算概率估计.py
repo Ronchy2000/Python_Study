@@ -8,7 +8,7 @@
 import pandas as pd
 import numpy as np
 from 分布概率 import prob_not_violation
-
+##使用累积分布函数
 df1 = pd.read_csv("b17_VTL1_covariance.csv")
 
 
