@@ -409,7 +409,7 @@ if __name__ == "__main__":
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
         model = cigp(xtr, ytr)
-        model.train_adam(250, lr=0.03)
+        model.train_adam(120, lr=0.03)
         with torch.no_grad():
             ypred, ypred_var = model(xte)
         # 保存方差
@@ -468,7 +468,7 @@ if __name__ == "__main__":
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
         model = cigp(xtr, ytr)
-        model.train_adam(250, lr=0.03)
+        model.train_adam(120, lr=0.03)
         with torch.no_grad():
             ypred, ypred_var = model(xte)
         # 保存方差
@@ -527,7 +527,7 @@ if __name__ == "__main__":
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
         model = cigp(xtr, ytr)
-        model.train_adam(250, lr=0.03)
+        model.train_adam(120, lr=0.03)
         with torch.no_grad():
             ypred, ypred_var = model(xte)
         # 保存方差
