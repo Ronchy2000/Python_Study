@@ -23,13 +23,17 @@ from sklearn.model_selection import RepeatedKFold
 from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
 
-test_size = 0.25
+test_size = 0.3
 values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18_v1', 'b18_v2', 'b18_v3', 'b19']
 
 def RF_regression(data_feature,data_target):
     Xtrain, Xtest, Ytrain, Ytest = train_test_split(data_feature.reshape(-1, 1), data_target.reshape(-1, 1),
                                                     test_size = test_size)  # 25% 作为测试集
-    model = RandomForestRegressor()
+    # model = RandomForestRegressor()
+    model = RandomForestRegressor(n_estimators=10,max_depth=2,bootstrap=True)
+
+
+
     model.fit(Xtrain, Ytrain)
     ypred = model.predict(Xtest)
     rmse = mean_squared_error(Ytest, ypred)
@@ -70,7 +74,7 @@ if __name__ == "__main__":
     df7 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b19_VTLx5.csv")
 
     df_data1 = np.array(df1.values[:, 1:])
-    df_data2 = np.array(df2.values[:, 1:])
+    df_data2 = np.array(df2.values[:, 1:])*2.5
     df_data3 = np.array(df3.values[:, 1:])
     df_data4 = np.array(df4.values[:, 1:])
     df_data5 = np.array(df6.values[:, 1:])
@@ -94,7 +98,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * test_size)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        #break  # 测试 一次
+        break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -127,7 +131,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * test_size)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        #break  #测试 一次
+        break  #测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -163,7 +167,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * test_size)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-       #break  # 测试 一次
+        break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -199,7 +203,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * test_size)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        #break  # 测试 一次
+        break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -234,7 +238,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data5.shape[0] * (df_data5.shape[1] - 1) * test_size)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        #break  # 测试 一次
+        break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -269,7 +273,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data6.shape[0] * (df_data6.shape[1] - 1) * test_size)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        #break  # 测试 一次
+        break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -304,7 +308,7 @@ if __name__ == "__main__":
         one_LESS10 = LESS10 / (df_data7.shape[0] * (df_data7.shape[1] - 1) * test_size)  # 乘以 test_size
         LESS10 = 0  # 每一轮记得清零！
         list_result_less10.append(one_LESS10)
-        # break  # 测试 一次
+        break  # 测试 一次
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -334,7 +338,7 @@ if __name__ == "__main__":
     print("result_RMSE_plot", result_RMSE_plot)
     print("result_LESS10_plot", result_LESS10_plot)
 
-    values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18', 'b19']
+    #values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18', 'b19']
 
     ##figure - MAE
     plt.figure(1)
@@ -371,14 +375,11 @@ if __name__ == "__main__":
     plt.grid(0)  # 不显示网格线
     plt.xticks(x_ax, values)
     plt.show()
+
 '''
 ---------------------------------------------
-result_MAE_plot [44.1975537117615, 45.79078616768285, 15.110304415147775, 38.31763357169766, 80.46698514996518]
-记得开方
-result_RMSE_plot [7504.8215884886085, 7899.028836047025, 509.63355439615145, 7648.482921695517, 15659.565242485802]
-result_LESS30_plot [0.6284, 0.6669333333333334, 0.8830666666666668, 0.7053888888888888, 0.3838024691358025]
-
-
+result_MAE_plot [44.776548429905546, 44.853423703270444, 15.005020055178324, 38.52353368491168, 42.50351801326819, 34.49699304590283, 80.6134537783091]
+result_RMSE_plot [7975.772163079103, 7716.908577352969, 509.9967164238723, 7818.603369984927, 4596.525215876683, 2668.5602638509713, 15813.549729608416]
+result_LESS10_plot [0.6233333333333333, 0.6670666666666666, 0.8786666666666667, 0.7105833333333333, 0.5725555555555555, 0.608611111111111, 0.38849382716049385]
 '''
-
 
