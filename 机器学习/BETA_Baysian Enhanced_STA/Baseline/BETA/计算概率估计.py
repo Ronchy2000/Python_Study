@@ -7,8 +7,15 @@
 
 import pandas as pd
 import numpy as np
+from 分布概率 import prob_not_violation
+
+df1 = pd.read_csv("b17_VTL1_covariance.csv")
 
 
+df_data1 = np.array(df1.values[:, 1:])
+mean = np.tile(77.2, (df_data1.shape[0],1))
+
+print( prob_not_violation(0, mean, np.sqrt( df_data1) ))
 
 
 
