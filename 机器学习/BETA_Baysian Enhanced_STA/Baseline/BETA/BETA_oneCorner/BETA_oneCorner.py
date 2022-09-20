@@ -217,6 +217,7 @@ if __name__ == "__main__":
     #b17_1
     list_result_less10 = []
     Covariance_pred = np.arange(0,df_data1.shape[0]* test_size).reshape(-1,1)
+    mean_predict = np.arange(0,df_data1.shape[0]* test_size).reshape(-1,1)
     print("Covariance_pred.shape:",Covariance_pred.shape)
     one_Corner = 1  #Corner1
     data_feature = df_data1[:,one_Corner].reshape(-1,1) #第 1列
@@ -234,6 +235,7 @@ if __name__ == "__main__":
         # 保存方差
         print("ypred_var.shape",ypred_var.shape)
         Covariance_pred = np.concatenate((Covariance_pred,ypred_var), axis=1) #按列拼接
+        mean_predict = np.concatenate((mean_predict,ypred), axis=1) #按列拼接
 
         mae = metrics.mean_absolute_error(yte, ypred)
         rmse = metrics.mean_squared_error(yte, ypred)
@@ -253,9 +255,10 @@ if __name__ == "__main__":
     one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
-    df = pd.DataFrame(Covariance_pred)
-    df.to_csv("b17_VTL1_covariance.csv", sep=',', index=False)
-
+    dff = pd.DataFrame(Covariance_pred)
+    dff.to_csv("b17_VTL1_covariance.csv", sep=',', index=False)
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b17_VTL1_prediction.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -277,6 +280,7 @@ if __name__ == "__main__":
     # #####b17_2
     list_result_less10 = []
     Covariance_pred = np.arange(0,df_data2.shape[0]* test_size).reshape(-1,1)
+    mean_predict = np.arange(0, df_data2.shape[0] * test_size).reshape(-1, 1)
     one_Corner = 1  # Corner1
     data_feature = df_data2[:, one_Corner].reshape(-1, 1)  # 第 1列
     data_target = np.delete(df_data2, one_Corner, axis=1)  # del 第 1 列
@@ -292,7 +296,7 @@ if __name__ == "__main__":
             ypred, ypred_var = model(xte)
         # 保存方差
         Covariance_pred = np.concatenate((Covariance_pred, ypred_var), axis=1)  # 按列拼接
-
+        mean_predict = np.concatenate((mean_predict, ypred), axis=1)  # 按列拼接
         mae = metrics.mean_absolute_error(yte, ypred)
         rmse = metrics.mean_squared_error(yte, ypred)
         MAE.append(mae)
@@ -311,9 +315,10 @@ if __name__ == "__main__":
     one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
-    df = pd.DataFrame(Covariance_pred)
-    df.to_csv("b17_VTL2_covariance.csv",sep=',', index=False)
-
+    dff = pd.DataFrame(Covariance_pred)
+    dff.to_csv("b17_VTL2_covariance.csv",sep=',', index=False)
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b17_VTL2_prediction.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -334,6 +339,7 @@ if __name__ == "__main__":
     # #####b17_3
     list_result_less10 = []
     Covariance_pred = np.arange(0,df_data3.shape[0]* test_size).reshape(-1,1)
+    mean_predict = np.arange(0, df_data3.shape[0] * test_size).reshape(-1, 1)
     one_Corner = 1  # Corner1
     data_feature = df_data3[:, one_Corner].reshape(-1, 1)  # 第 1列
     data_target = np.delete(df_data3, one_Corner, axis=1)  # del 第 1 列
@@ -349,6 +355,7 @@ if __name__ == "__main__":
             ypred, ypred_var = model(xte)
         # 保存方差
         Covariance_pred = np.concatenate((Covariance_pred, ypred_var), axis=1)  # 按列拼接
+        mean_predict = np.concatenate((mean_predict, ypred), axis=1)  # 按列拼接
 
         mae = metrics.mean_absolute_error(yte, ypred)
         rmse = metrics.mean_squared_error(yte, ypred)
@@ -368,9 +375,10 @@ if __name__ == "__main__":
     one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
-    df = pd.DataFrame(Covariance_pred)
-    df.to_csv("b17_VTL3_covariance.csv", sep=',', index=False)
-
+    dff = pd.DataFrame(Covariance_pred)
+    dff.to_csv("b17_VTL3_covariance.csv", sep=',', index=False)
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b17_VTL3_prediction.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -390,6 +398,7 @@ if __name__ == "__main__":
 # #####b18_v1
     list_result_less10 = []
     Covariance_pred = np.arange(0,df_data4.shape[0]* test_size).reshape(-1,1)
+    mean_predict = np.arange(0, df_data4.shape[0] * test_size).reshape(-1, 1)
     one_Corner = 1  # Corner1
     data_feature = df_data4[:, one_Corner].reshape(-1, 1)  # 第 1列
     data_target = np.delete(df_data4, one_Corner, axis=1)  # del 第 1 列
@@ -405,6 +414,7 @@ if __name__ == "__main__":
             ypred, ypred_var = model(xte)
         # 保存方差
         Covariance_pred = np.concatenate((Covariance_pred, ypred_var), axis=1)  # 按列拼接
+        mean_predict = np.concatenate((mean_predict, ypred), axis=1)  # 按列拼接
 
         mae = metrics.mean_absolute_error(yte, ypred)
         rmse = metrics.mean_squared_error(yte, ypred)
@@ -424,9 +434,10 @@ if __name__ == "__main__":
     one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
-    df = pd.DataFrame(Covariance_pred)
-    df.to_csv("b18_VTL1_covariance.csv", sep=',', index=False)
-
+    dff = pd.DataFrame(Covariance_pred)
+    dff.to_csv("b18_VTL1_covariance.csv", sep=',', index=False)
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b18_VTL1_prediction.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -446,6 +457,7 @@ if __name__ == "__main__":
 # #####b18_v2
     list_result_less10 = []
     Covariance_pred = np.arange(0,df_data5.shape[0]* test_size).reshape(-1,1)
+    mean_predict = np.arange(0, df_data5.shape[0] * test_size).reshape(-1, 1)
     one_Corner = 1  # Corner1
     data_feature = df_data5[:, one_Corner].reshape(-1, 1)  # 第 1列
     data_target = np.delete(df_data5, one_Corner, axis=1)  # del 第 1 列
@@ -461,6 +473,7 @@ if __name__ == "__main__":
             ypred, ypred_var = model(xte)
         # 保存方差
         Covariance_pred = np.concatenate((Covariance_pred, ypred_var), axis=1)  # 按列拼接
+        mean_predict = np.concatenate((mean_predict, ypred), axis=1)  # 按列拼接
 
         mae = metrics.mean_absolute_error(yte, ypred)
         rmse = metrics.mean_squared_error(yte, ypred)
@@ -480,9 +493,10 @@ if __name__ == "__main__":
     one_LESS10 = LESS10 / (df_data5.shape[0] * (df_data5.shape[1] - 1) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
-    df = pd.DataFrame(Covariance_pred)
-    df.to_csv("b18_VTL2_covariance.csv", sep=',', index=False)
-
+    dff = pd.DataFrame(Covariance_pred)
+    dff.to_csv("b18_VTL2_covariance.csv", sep=',', index=False)
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b18_VTL2_prediction.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -502,6 +516,7 @@ if __name__ == "__main__":
     # #####b18_v3
     list_result_less10 = []
     Covariance_pred = np.arange(0,df_data6.shape[0]* test_size).reshape(-1,1)
+    mean_predict = np.arange(0, df_data6.shape[0] * test_size).reshape(-1, 1)
     one_Corner = 1  # Corner1
     data_feature = df_data6[:, one_Corner].reshape(-1, 1)  # 第 1列
     data_target = np.delete(df_data6, one_Corner, axis=1)  # del 第 1 列
@@ -517,7 +532,7 @@ if __name__ == "__main__":
             ypred, ypred_var = model(xte)
         # 保存方差
         Covariance_pred = np.concatenate((Covariance_pred, ypred_var), axis=1)  # 按列拼接
-
+        mean_predict = np.concatenate((mean_predict, ypred), axis=1)  # 按列拼接
         mae = metrics.mean_absolute_error(yte, ypred)
         rmse = metrics.mean_squared_error(yte, ypred)
         MAE.append(mae)
@@ -536,9 +551,10 @@ if __name__ == "__main__":
     one_LESS10 = LESS10 / (df_data6.shape[0] * (df_data6.shape[1] - 1) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
-    df = pd.DataFrame(Covariance_pred)
-    df.to_csv("b18_VTL3_covariance.csv", sep=',', index=False)
-
+    dff = pd.DataFrame(Covariance_pred)
+    dff.to_csv("b18_VTL3_covariance.csv", sep=',', index=False)
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b18_VTL3_prediction.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -558,6 +574,7 @@ if __name__ == "__main__":
 # #####b19
     list_result_less10 = []
     Covariance_pred = np.arange(0,df_data7.shape[0]*test_size).reshape(-1,1)
+    mean_predict = np.arange(0, df_data7.shape[0] * test_size).reshape(-1, 1)
     one_Corner = 1  # Corner1
     data_feature = df_data7[:, one_Corner].reshape(-1, 1)  # 第 1列
     data_target = np.delete(df_data7, one_Corner, axis=1)  # del 第 1 列
@@ -573,7 +590,7 @@ if __name__ == "__main__":
             ypred, ypred_var = model(xte)
         # 保存方差
         Covariance_pred = np.concatenate((Covariance_pred, ypred_var), axis=1)  # 按列拼接
-
+        mean_predict = np.concatenate((mean_predict, ypred), axis=1)  # 按列拼接
         mae = metrics.mean_absolute_error(yte, ypred)
         rmse = metrics.mean_squared_error(yte, ypred)
         MAE.append(mae)
@@ -592,9 +609,10 @@ if __name__ == "__main__":
     one_LESS10 = LESS10 / (df_data7.shape[0] * (df_data7.shape[1] - 1) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
-    df = pd.DataFrame(Covariance_pred)
-    df.to_csv("b19_VTL1_covariance.csv", sep=',', index=False)
-
+    dff = pd.DataFrame(Covariance_pred)
+    dff.to_csv("b19_VTL1_covariance.csv", sep=',', index=False)
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b19_VTL1_prediction.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
