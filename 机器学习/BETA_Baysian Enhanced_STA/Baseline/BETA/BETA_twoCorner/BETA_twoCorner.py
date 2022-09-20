@@ -5,9 +5,6 @@
 # @File    : BETA_twoCorner.py
 # @Software: PyCharm
 
-
-print(torch.__version__)
-# I use torch (1.11.0) for this work. lower version may not work.
 import torch
 import torch.nn as nn
 import numpy as np
@@ -17,6 +14,9 @@ from sklearn import metrics
 from sklearn.model_selection import train_test_split
 
 import os
+print(torch.__version__)
+# I use torch (1.11.0) for this work. lower version may not work.
+
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'  # Fixing strange error if run in MacOS
 JITTER = 1e-6
@@ -189,6 +189,10 @@ result_LESS10_plot = []
 #设置
 LESS_value = 30
 
+first_corner = 1    #"Corner1"
+second_corner = 2   #"Corner2"
+third_corner = 3    #"Corner3"
+
 if __name__ == "__main__":
     # df = pd.read_csv("timing1500x14.csv")
     # df_data = np.array(df.values[:, 1:])
@@ -211,3 +215,18 @@ if __name__ == "__main__":
     df_data6 = np.array(df5.values[:, 1:])
     df_data7 = np.array(df7.values[:, 1:])
 
+    data_feature = df_data1[:, [first_corner,second_corner]]  # 第 1,2列
+    # print(data_feature.shape)
+    data_target = np.delete(df_data1, [first_corner,second_corner], axis=1)  # del 第 1 列
+    # print(data_target.shape)
+    for j in data_target.T:  #对 列 进行迭代
+        xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=test_size)
+        xtr = torch.Tensor(xtr)
+        xte = torch.Tensor(xte)
+        ytr = torch.Tensor(ytr).view(-1, 1)
+        yte = torch.Tensor(yte).view(-1, 1)
+        model = cigp(xtr, ytr)
+        model.train_adam(250, lr=0.03)
+        with torch.no_grad():
+            ypred, ypred_var = model(xte)
+        print(ypred.shape,ypred_var.shape)
