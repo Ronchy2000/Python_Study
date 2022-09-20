@@ -208,211 +208,211 @@ if __name__ == "__main__":
 
 #--------------------------------------------------------------
     #b17
-#     list_result_less10 = []
-#     for i in range(df_data1.shape[1]):
-#         data_feature = df_data1[:,i].reshape(-1,1)  #第 i 列
-#         data_target = np.delete(df_data1,i,axis=1)  #del 第 i 列
-#         for j in data_target.T:  #对 列 进行迭代
-#             xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=0.25)
-#             xtr = torch.Tensor(xtr).view(-1, 1)
-#             xte = torch.Tensor(xte).view(-1, 1)
-#             ytr = torch.Tensor(ytr).view(-1, 1)
-#             yte = torch.Tensor(yte).view(-1, 1)
-#             model = cigp(xtr, ytr)
-#             model.train_adam(170, lr=0.03)
-#             with torch.no_grad():
-#                 ypred, ypred_var = model(xte)
-#             mae = metrics.mean_absolute_error(yte, ypred)
-#             rmse = metrics.mean_squared_error(yte, ypred)
-#             MAE.append(mae)
-#             RMSE.append(rmse)
-#
-#             Epsilon = yte.reshape(-1) - ypred.reshape(-1)
-#             abs_Epsilon = np.maximum(Epsilon, -Epsilon)
-#
-#     #LESS  #*************************************
-#             less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
-#             LESS10 += less10
-#             print("testY:", yte.shape, "y_pred", ypred.shape)
-#             print("abs_Epsilon", abs_Epsilon.shape)
-#             print("MAE:", mae)
-#             print("RMSE:", rmse)
-#             print("the num of less10:", less10)  # 返回的是满足条件的个数
-#         one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * 0.25)  # 乘以 test_size
-#         LESS10 = 0  # 每一轮记得清零！
-#         list_result_less10.append(one_LESS10)
-#         break  # 测试 一次
-#     print("==================================================================")
-#     print("pridiction siteration:", len(MAE))  # 13*14 次
-#     result_mae = sum(MAE) / len(MAE)
-#     print("MAE", result_mae)
-#     result_rmse = sum(RMSE) / len(RMSE)
-#     print("RMSE", result_rmse)
-#     result_less10 = sum(list_result_less10) / len(list_result_less10)
-#     print("LESS10:", result_less10)
-#     result_MAE_plot.append(result_mae)
-#     result_RMSE_plot.append(result_rmse)
-#     result_LESS10_plot.append(result_less10)
-#     MAE.clear()
-#     RMSE.clear()
-#     result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
-#     print("This BenchMark Done.")
-#     print("==========next starting...=============")
-# # --------------------------------------------------------------
-#     # --------------------------------------------------------------
-#     #b18
-#     list_result_less10 = []
-#     for i in range(df_data2.shape[1]):
-#         data_feature = df_data2[:, i].reshape(-1, 1)  # 第 i 列
-#         data_target = np.delete(df_data2, i, axis=1)  # del 第 i 列
-#         for j in data_target.T:  # 对 列 进行迭代
-#             xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1, 1), test_size=0.25)
-#             xtr = torch.Tensor(xtr).view(-1, 1)
-#             xte = torch.Tensor(xte).view(-1, 1)
-#             ytr = torch.Tensor(ytr).view(-1, 1)
-#             yte = torch.Tensor(yte).view(-1, 1)
-#             model = cigp(xtr, ytr)
-#             model.train_adam(170, lr=0.03)
-#             with torch.no_grad():
-#                 ypred, ypred_var = model(xte)
-#             mae = metrics.mean_absolute_error(yte, ypred)
-#             rmse = metrics.mean_squared_error(yte, ypred)
-#             MAE.append(mae)
-#             RMSE.append(rmse)
-#
-#             Epsilon = yte.reshape(-1) - ypred.reshape(-1)
-#             abs_Epsilon = np.maximum(Epsilon, -Epsilon)
-#             less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
-#             LESS10 += less10
-#             print("testY:", yte.shape, "y_pred", ypred.shape)
-#             print("abs_Epsilon", abs_Epsilon.shape)
-#             print("MAE:", mae)
-#             print("RMSE:", rmse)
-#             print("the num of less10:", less10)  # 返回的是满足条件的个数
-#         one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * 0.25)  # 乘以 test_size
-#         LESS10 = 0  # 每一轮记得清零！
-#         list_result_less10.append(one_LESS10)
-#         break  # 测试 一次
-#     print("==================================================================")
-#     print("pridiction siteration:", len(MAE))  # 13*14 次
-#     result_mae = sum(MAE) / len(MAE)
-#     print("MAE", result_mae)
-#     result_rmse = sum(RMSE) / len(RMSE)
-#     print("RMSE", result_rmse)
-#     result_less10 = sum(list_result_less10) / len(list_result_less10)
-#     print("LESS10:", result_less10)
-#     result_MAE_plot.append(result_mae)
-#     result_RMSE_plot.append(result_rmse)
-#     result_LESS10_plot.append(result_less10)
-#     MAE.clear()
-#     RMSE.clear()
-#     result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
-#     print("This BenchMark Done.")
-#     print("==========next starting...=============")
-#     # --------------------------------------------------------------
-#     # --------------------------------------------------------------
-#     #b19
-#     list_result_less10 = []
-#     for i in range(df_data3.shape[1]):
-#         data_feature = df_data3[:, i].reshape(-1, 1)  # 第 i 列
-#         data_target = np.delete(df_data3, i, axis=1)  # del 第 i 列
-#         for j in data_target.T:  # 对 列 进行迭代
-#             xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1, 1), test_size=0.25)
-#             xtr = torch.Tensor(xtr).view(-1, 1)
-#             xte = torch.Tensor(xte).view(-1, 1)
-#             ytr = torch.Tensor(ytr).view(-1, 1)
-#             yte = torch.Tensor(yte).view(-1, 1)
-#             model = cigp(xtr, ytr)
-#             model.train_adam(170, lr=0.03)
-#             with torch.no_grad():
-#                 ypred, ypred_var = model(xte)
-#             mae = metrics.mean_absolute_error(yte, ypred)
-#             rmse = metrics.mean_squared_error(yte, ypred)
-#             MAE.append(mae)
-#             RMSE.append(rmse)
-#
-#             Epsilon = yte.reshape(-1) - ypred.reshape(-1)
-#             abs_Epsilon = np.maximum(Epsilon, -Epsilon)
-#             less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
-#             LESS10 += less10
-#             print("testY:", yte.shape, "y_pred", ypred.shape)
-#             print("abs_Epsilon", abs_Epsilon.shape)
-#             print("MAE:", mae)
-#             print("RMSE:", rmse)
-#             print("the num of less10:", less10)  # 返回的是满足条件的个数
-#         one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * 0.25)  # 乘以 test_size
-#         LESS10 = 0  # 每一轮记得清零！
-#         list_result_less10.append(one_LESS10)
-#         break  # 测试 一次
-#     print("==================================================================")
-#     print("pridiction siteration:", len(MAE))  # 13*14 次
-#     result_mae = sum(MAE) / len(MAE)
-#     print("MAE", result_mae)
-#     result_rmse = sum(RMSE) / len(RMSE)
-#     print("RMSE", result_rmse)
-#     result_less10 = sum(list_result_less10) / len(list_result_less10)
-#     print("LESS10:", result_less10)
-#     result_MAE_plot.append(result_mae)
-#     result_RMSE_plot.append(result_rmse)
-#     result_LESS10_plot.append(result_less10)
-#     MAE.clear()
-#     RMSE.clear()
-#     result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
-#     print("This BenchMark Done.")
-#     print("==========next starting...=============")
+    list_result_less10 = []
+    for i in range(df_data1.shape[1]):
+        data_feature = df_data1[:,i].reshape(-1,1)  #第 i 列
+        data_target = np.delete(df_data1,i,axis=1)  #del 第 i 列
+        for j in data_target.T:  #对 列 进行迭代
+            xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=0.25)
+            xtr = torch.Tensor(xtr).view(-1, 1)
+            xte = torch.Tensor(xte).view(-1, 1)
+            ytr = torch.Tensor(ytr).view(-1, 1)
+            yte = torch.Tensor(yte).view(-1, 1)
+            model = cigp(xtr, ytr)
+            model.train_adam(170, lr=0.03)
+            with torch.no_grad():
+                ypred, ypred_var = model(xte)
+            mae = metrics.mean_absolute_error(yte, ypred)
+            rmse = metrics.mean_squared_error(yte, ypred)
+            MAE.append(mae)
+            RMSE.append(rmse)
+
+            Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+            abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+
+    #LESS  #*************************************
+            less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+            LESS10 += less10
+            print("testY:", yte.shape, "y_pred", ypred.shape)
+            print("abs_Epsilon", abs_Epsilon.shape)
+            print("MAE:", mae)
+            print("RMSE:", rmse)
+            print("the num of less10:", less10)  # 返回的是满足条件的个数
+        one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+        break  # 测试一次
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
+    MAE.clear()
+    RMSE.clear()
+    result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
+    print("This BenchMark Done.")
+    print("==========next starting...=============")
+# --------------------------------------------------------------
+    # --------------------------------------------------------------
+    #b18
+    list_result_less10 = []
+    for i in range(df_data2.shape[1]):
+        data_feature = df_data2[:, i].reshape(-1, 1)  # 第 i 列
+        data_target = np.delete(df_data2, i, axis=1)  # del 第 i 列
+        for j in data_target.T:  # 对 列 进行迭代
+            xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1, 1), test_size=0.25)
+            xtr = torch.Tensor(xtr).view(-1, 1)
+            xte = torch.Tensor(xte).view(-1, 1)
+            ytr = torch.Tensor(ytr).view(-1, 1)
+            yte = torch.Tensor(yte).view(-1, 1)
+            model = cigp(xtr, ytr)
+            model.train_adam(170, lr=0.03)
+            with torch.no_grad():
+                ypred, ypred_var = model(xte)
+            mae = metrics.mean_absolute_error(yte, ypred)
+            rmse = metrics.mean_squared_error(yte, ypred)
+            MAE.append(mae)
+            RMSE.append(rmse)
+
+            Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+            abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+            less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+            LESS10 += less10
+            print("testY:", yte.shape, "y_pred", ypred.shape)
+            print("abs_Epsilon", abs_Epsilon.shape)
+            print("MAE:", mae)
+            print("RMSE:", rmse)
+            print("the num of less10:", less10)  # 返回的是满足条件的个数
+        one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+        break  # 测试 一次
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
+    MAE.clear()
+    RMSE.clear()
+    result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
+    print("This BenchMark Done.")
+    print("==========next starting...=============")
     # --------------------------------------------------------------
     # --------------------------------------------------------------
-    # #b20
-    # list_result_less10 = []
-    # for i in range(df_data4.shape[1]):
-    #     data_feature = df_data4[:, i].reshape(-1, 1)  # 第 i 列
-    #     data_target = np.delete(df_data4, i, axis=1)  # del 第 i 列
-    #     for j in data_target.T:  # 对 列 进行迭代
-    #         xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1, 1), test_size=0.25)
-    #         xtr = torch.Tensor(xtr).view(-1, 1)
-    #         xte = torch.Tensor(xte).view(-1, 1)
-    #         ytr = torch.Tensor(ytr).view(-1, 1)
-    #         yte = torch.Tensor(yte).view(-1, 1)
-    #         model = cigp(xtr, ytr)
-    #         model.train_adam(170, lr=0.03)
-    #         with torch.no_grad():
-    #             ypred, ypred_var = model(xte)
-    #         mae = metrics.mean_absolute_error(yte, ypred)
-    #         rmse = metrics.mean_squared_error(yte, ypred)
-    #         MAE.append(mae)
-    #         RMSE.append(rmse)
-    #
-    #         Epsilon = yte.reshape(-1) - ypred.reshape(-1)
-    #         abs_Epsilon = np.maximum(Epsilon, -Epsilon)
-    #         less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
-    #         LESS10 += less10
-    #         print("testY:", yte.shape, "y_pred", ypred.shape)
-    #         print("abs_Epsilon", abs_Epsilon.shape)
-    #         print("MAE:", mae)
-    #         print("RMSE:", rmse)
-    #         print("the num of less10:", less10)  # 返回的是满足条件的个数
-    #     one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * 0.25)  # 乘以 test_size
-    #     LESS10 = 0  # 每一轮记得清零！
-    #     list_result_less10.append(one_LESS10)
-    #     break  # 测试 一次
-    # print("==================================================================")
-    # print("pridiction siteration:", len(MAE))  # 13*14 次
-    # result_mae = sum(MAE) / len(MAE)
-    # print("MAE", result_mae)
-    # result_rmse = sum(RMSE) / len(RMSE)
-    # print("RMSE", result_rmse)
-    # result_less10 = sum(list_result_less10) / len(list_result_less10)
-    # print("LESS10:", result_less10)
-    # result_MAE_plot.append(result_mae)
-    # result_RMSE_plot.append(result_rmse)
-    # result_LESS10_plot.append(result_less10)
-    # MAE.clear()
-    # RMSE.clear()
-    # result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
-    # print("This BenchMark Done.")
-    # print("==========next starting...=============")
-    # --------------------------------------------------------------
-    # --------------------------------------------------------------
+    #b19
+    list_result_less10 = []
+    for i in range(df_data3.shape[1]):
+        data_feature = df_data3[:, i].reshape(-1, 1)  # 第 i 列
+        data_target = np.delete(df_data3, i, axis=1)  # del 第 i 列
+        for j in data_target.T:  # 对 列 进行迭代
+            xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1, 1), test_size=0.25)
+            xtr = torch.Tensor(xtr).view(-1, 1)
+            xte = torch.Tensor(xte).view(-1, 1)
+            ytr = torch.Tensor(ytr).view(-1, 1)
+            yte = torch.Tensor(yte).view(-1, 1)
+            model = cigp(xtr, ytr)
+            model.train_adam(170, lr=0.03)
+            with torch.no_grad():
+                ypred, ypred_var = model(xte)
+            mae = metrics.mean_absolute_error(yte, ypred)
+            rmse = metrics.mean_squared_error(yte, ypred)
+            MAE.append(mae)
+            RMSE.append(rmse)
+
+            Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+            abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+            less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+            LESS10 += less10
+            print("testY:", yte.shape, "y_pred", ypred.shape)
+            print("abs_Epsilon", abs_Epsilon.shape)
+            print("MAE:", mae)
+            print("RMSE:", rmse)
+            print("the num of less10:", less10)  # 返回的是满足条件的个数
+        one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+        break  # 测试 一次
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
+    MAE.clear()
+    RMSE.clear()
+    result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
+    print("This BenchMark Done.")
+    print("==========next starting...=============")
+    #--------------------------------------------------------------
+    #--------------------------------------------------------------
+    #b20
+    list_result_less10 = []
+    for i in range(df_data4.shape[1]):
+        data_feature = df_data4[:, i].reshape(-1, 1)  # 第 i 列
+        data_target = np.delete(df_data4, i, axis=1)  # del 第 i 列
+        for j in data_target.T:  # 对 列 进行迭代
+            xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1, 1), test_size=0.25)
+            xtr = torch.Tensor(xtr).view(-1, 1)
+            xte = torch.Tensor(xte).view(-1, 1)
+            ytr = torch.Tensor(ytr).view(-1, 1)
+            yte = torch.Tensor(yte).view(-1, 1)
+            model = cigp(xtr, ytr)
+            model.train_adam(170, lr=0.03)
+            with torch.no_grad():
+                ypred, ypred_var = model(xte)
+            mae = metrics.mean_absolute_error(yte, ypred)
+            rmse = metrics.mean_squared_error(yte, ypred)
+            MAE.append(mae)
+            RMSE.append(rmse)
+
+            Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+            abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+            less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+            LESS10 += less10
+            print("testY:", yte.shape, "y_pred", ypred.shape)
+            print("abs_Epsilon", abs_Epsilon.shape)
+            print("MAE:", mae)
+            print("RMSE:", rmse)
+            print("the num of less10:", less10)  # 返回的是满足条件的个数
+        one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * 0.25)  # 乘以 test_size
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+        break  # 测试 一次
+    print("==================================================================")
+    print("pridiction siteration:", len(MAE))  # 13*14 次
+    result_mae = sum(MAE) / len(MAE)
+    print("MAE", result_mae)
+    result_rmse = sum(RMSE) / len(RMSE)
+    print("RMSE", result_rmse)
+    result_less10 = sum(list_result_less10) / len(list_result_less10)
+    print("LESS10:", result_less10)
+    result_MAE_plot.append(result_mae)
+    result_RMSE_plot.append(result_rmse)
+    result_LESS10_plot.append(result_less10)
+    MAE.clear()
+    RMSE.clear()
+    result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
+    print("This BenchMark Done.")
+    print("==========next starting...=============")
+#     --------------------------------------------------------------
+#     --------------------------------------------------------------
     #b21
     list_result_less10 = []
     for i in range(df_data5.shape[1]):

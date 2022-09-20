@@ -77,7 +77,7 @@ x_ax = range(1, len(Ridge_result_LESS30_plot) + 1)
 #Ridge
 plt.plot(x_ax, Ridge_result_LESS30_plot, color="green", marker='o',markersize = 5, linewidth=0.7, label="Ridge")
 #MLP
-plt.plot(x_ax, MLP_result_LESS30_plot, color="red", marker='s', markersize = 5, linewidth=0.7, label="RF")
+plt.plot(x_ax, MLP_result_LESS30_plot, color="blue", marker='v', markersize = 5, linewidth=0.7, label="MLP")
 #RF
 plt.plot(x_ax, RF_result_LESS30_plot, color="red", marker='s', markersize = 5, linewidth=0.7, label="RF")
 #GP
