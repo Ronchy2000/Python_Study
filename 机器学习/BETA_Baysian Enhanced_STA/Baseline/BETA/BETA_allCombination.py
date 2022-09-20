@@ -520,7 +520,7 @@ if __name__ == "__main__":
     print("result_RMSE_plot", result_RMSE_plot)
     print("result_LESS10_plot", result_LESS10_plot)
 
-    values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18', 'b19']
+    values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18_v1', 'b18_v2', 'b18_v3', 'b19']
 
     ##figure - MAE
     plt.figure(1)
