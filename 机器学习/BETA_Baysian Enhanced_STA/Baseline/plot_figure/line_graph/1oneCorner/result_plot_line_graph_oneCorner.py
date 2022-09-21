@@ -32,6 +32,10 @@ markersize = 6
 linestyle = '-.'
 linewidth = 1
 
+font = {'family' : 'normal',
+        'weight' : 'bold',
+        'size'   : 22}
+
 
 #******************************************************************************************
 
@@ -51,11 +55,15 @@ plt.plot(x_ax,GP_result_MAE_plot, color="red", marker='*', markersize = markersi
 plt.ylabel('MAE(ps)')   # set ystick label
 plt.xlabel('Designs')  # set xstck label
 plt.legend(loc="lower right")  #set legend location
-plt.grid(0)
+# plt.grid(0)
 plt.xticks(x_ax, name_list)
-plt.show()
+# plt.show()
 # plt.draw()
 fig1_file = "line_graph_MAE_plot.eps"
+
+plt.xticks(rotation=40)
+plt.rcParams.update({'font.size': 16})
+
 plt.savefig(fig1_file,  bbox_inches='tight')
 
 
@@ -78,12 +86,13 @@ plt.ylabel('RMSE(ps)')   # set ystick label
 plt.xlabel('Designs')  # set xstck label
 plt.legend(loc="lower right")  #set legend location
 # plt.grid(0)
-plt.draw()
+# plt.draw()
 plt.xticks(x_ax, name_list)
-plt.show()
+# plt.show()
 fig2_file = "line_graph_RMSE_plot.eps"
+plt.xticks(rotation=40)
+plt.rcParams.update({'font.size': 16})
 plt.savefig(fig2_file,  bbox_inches='tight')
-
 
 
 
@@ -108,9 +117,11 @@ plt.xlabel('Designs')  # set xstck label
 plt.legend(loc="upper right")  #set legend location
 # plt.grid(0)
 plt.xticks(x_ax, name_list)
-plt.show()
-plt.draw()
+# plt.show()
+# plt.draw()
 fig3_file = "line_graph_LESS30_plot.eps"
+plt.xticks(rotation=40)
+plt.rcParams.update({'font.size': 16})
 plt.savefig(fig3_file,  bbox_inches='tight')
 
 
