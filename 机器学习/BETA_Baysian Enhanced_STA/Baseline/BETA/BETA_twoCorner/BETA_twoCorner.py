@@ -253,7 +253,7 @@ if __name__ == "__main__":
         print("RMSE:", rmse)
         print("the num of less10:", less10)  # 返回的是满足条件的个数
 
-    one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * test_size)  # 乘以 test_size
+    one_LESS10 = LESS10 / (data_target.shape[0] * (data_target.shape[1]) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
     dff = pd.DataFrame(Covariance_pred)
@@ -315,7 +315,7 @@ if __name__ == "__main__":
         print("RMSE:", rmse)
         print("the num of less10:", less10)  # 返回的是满足条件的个数
 
-    one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * test_size)  # 乘以 test_size
+    one_LESS10 = LESS10 / (data_target.shape[0] * (data_target.shape[1]) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
     dff = pd.DataFrame(Covariance_pred)
@@ -376,7 +376,7 @@ if __name__ == "__main__":
         print("RMSE:", rmse)
         print("the num of less10:", less10)  # 返回的是满足条件的个数
 
-    one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * test_size)  # 乘以 test_size
+    one_LESS10 = LESS10 / (data_target.shape[0] * (data_target.shape[1]) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
     dff = pd.DataFrame(Covariance_pred)
@@ -437,7 +437,7 @@ if __name__ == "__main__":
         print("RMSE:", rmse)
         print("the num of less10:", less10)  # 返回的是满足条件的个数
 
-    one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * test_size)  # 乘以 test_size
+    one_LESS10 = LESS10 / (data_target.shape[0] * (data_target.shape[1]) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
     dff = pd.DataFrame(Covariance_pred)
@@ -498,7 +498,7 @@ if __name__ == "__main__":
         print("RMSE:", rmse)
         print("the num of less10:", less10)  # 返回的是满足条件的个数
 
-    one_LESS10 = LESS10 / (df_data5.shape[0] * (df_data5.shape[1] - 1) * test_size)  # 乘以 test_size
+    one_LESS10 = LESS10 / (data_target.shape[0] * (data_target.shape[1]) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
     dff = pd.DataFrame(Covariance_pred)
@@ -558,7 +558,7 @@ if __name__ == "__main__":
         print("RMSE:", rmse)
         print("the num of less10:", less10)  # 返回的是满足条件的个数
 
-    one_LESS10 = LESS10 / (df_data6.shape[0] * (df_data6.shape[1] - 1) * test_size)  # 乘以 test_size
+    one_LESS10 = LESS10 / (data_target.shape[0] * (data_target.shape[1]) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
     dff = pd.DataFrame(Covariance_pred)
@@ -620,7 +620,7 @@ if __name__ == "__main__":
         print("RMSE:", rmse)
         print("the num of less10:", less10)  # 返回的是满足条件的个数
 
-    one_LESS10 = LESS10 / (df_data7.shape[0] * (df_data7.shape[1] - 1) * test_size)  # 乘以 test_size
+    one_LESS10 = LESS10 / (data_target.shape[0] * (data_target.shape[1]) * test_size)  # 乘以 test_size
     LESS10 = 0  # 每一轮记得清零！
     list_result_less10.append(one_LESS10)
     dff = pd.DataFrame(Covariance_pred)
