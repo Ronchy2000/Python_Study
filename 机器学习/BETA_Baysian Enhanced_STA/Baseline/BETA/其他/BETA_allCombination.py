@@ -194,13 +194,13 @@ if __name__ == "__main__":
     # df = pd.read_csv("timing1500x14.csv")
     # df_data = np.array(df.values[:, 1:])
 
-    df1 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL1x5.csv")
-    df2 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL2x5.csv")
-    df3 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL3x5.csv")
+    df1 = pd.read_csv("../../../Benchmark/Benchmark/b17_VTL1x5.csv")
+    df2 = pd.read_csv("../../../Benchmark/Benchmark/b17_VTL2x5.csv")
+    df3 = pd.read_csv("../../../Benchmark/Benchmark/b17_VTL3x5.csv")
 
-    df4 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_VTL1x5.csv")
-    df5 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_VTL2x5.csv")
-    df6 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_VTL3x5.csv")
+    df4 = pd.read_csv("../../../Benchmark/Benchmark/b18_VTL1x5.csv")
+    df5 = pd.read_csv("../../../Benchmark/Benchmark/b18_VTL2x5.csv")
+    df6 = pd.read_csv("../../../Benchmark/Benchmark/b18_VTL3x5.csv")
 
     df7 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b19_VTLx5.csv")
 

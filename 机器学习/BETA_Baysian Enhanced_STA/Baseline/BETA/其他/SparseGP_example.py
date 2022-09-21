@@ -20,16 +20,17 @@ from math import floor
 smoke_test = ('CI' in os.environ)
 print("smoke_test:",smoke_test)
 
-if not smoke_test and not os.path.isfile('../elevators.mat'):
+if not smoke_test and not os.path.isfile('../../elevators.mat'):
     print('Downloading \'elevators\' UCI dataset...')
-    urllib.request.urlretrieve('https://drive.google.com/uc?export=download&id=1jhWL3YUHvXIaftia4qeAyDwVxo6j1alk', '../elevators.mat')
+    urllib.request.urlretrieve('https://drive.google.com/uc?export=download&id=1jhWL3YUHvXIaftia4qeAyDwVxo6j1alk',
+                               '../../elevators.mat')
 
 
 if smoke_test:  # this is for running the notebook in our testing framework
     X, y = torch.randn(1000, 3), torch.randn(1000)  #用不到
 else:
     ## 该例程用到的是这个
-    data = torch.Tensor(loadmat('../elevators.mat')['data'])
+    data = torch.Tensor(loadmat('../../elevators.mat')['data'])
     X = data[:, :-1]
     print("X处理前:",X)
     #数据处理 ，不太懂
