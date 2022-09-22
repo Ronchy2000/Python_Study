@@ -11,7 +11,6 @@ import pandas as pd
 import xlwt
 
 # fileHandler = open(file_path,"r")
-
 def extract_file_data(path):
     print(path)
     fileHandler = open(path, "r")
@@ -32,19 +31,29 @@ def extract_file_data(path):
 
         ret2 = re.match("Start-point  :",line)
         if ret2:
-            start = re.findall(".*Start-point  : (.*)", line)
+            tmp = re.findall(".*Start-point  : (.*)/.*", line)
+            if not tmp : #列表为空
+                start = re.findall(".*Start-point  : (.*)", line)  #没有反斜杠的情况
+            else:
+                start = tmp
             Start_point.append(start)
 
         ret3 = re.match("End-point    :", line)
         if ret3:
-            end = re.findall(".*End-point    : (.*)", line)
+            tmp = re.findall(".*End-point    : (.*)/.*", line)
+            if not tmp : #列表为空
+                end = re.findall(".*End-point    : (.*)", line)  #没有反斜杠的情况
+            else:
+                end = tmp
             End_point.append(end)
+
 
     # print(len(timing_slack))
     # print(len(Start_point))
     # print(len(End_point))
     fileHandler.close()
     return timing_slack,Start_point,End_point
+
 
 
 file1_path = "b17_15_fast1.log"
@@ -148,7 +157,7 @@ if len(start_right) == len(end_right):
     header = [('Corner' + str(i)) for i in range(1,np_tmp_timing.shape[1]+1)]
     df = pd.DataFrame(np_tmp_timing, columns=header)
 
-    df.to_excel("b17_15nm_v1_x5.xls", sheet_name='Sheet1', index=True)
+    df.to_csv("b17_15nm_v1_x5.csv",index=True)
     print("=========Done!=========")
 else:
     print("error，有end不一致")
