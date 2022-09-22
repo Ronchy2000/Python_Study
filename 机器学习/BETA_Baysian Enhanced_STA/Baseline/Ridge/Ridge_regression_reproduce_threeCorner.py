@@ -2,7 +2,7 @@
 # @Time    : 2022/9/7 16:51
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : Ridge_regression_reproduce.py
+# @File    : Ridge_regression_reproduce_v234.py
 # @Software: PyCharm
 import numpy as np
 import pandas as pd
