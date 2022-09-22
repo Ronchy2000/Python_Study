@@ -32,19 +32,29 @@ def extract_file_data(path):
 
         ret2 = re.match("Start-point  :",line)
         if ret2:
-            start = re.findall(".*Start-point  : (.*)", line)
+            tmp = re.findall(".*Start-point  : (.*)/.*", line)
+            if not tmp : #列表为空
+                start = re.findall(".*Start-point  : (.*)", line)  #没有反斜杠的情况
+            else:
+                start = tmp
             Start_point.append(start)
 
         ret3 = re.match("End-point    :", line)
         if ret3:
-            end = re.findall(".*End-point    : (.*)", line)
+            tmp = re.findall(".*End-point    : (.*)/.*", line)
+            if not tmp : #列表为空
+                end = re.findall(".*End-point    : (.*)", line)  #没有反斜杠的情况
+            else:
+                end = tmp
             End_point.append(end)
+
 
     # print(len(timing_slack))
     # print(len(Start_point))
     # print(len(End_point))
     fileHandler.close()
     return timing_slack,Start_point,End_point
+
 
 
 file1_path = ".\\Benchmark\\b17\\迭代\\b17_迭代3\\b17_tt_VTL3.log"
