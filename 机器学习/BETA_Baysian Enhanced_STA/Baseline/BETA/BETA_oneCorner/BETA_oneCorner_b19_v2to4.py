@@ -279,6 +279,7 @@ if __name__ == "__main__":
         xte = torch.Tensor(xte).view(-1, 1)
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
+        # print(xtr.shape, xte.shape, ytr.shape, yte.shape)
         model = cigp(xtr, ytr)
         model.train_adam(300, lr=0.03)
         with torch.no_grad():
