@@ -23,15 +23,14 @@ from sklearn.model_selection import RepeatedKFold
 from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
 
-test_size = 0.3
+test_size = 0.8
 values = ['b17_v1', 'b17_v2', 'b17_v3', 'b18_v1', 'b18_v2', 'b18_v3', 'b19']
 
 def RF_regression(data_feature,data_target):
     Xtrain, Xtest, Ytrain, Ytest = train_test_split(data_feature, data_target.reshape(-1, 1),
                                                     test_size = test_size)  # 25% 作为测试集
     # model = RandomForestRegressor()
-    model = RandomForestRegressor(n_estimators=10,max_depth=2,bootstrap=True)
-
+    model = RandomForestRegressor(n_estimators=10,max_depth=3,bootstrap=True)
 
 
     model.fit(Xtrain, Ytrain)
@@ -64,15 +63,15 @@ if __name__ == "__main__":
     # df4 = pd.read_csv("..\\..\\Benchmark\\timing20000x14.csv")
     # df5 = pd.read_csv("..\\..\\Benchmark\\timing50000x14.csv")
     # df6 = pd.read_csv("..\\..\\Benchmark\\timing100000x14.csv")
-    df1 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL1x5.csv")
-    df2 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL2x5.csv")
-    df3 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b17_VTL3x5.csv")
+    df1 = pd.read_csv("..\\..\\..\\Benchmark\\Benchmark\\b17_VTL1x5.csv")
+    df2 = pd.read_csv("..\\..\\..\\Benchmark\\Benchmark\\b17_VTL2x5.csv")
+    df3 = pd.read_csv("..\\..\\..\\Benchmark\\Benchmark\\b17_VTL3x5.csv")
 
-    df4 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_VTL1x5.csv")
-    df5 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_VTL2x5.csv")
-    df6 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b18_VTL3x5.csv")
+    df4 = pd.read_csv("..\\..\\..\\Benchmark\\Benchmark\\b18_VTL1x5.csv")
+    df5 = pd.read_csv("..\\..\\..\\Benchmark\\Benchmark\\b18_VTL2x5.csv")
+    df6 = pd.read_csv("..\\..\\..\\Benchmark\\Benchmark\\b18_VTL3x5.csv")
 
-    df7 = pd.read_csv("..\\..\\Benchmark\\Benchmark\\b19_VTLx5.csv")
+    df7 = pd.read_csv("..\\..\\..\\Benchmark\\Benchmark\\b19_VTL1x5.csv")
 
     df_data1 = np.array(df1.values[:, 1:])
     df_data2 = np.array(df2.values[:, 1:])
@@ -294,11 +293,11 @@ if __name__ == "__main__":
     MAE.clear()
     RMSE.clear()
     result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
-    #
 
-    # '''
-    # b19
-    # '''
+
+    # #'''
+    # #b19
+    # #'''
     list_result_less10 = []
     data_feature = df_data7[:, [first_corner, second_corner]]  # 第 1,2列
     # print(data_feature.shape)
@@ -330,7 +329,6 @@ if __name__ == "__main__":
     MAE.clear()
     RMSE.clear()
     result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
-
 
 
 

@@ -23,7 +23,7 @@ from sklearn.model_selection import RepeatedKFold
 from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
 
-test_size = 0.3
+test_size = 0.8
 values = [ 'b19_v2','b19_v3','b19_v4']
 
 def RF_regression(data_feature,data_target):
@@ -57,13 +57,14 @@ result_MAE_plot = []
 result_RMSE_plot = []
 result_LESS10_plot = []
 if __name__ == "__main__":
-    df1 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL2x5.csv")
-    df2 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL3x5.csv")
-    df3 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL4x5.csv")
+    df1 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL2x5.csv")
+    df2 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL3x5.csv")
+    df3 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL4x5.csv")
 
     df_data1 = np.array(df1.values[:, 1:])
     df_data2 = np.array(df2.values[:, 1:])
     df_data3 = np.array(df3.values[:, 1:])
+
     # --------------------------------------
     # '''
     # b19_v2
@@ -172,8 +173,6 @@ if __name__ == "__main__":
 
 
 
-
-
 ##plot
     print("---------------------------------------------")
     print("result_MAE_plot",result_MAE_plot)
@@ -218,11 +217,12 @@ if __name__ == "__main__":
     plt.xticks(x_ax, values)
     plt.show()
 
+
+
 '''
 ---------------------------------------------
 result_MAE_plot [75.30315422630774, 65.20723834311937, 16.656610685776467, 163.75805868038617, 64.32663452319106, 53.11690632519584, 116.03983927024045]
 result_RMSE_plot [11030.536624955503, 10789.335564273795, 584.1747463025556, 49389.28355687186, 7601.87534882711, 4826.049597582013, 23019.817314888878]
 result_LESS10_plot [0.29, 0.31666666666666665, 0.8844444444444445, 0.19733796296296297, 0.3244212962962963, 0.3398148148148148, 0.1787037037037037]
-
 '''
 

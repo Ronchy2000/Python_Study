@@ -23,7 +23,7 @@ from sklearn.model_selection import RepeatedKFold
 from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
 
-test_size = 0.3
+test_size = 0.8
 values = [ 'b19_v2','b19_v3','b19_v4']
 
 def RF_regression(data_feature,data_target):
@@ -58,9 +58,9 @@ result_RMSE_plot = []
 result_LESS10_plot = []
 first_corner, second_corner = 1, 2
 if __name__ == "__main__":
-    df1 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL2x5.csv")
-    df2 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL3x5.csv")
-    df3 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL4x5.csv")
+    df1 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL2x5.csv")
+    df2 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL3x5.csv")
+    df3 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL4x5.csv")
 
     df_data1 = np.array(df1.values[:, 1:])
     df_data2 = np.array(df2.values[:, 1:])
