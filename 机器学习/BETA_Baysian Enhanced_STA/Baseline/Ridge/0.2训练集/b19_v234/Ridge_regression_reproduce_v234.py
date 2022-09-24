@@ -14,7 +14,7 @@ from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 
-test_size = 0.8
+test_size = 0.25
 values = ['b19_v2','b19_v3','b19_v4']
 
 
