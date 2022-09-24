@@ -27,7 +27,7 @@ EPS = 1e-10
 PI = 3.1415
 
 test_size = 0.25
-values = ['b19_v2', 'b19_v3','b19_v4']
+values = ['Corner1','Corner2','Corner3','Corner4','Corner5']
 
 
 class cigp(nn.Module):
@@ -186,9 +186,9 @@ class cigp(nn.Module):
 MAE = []
 RMSE = []
 LESS10 = 0
-result_MAE_plot = []
-result_RMSE_plot = []
-result_LESS10_plot = []
+result_MAE_plot = np.empty(shape = [1,5])
+result_RMSE_plot = np.empty(shape = [1,5])
+result_LESS10_plot = np.empty(shape = [1,5])
 #设置
 LESS_value = 30
 
@@ -209,8 +209,211 @@ if __name__ == "__main__":
     df_data4 = np.array(df4.values[:, 1:])
     df_data5 = np.array(df5.values[:, 1:])
 
+###one version
+    list_result_less10 = []
+    for i in range(df_data1.shape[1]):
+        data_feature = df_data1[:, i].reshape(-1, 1)  # 第 i 列
+        data_target = df_data2[:, i].reshape(-1, 1)  # 第 i 列
+
+        xtr, xte, ytr, yte = train_test_split(data_feature, data_target, test_size=test_size)
+        xtr = torch.Tensor(xtr).view(-1, 1)
+        xte = torch.Tensor(xte).view(-1, 1)
+        ytr = torch.Tensor(ytr).view(-1, 1)
+        yte = torch.Tensor(yte).view(-1, 1)
+        model = cigp(xtr, ytr)
+        model.train_adam(250, lr=0.03)
+        with torch.no_grad():
+            ypred, ypred_var = model(xte)
+        mae = metrics.mean_absolute_error(yte, ypred)
+        rmse = metrics.mean_squared_error(yte, ypred)
+        MAE.append(mae)
+        RMSE.append(rmse)
+        Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+        abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+        # LESS  #*************************************
+        less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+        LESS10 += less10
+        one_LESS10 = LESS10 / (data_target.shape[0] * test_size)
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+
+    print('------------------------------------------------------')
+    print('Use one version\n')
+    print("MAE:", MAE)
+    print("RMSE:", RMSE)
+    print("less10:", list_result_less10)
+
+    result_MAE_plot = np.array(MAE)
+    result_RMSE_plot = np.array(RMSE)
+    result_LESS10_plot = np.array(list_result_less10)
 
 
 
+###two version
+    MAE.clear()
+    RMSE.clear()
+    list_result_less10.clear()
+    for i in range(df_data1.shape[1]):
+        tmp1 = df_data1[:, i].reshape(-1, 1)
+        tmp2 = df_data2[:, i].reshape(-1, 1)
+        data_feature = np.concatenate((tmp1,tmp2), axis = 1)  # 第 i 列
+        data_target = df_data3[:, i].reshape(-1, 1)  # 第 i 列
+
+        xtr, xte, ytr, yte = train_test_split(data_feature, data_target, test_size=test_size)
+        xtr = torch.Tensor(xtr)
+        xte = torch.Tensor(xte)
+        ytr = torch.Tensor(ytr).view(-1, 1)
+        yte = torch.Tensor(yte).view(-1, 1)
+        model = cigp(xtr, ytr)
+        model.train_adam(200, lr=0.03)
+        with torch.no_grad():
+            ypred, ypred_var = model(xte)
+        mae = metrics.mean_absolute_error(yte, ypred)
+        rmse = metrics.mean_squared_error(yte, ypred)
+        MAE.append(mae)
+        RMSE.append(rmse)
+        Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+        abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+        # LESS  #*************************************
+        less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+        LESS10 += less10
+        one_LESS10 = LESS10 / (data_target.shape[0] * test_size)
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+
+    print('------------------------------------------------------')
+    print('Use two version\n')
+    print("MAE:", MAE)
+    print("RMSE:", RMSE)
+    print("less10:", list_result_less10)
+
+    result_MAE_plot = np.concatenate((result_MAE_plot.reshape(1, -1), np.array(MAE).reshape(1, -1)), axis=0)
+    result_RMSE_plot = np.concatenate((result_RMSE_plot.reshape(1, -1), np.array(RMSE).reshape(1, -1)), axis=0)
+    result_LESS10_plot = np.concatenate((result_LESS10_plot.reshape(1, -1), np.array(list_result_less10).reshape(1, -1)), axis=0)
+
+###three version
+    MAE.clear()
+    RMSE.clear()
+    list_result_less10.clear()
+    for i in range(df_data1.shape[1]):
+        tmp1 = df_data1[:, i].reshape(-1, 1)
+        tmp2 = df_data2[:, i].reshape(-1, 1)
+        tmp3 = df_data3[:, i].reshape(-1, 1)
+        data_feature = np.concatenate((tmp1, tmp2, tmp3), axis=1)  # 第 i 列
+        data_target = df_data4[:, i].reshape(-1, 1)  # 第 i 列
+
+        xtr, xte, ytr, yte = train_test_split(data_feature, data_target, test_size=test_size)
+        xtr = torch.Tensor(xtr)
+        xte = torch.Tensor(xte)
+        ytr = torch.Tensor(ytr).view(-1, 1)
+        yte = torch.Tensor(yte).view(-1, 1)
+        model = cigp(xtr, ytr)
+        model.train_adam(200, lr=0.03)
+        with torch.no_grad():
+            ypred, ypred_var = model(xte)
+        mae = metrics.mean_absolute_error(yte, ypred)
+        rmse = metrics.mean_squared_error(yte, ypred)
+        MAE.append(mae)
+        RMSE.append(rmse)
+        Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+        abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+        # LESS  #*************************************
+        less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+        LESS10 += less10
+        one_LESS10 = LESS10 / (data_target.shape[0] * test_size)
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+
+    print('------------------------------------------------------')
+    print('Use three version\n')
+    print("MAE:", MAE)
+    print("RMSE:", RMSE)
+    print("less10:", list_result_less10)
+
+    result_MAE_plot = np.concatenate((result_MAE_plot, np.array(MAE).reshape(1, -1)), axis=0)
+    result_RMSE_plot = np.concatenate((result_RMSE_plot, np.array(RMSE).reshape(1, -1)), axis=0)
+    result_LESS10_plot = np.concatenate((result_LESS10_plot, np.array(list_result_less10).reshape(1, -1)), axis=0)
+
+###four version
+    MAE.clear()
+    RMSE.clear()
+    list_result_less10.clear()
+    for i in range(df_data1.shape[1]):
+        tmp1 = df_data1[:, i].reshape(-1, 1)
+        tmp2 = df_data2[:, i].reshape(-1, 1)
+        tmp3 = df_data3[:, i].reshape(-1, 1)
+        tmp4 = df_data3[:, i].reshape(-1, 1)
+        data_feature = np.concatenate((tmp1, tmp2, tmp3, tmp4), axis=1)  # 第 i 列
+        data_target = df_data5[:, i].reshape(-1, 1)  # 第 i 列
+
+        xtr, xte, ytr, yte = train_test_split(data_feature, data_target, test_size=test_size)
+        xtr = torch.Tensor(xtr)
+        xte = torch.Tensor(xte)
+        ytr = torch.Tensor(ytr).view(-1, 1)
+        yte = torch.Tensor(yte).view(-1, 1)
+        model = cigp(xtr, ytr)
+        model.train_adam(200, lr=0.03)
+        with torch.no_grad():
+            ypred, ypred_var = model(xte)
+        mae = metrics.mean_absolute_error(yte, ypred)
+        rmse = metrics.mean_squared_error(yte, ypred)
+        MAE.append(mae)
+        RMSE.append(rmse)
+        Epsilon = yte.reshape(-1) - ypred.reshape(-1)
+        abs_Epsilon = np.maximum(Epsilon, -Epsilon)
+        # LESS  #*************************************
+        less10 = len(abs_Epsilon[abs_Epsilon < LESS_value])
+        LESS10 += less10
+        one_LESS10 = LESS10 / (data_target.shape[0] * test_size)
+        LESS10 = 0  # 每一轮记得清零！
+        list_result_less10.append(one_LESS10)
+
+    print('------------------------------------------------------')
+    print('Use one version\n')
+    print("MAE:", MAE)
+    print("RMSE:", RMSE)
+    print("less10:", list_result_less10)
+
+    result_MAE_plot = np.concatenate((result_MAE_plot, np.array(MAE).reshape(1, -1)), axis=0)
+    result_RMSE_plot = np.concatenate((result_RMSE_plot, np.array(RMSE).reshape(1, -1)), axis=0)
+    result_LESS10_plot = np.concatenate((result_LESS10_plot, np.array(list_result_less10).reshape(1, -1)), axis=0)
+
+    print("======================================================")
+    print("result_MAE_plot=", result_MAE_plot)
+    print("result_RMSE_plot=", result_RMSE_plot)
+    print("result_LESS10_plot=", result_LESS10_plot)
+
+##plot
+    x = [i for i in range(1, len(MAE) + 1)]
+    print(result_MAE_plot.shape)
+    plt.figure(1)
+    plt.plot(x, result_MAE_plot[0, :], label='one_generation')
+    plt.plot(x, result_MAE_plot[1, :], label='two_generation')
+    plt.plot(x, result_MAE_plot[2, :], label='three_generation')
+    plt.plot(x, result_MAE_plot[3, :], label='four_generation')
+    plt.xticks(x, values)
+    plt.title("MAE")
+    plt.legend()
+    plt.show()
+
+    plt.figure(2)
+    plt.plot(x, result_RMSE_plot[0, :], label='one_generation')
+    plt.plot(x, result_RMSE_plot[1, :], label='two_generation')
+    plt.plot(x, result_RMSE_plot[2, :], label='three_generation')
+    plt.plot(x, result_RMSE_plot[3, :], label='four_generation')
+    plt.xticks(x, values)
+    plt.legend()
+    plt.title("RMSE")
+    plt.show()
+
+    plt.figure(3)
+    plt.plot(x, result_LESS10_plot[0, :] * 100, label='one_generation')
+    plt.plot(x, result_LESS10_plot[1, :] * 100, label='two_generation')
+    plt.plot(x, result_LESS10_plot[2, :] * 100, label='three_generation')
+    plt.plot(x, result_LESS10_plot[3, :] * 100, label='four_generation')
+    plt.xticks(x, values)
+    plt.legend()
+    plt.title("LESS10")
+    plt.show()
 
 
