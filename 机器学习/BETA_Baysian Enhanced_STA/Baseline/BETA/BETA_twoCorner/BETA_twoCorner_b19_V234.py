@@ -2,7 +2,7 @@
 # @Time    : 2022/9/21 2:35
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : BETA_twoCorner.py
+# @File    : BETA_twoCorner_b17.py
 # @Software: PyCharm
 
 import torch

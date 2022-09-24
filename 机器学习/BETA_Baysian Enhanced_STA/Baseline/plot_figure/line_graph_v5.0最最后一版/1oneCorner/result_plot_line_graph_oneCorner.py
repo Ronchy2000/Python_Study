@@ -7,6 +7,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+## V5.0版本，
+#  1.MAE，LESS30加了 grid，grid_linewidth控制线宽
+## 2.固定y轴刻度
+## 3.修改x-label名称
 
 ##MAE
 Ridge_result_MAE_plot = [111.30132809817754, 57.90079059731588, 17.273904424443664, 157.32547192624403, 66.36891834766786, 48.83213168636948, 125.82300093776868,94.11091024168182, 86.07512294325065, 82.16493055969667]
@@ -26,7 +30,7 @@ GP_result_LESS30_plot = np.array([0.3592, 0.6354666666666667, 0.8810666666666667
 
 ###Settings*******************************************************************************
 #设置x轴标签
-name_list = ['b17_v1', 'b17_v2', 'b17_v3', 'b18_v1','b18_v2','b18_v3', 'b19_v1', 'b19_v2', 'b19_v3', 'b19_v4']
+name_list = ['b17-v1', 'b17-v2', 'b17-v3', 'b18-v1','b18-v2','b18-v3', 'b19-v1', 'b19-v2', 'b19-v3', 'b19-v4']
 #set marker，line.
 markersize = 6
 linestyle = '-.'
@@ -36,10 +40,12 @@ font = {
         'weight' : 'bold',
         'size'   : 8}
 
-legend_fontsize={ 'size': 10}
+legend_fontsize={ 'size': 7}
 
 figsize = (4,3)
 dpi = 150 #sci要求 300以上
+
+grid_linewidth = 0.5 #网格线宽度
 
 
 #******************************************************************************************
@@ -74,6 +80,9 @@ right=0.95,
 hspace=0.2,
 wspace=0.2)
 # plt.show()
+plt.grid(linewidth = grid_linewidth)
+plt.ylim(10,180)#X轴范围
+
 fig1_file = "line_graph_MAE_plot.pdf"
 plt.savefig(fig1_file,  bbox_inches='tight') #tight,否则底部会被阶段！
 
@@ -139,6 +148,8 @@ right=0.95,
 hspace=0.2,
 wspace=0.2)
 
+plt.grid(linewidth = grid_linewidth)
+plt.ylim(5,95)#X轴范围
 fig3_file = "line_graph_LESS30_plot.pdf"
 plt.savefig(fig3_file,  bbox_inches='tight')
 # plt.show()
