@@ -23,7 +23,7 @@ JITTER = 1e-6
 EPS = 1e-10
 PI = 3.1415
 
-test_size = 0.25
+test_size = 0.8
 values = ['b19_v2', 'b19_v3','b19_v4']
 
 
@@ -197,9 +197,9 @@ if __name__ == "__main__":
     # df = pd.read_csv("timing1500x14.csv")
     # df_data = np.array(df.values[:, 1:])
 
-    df1 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL2x5.csv")
-    df2 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL3x5.csv")
-    df3 = pd.read_csv("../../../Benchmark/Benchmark/b19_VTL4x5.csv")
+    df1 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL2x5.csv")
+    df2 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL3x5.csv")
+    df3 = pd.read_csv("../../../../Benchmark/Benchmark/b19_VTL4x5.csv")
 
     df_data1 = np.array(df1.values[:, 1:])
     df_data2 = np.array(df2.values[:, 1:])
