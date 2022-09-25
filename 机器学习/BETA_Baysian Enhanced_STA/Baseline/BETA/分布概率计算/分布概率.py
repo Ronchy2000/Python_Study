@@ -16,8 +16,8 @@ def prob_not_violation(X, mean, covariance):
     # covariance = np.array([0.5, 1, 1.5, 2, 1.5, 2])
 
     # prob of  x > X
-    # prob = 1 - scipy.stats.norm(mean, covariance).cdf(X)
+    prob = 1 - scipy.stats.norm(mean, covariance).cdf(X)
     # prob of  x < X
-    prob = scipy.stats.norm(mean, covariance).cdf(X)
+    #prob = scipy.stats.norm(mean, covariance).cdf(X)
     # print(prob)
     return prob

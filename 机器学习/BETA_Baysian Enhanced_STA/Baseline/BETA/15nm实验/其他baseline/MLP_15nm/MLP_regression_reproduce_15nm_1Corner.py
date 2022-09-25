@@ -19,7 +19,9 @@ values = ['b18_v2', 'b18_v3']
 
 
 def myMLPRegressor(x,y):
+    global real_data
     trainX, testX, trainY, testY = train_test_split(x, y, test_size = test_size)
+    real_data = np.concatenate((real_data, testY), axis=1)  # 按列拼接
     sc=StandardScaler()
     scaler = sc.fit(trainX)
     trainX_scaled = scaler.transform(trainX)
@@ -44,27 +46,42 @@ def myMLPRegressor(x,y):
     print("MAE:", mae)
     print("RMSE:", rmse)
     print("the num of less10:", less10)  # 返回的是满足条件的个数
-    return mae, rmse, less10
+    return mae, rmse, less10,y_pred
     # plt.plot(mlp_reg.loss_curve_)
     # plt.title("Loss Curve", fontsize=14)
     # plt.xlabel('Iterations')
     # plt.ylabel('Cost')
     # plt.show()
 
+
+###b19
+df1 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v1_x5.csv")
+df2 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v2_x5.csv")
+df3 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v3_x5.csv")
+df4 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v4_x5.csv")
+df5 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v5_x5.csv")
+df_data1 = np.array(df1.values[:, 1:])
+df_data2 = np.array(df2.values[:, 1:])
+df_data3 = np.array(df3.values[:, 1:])
+df_data4 = np.array(df4.values[:, 1:])
+df_data5 = np.array(df5.values[:, 1:])
+
+    
 MAE = []
 RMSE = []
 LESS10 = 0
 result_MAE_plot = []
 result_RMSE_plot = []
 result_LESS10_plot = []
+real_data = np.arange(0, df_data5.shape[0] * test_size).reshape(-1, 1)
 if __name__ == "__main__":
 
     ##b17
-    df1 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v1_x5.csv")
-    df2 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v2_x5.csv")
-    df3 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v3_x5.csv")
-    df4 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v4_x5.csv")
-    df5 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v5_x5.csv")
+    # df1 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v1_x5.csv")
+    # df2 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v2_x5.csv")
+    # df3 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v3_x5.csv")
+    # df4 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v4_x5.csv")
+    # df5 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b17_15nm_5次迭代/b17_15nm_v5_x5.csv")
 
     # ###b18
     # df1 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b18_15nm_5次迭代/b18_15nm_v1_x5.csv")
@@ -73,168 +90,159 @@ if __name__ == "__main__":
     # df4 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b18_15nm_5次迭代/b18_15nm_v4_x5.csv")
     # df5 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b18_15nm_5次迭代/b18_15nm_v5_x5.csv")
 
-    ###b19
-    # df1 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v1_x5.csv")
-    # df2 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v2_x5.csv")
-    # df3 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v3_x5.csv")
-    # df4 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v4_x5.csv")
-    # df5 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b19_15nm_5次迭代/b19_15nm_v5_x5.csv")
 
-    df_data1 = np.array(df1.values[:, 1:])
-    df_data2 = np.array(df2.values[:, 1:])
-    df_data3 = np.array(df3.values[:, 1:])
-    df_data4 = np.array(df4.values[:, 1:])
-    df_data5 = np.array(df5.values[:, 1:])
     # print(df_data1)
     # --------------------------------------
     ###'''
     ###b17
     ###'''
-    list_result_less10 = []
-    for i in range(df_data1.shape[1]):
-        data_feature = df_data1[:, i].reshape(-1, 1)  # 第 i 列
-        data_target = np.delete(df_data1, i, axis=1)  # del 第 i 列
-        for j in data_target.T:  # 对 列 进行迭代
-            tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp_mae)
-            RMSE.append(tmp_rmse)
-            LESS10 += len_less10
-        one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * test_size)  # 乘以 test_size
-        LESS10 = 0  # 每一轮记得清零！
-        list_result_less10.append(one_LESS10)
-        break  #测试 一次
-    print("==================================================================")
-    print("pridiction siteration:", len(MAE))  # 13*14 次
-    result_mae = sum(MAE) / len(MAE)
-    print("MAE", result_mae)
-    result_rmse = sum(RMSE) / len(RMSE)
-    print("RMSE", result_rmse)
-    result_less10 = sum(list_result_less10) / len(list_result_less10)
-    print("LESS10:", result_less10)
-    result_MAE_plot.append(result_mae)
-    result_RMSE_plot.append(result_rmse)
-    result_LESS10_plot.append(result_less10)
-    MAE.clear()
-    RMSE.clear()
-    result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
-
-    ##--------------------------------------
-    ###'''
-    ###b17_2
-    ###'''
-    list_result_less10 = []
-    for i in range(df_data2.shape[1]):
-        data_feature = df_data2[:, i].reshape(-1, 1)  # 第 i 列
-        data_target = np.delete(df_data2, i, axis=1)  # del 第 i 列
-        for j in data_target.T:  # 对 列 进行迭代
-            tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp_mae)
-            RMSE.append(tmp_rmse)
-            LESS10 += len_less10
-        one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * test_size)  # 乘以 test_size
-        LESS10 = 0  # 每一轮记得清零！
-        list_result_less10.append(one_LESS10)
-        #break  #测试 一次
-    print("==================================================================")
-    print("pridiction siteration:", len(MAE))  # 13*14 次
-    result_mae = sum(MAE) / len(MAE)
-    print("MAE", result_mae)
-
-    result_rmse = sum(RMSE) / len(RMSE)
-    print("RMSE", result_rmse)
-
-    result_less10 = sum(list_result_less10) / len(list_result_less10)
-    print("LESS10:", result_less10)
-
-    result_MAE_plot.append(result_mae)
-    result_RMSE_plot.append(result_rmse)
-    result_LESS10_plot.append(result_less10)
-    MAE.clear()
-    RMSE.clear()
-
-    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
-
-    ###--------------------------------------
-    ###'''
-    ###b17_3
-    ###'''
-    list_result_less10 = []
-    for i in range(df_data3.shape[1]):
-        data_feature = df_data3[:, i].reshape(-1, 1)  # 第 i 列
-        data_target = np.delete(df_data3, i, axis=1)  # del 第 i 列
-        for j in data_target.T:  # 对 列 进行迭代
-            tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp_mae)
-            RMSE.append(tmp_rmse)
-            LESS10 += len_less10
-        one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * test_size)  # 乘以 test_size
-        LESS10 = 0  # 每一轮记得清零！
-        list_result_less10.append(one_LESS10)
-        #break  # 测试 一次
-    print("==================================================================")
-    print("pridiction siteration:", len(MAE))  # 13*14 次
-    result_mae = sum(MAE) / len(MAE)
-    print("MAE", result_mae)
-
-    result_rmse = sum(RMSE) / len(RMSE)
-    print("RMSE", result_rmse)
-
-    result_less10 = sum(list_result_less10) / len(list_result_less10)
-    print("LESS10:", result_less10)
-
-    result_MAE_plot.append(result_mae)
-    result_RMSE_plot.append(result_rmse)
-    result_LESS10_plot.append(result_less10)
-    MAE.clear()
-    RMSE.clear()
-
-    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
-
-    ###--------------------------------------
-    ###'''
-    ###b18_1
-    ###'''
-    list_result_less10 = []
-    for i in range(df_data4.shape[1]):
-        data_feature = df_data4[:, i].reshape(-1, 1)  # 第 i 列
-        data_target = np.delete(df_data4, i, axis=1)  # del 第 i 列
-        for j in data_target.T:  # 对 列 进行迭代
-            tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
-            MAE.append(tmp_mae)
-            RMSE.append(tmp_rmse)
-            LESS10 += len_less10
-        one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * test_size)  # 乘以 test_size
-        LESS10 = 0  # 每一轮记得清零！
-        list_result_less10.append(one_LESS10)
-        #break  # 测试 一次
-    print("==================================================================")
-    print("pridiction siteration:", len(MAE))  # 13*14 次
-    result_mae = sum(MAE) / len(MAE)
-    print("MAE", result_mae)
-
-    result_rmse = sum(RMSE) / len(RMSE)
-    print("RMSE", result_rmse)
-
-    result_less10 = sum(list_result_less10) / len(list_result_less10)
-    print("LESS10:", result_less10)
-
-    result_MAE_plot.append(result_mae)
-    result_RMSE_plot.append(result_rmse)
-    result_LESS10_plot.append(result_less10)
-    MAE.clear()
-    RMSE.clear()
-    result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+    # list_result_less10 = []
+    # for i in range(df_data1.shape[1]):
+    #     data_feature = df_data1[:, i].reshape(-1, 1)  # 第 i 列
+    #     data_target = np.delete(df_data1, i, axis=1)  # del 第 i 列
+    #     for j in data_target.T:  # 对 列 进行迭代
+    #         tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
+    #         MAE.append(tmp_mae)
+    #         RMSE.append(tmp_rmse)
+    #         LESS10 += len_less10
+    #     one_LESS10 = LESS10 / (df_data1.shape[0] * (df_data1.shape[1] - 1) * test_size)  # 乘以 test_size
+    #     LESS10 = 0  # 每一轮记得清零！
+    #     list_result_less10.append(one_LESS10)
+    #     break  #测试 一次
+    # print("==================================================================")
+    # print("pridiction siteration:", len(MAE))  # 13*14 次
+    # result_mae = sum(MAE) / len(MAE)
+    # print("MAE", result_mae)
+    # result_rmse = sum(RMSE) / len(RMSE)
+    # print("RMSE", result_rmse)
+    # result_less10 = sum(list_result_less10) / len(list_result_less10)
+    # print("LESS10:", result_less10)
+    # result_MAE_plot.append(result_mae)
+    # result_RMSE_plot.append(result_rmse)
+    # result_LESS10_plot.append(result_less10)
+    # MAE.clear()
+    # RMSE.clear()
+    # result_mae, result_rmse, result_less10, LESS10 = 0, 0, 0, 0
+    #
+    # ##--------------------------------------
+    # ###'''
+    # ###b17_2
+    # ###'''
+    # list_result_less10 = []
+    # for i in range(df_data2.shape[1]):
+    #     data_feature = df_data2[:, i].reshape(-1, 1)  # 第 i 列
+    #     data_target = np.delete(df_data2, i, axis=1)  # del 第 i 列
+    #     for j in data_target.T:  # 对 列 进行迭代
+    #         tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
+    #         MAE.append(tmp_mae)
+    #         RMSE.append(tmp_rmse)
+    #         LESS10 += len_less10
+    #     one_LESS10 = LESS10 / (df_data2.shape[0] * (df_data2.shape[1] - 1) * test_size)  # 乘以 test_size
+    #     LESS10 = 0  # 每一轮记得清零！
+    #     list_result_less10.append(one_LESS10)
+    #     #break  #测试 一次
+    # print("==================================================================")
+    # print("pridiction siteration:", len(MAE))  # 13*14 次
+    # result_mae = sum(MAE) / len(MAE)
+    # print("MAE", result_mae)
+    #
+    # result_rmse = sum(RMSE) / len(RMSE)
+    # print("RMSE", result_rmse)
+    #
+    # result_less10 = sum(list_result_less10) / len(list_result_less10)
+    # print("LESS10:", result_less10)
+    #
+    # result_MAE_plot.append(result_mae)
+    # result_RMSE_plot.append(result_rmse)
+    # result_LESS10_plot.append(result_less10)
+    # MAE.clear()
+    # RMSE.clear()
+    #
+    # result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+    #
+    # ###--------------------------------------
+    # ###'''
+    # ###b17_3
+    # ###'''
+    # list_result_less10 = []
+    # for i in range(df_data3.shape[1]):
+    #     data_feature = df_data3[:, i].reshape(-1, 1)  # 第 i 列
+    #     data_target = np.delete(df_data3, i, axis=1)  # del 第 i 列
+    #     for j in data_target.T:  # 对 列 进行迭代
+    #         tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
+    #         MAE.append(tmp_mae)
+    #         RMSE.append(tmp_rmse)
+    #         LESS10 += len_less10
+    #     one_LESS10 = LESS10 / (df_data3.shape[0] * (df_data3.shape[1] - 1) * test_size)  # 乘以 test_size
+    #     LESS10 = 0  # 每一轮记得清零！
+    #     list_result_less10.append(one_LESS10)
+    #     #break  # 测试 一次
+    # print("==================================================================")
+    # print("pridiction siteration:", len(MAE))  # 13*14 次
+    # result_mae = sum(MAE) / len(MAE)
+    # print("MAE", result_mae)
+    #
+    # result_rmse = sum(RMSE) / len(RMSE)
+    # print("RMSE", result_rmse)
+    #
+    # result_less10 = sum(list_result_less10) / len(list_result_less10)
+    # print("LESS10:", result_less10)
+    #
+    # result_MAE_plot.append(result_mae)
+    # result_RMSE_plot.append(result_rmse)
+    # result_LESS10_plot.append(result_less10)
+    # MAE.clear()
+    # RMSE.clear()
+    #
+    # result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
+    #
+    # ###--------------------------------------
+    # ###'''
+    # ###b18_1
+    # ###'''
+    # list_result_less10 = []
+    # for i in range(df_data4.shape[1]):
+    #     data_feature = df_data4[:, i].reshape(-1, 1)  # 第 i 列
+    #     data_target = np.delete(df_data4, i, axis=1)  # del 第 i 列
+    #     for j in data_target.T:  # 对 列 进行迭代
+    #         tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
+    #         MAE.append(tmp_mae)
+    #         RMSE.append(tmp_rmse)
+    #         LESS10 += len_less10
+    #     one_LESS10 = LESS10 / (df_data4.shape[0] * (df_data4.shape[1] - 1) * test_size)  # 乘以 test_size
+    #     LESS10 = 0  # 每一轮记得清零！
+    #     list_result_less10.append(one_LESS10)
+    #     #break  # 测试 一次
+    # print("==================================================================")
+    # print("pridiction siteration:", len(MAE))  # 13*14 次
+    # result_mae = sum(MAE) / len(MAE)
+    # print("MAE", result_mae)
+    #
+    # result_rmse = sum(RMSE) / len(RMSE)
+    # print("RMSE", result_rmse)
+    #
+    # result_less10 = sum(list_result_less10) / len(list_result_less10)
+    # print("LESS10:", result_less10)
+    #
+    # result_MAE_plot.append(result_mae)
+    # result_RMSE_plot.append(result_rmse)
+    # result_LESS10_plot.append(result_less10)
+    # MAE.clear()
+    # RMSE.clear()
+    # result_mae, result_rmse, result_less10,LESS10 = 0,0,0,0
 
     # --------------------------------------
     # '''
     # b18_2
     # '''
     list_result_less10 = []
+    mean_predict = np.arange(0, df_data5.shape[0] * test_size).reshape(-1, 1)
     for i in range(df_data5.shape[1]):
         data_feature = df_data5[:, i].reshape(-1, 1)  # 第 i 列
         data_target = np.delete(df_data5, i, axis=1)  # del 第 i 列
         for j in data_target.T:  # 对 列 进行迭代
-            tmp_mae, tmp_rmse, len_less10 = myMLPRegressor(data_feature, j.reshape(-1, 1))
+            tmp_mae, tmp_rmse, len_less10,predict = myMLPRegressor(data_feature, j.reshape(-1, 1))
+            mean_predict = np.concatenate((mean_predict, predict.reshape(-1,1)), axis=1)  # 按列拼接
             MAE.append(tmp_mae)
             RMSE.append(tmp_rmse)
             LESS10 += len_less10
@@ -243,6 +251,10 @@ if __name__ == "__main__":
         list_result_less10.append(one_LESS10)
         break  # 测试 一次
     print("==================================================================")
+    dff2 = pd.DataFrame(mean_predict)
+    dff2.to_csv("b19_15nm_v5_prediction_MLP.csv", sep=',', index=False)
+    dff3 = pd.DataFrame(real_data)
+    dff3.to_csv("b19_15nm_v5_real_MLP.csv", sep=',', index=False)
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
     print("MAE", result_mae)
