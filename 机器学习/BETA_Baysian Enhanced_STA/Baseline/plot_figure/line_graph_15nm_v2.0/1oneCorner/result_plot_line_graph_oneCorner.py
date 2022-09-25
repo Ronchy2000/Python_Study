@@ -151,7 +151,7 @@ hspace=0.2,
 wspace=0.2)
 
 plt.grid(linewidth = grid_linewidth)
-plt.ylim(int(80,100)#y轴范围
+plt.ylim(80,100) #y轴范围
 fig3_file = "line_graph_LESS30_plot.pdf"
 plt.savefig(fig3_file,  bbox_inches='tight')
 # plt.show()
