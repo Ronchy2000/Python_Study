@@ -191,8 +191,6 @@ result_LESS10_plot = []
 LESS_value = 30
 
 if __name__ == "__main__":
-    # df = pd.read_csv("timing1500x14.csv")
-    # df_data = np.array(df.values[:, 1:])
 
     df1 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b18_15nm_5次迭代/b18_15nm_v1_x5.csv")
     df2 = pd.read_csv("../../../../../Benchmark/Benchmark/15nm/b18_15nm_5次迭代/b18_15nm_v2_x5.csv")
