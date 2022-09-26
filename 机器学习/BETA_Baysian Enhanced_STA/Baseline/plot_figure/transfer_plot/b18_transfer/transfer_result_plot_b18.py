@@ -85,10 +85,10 @@ grid_linewidth = 0.5 #网格线宽度
 plt.rcParams['figure.figsize'] = figsize
 plt.rcParams['font.sans-serif'] = ['Arial']
 
+
 #plot less30
 for i in range(Ridge_result_LESS10_plot.shape[0]):
         fig = plt.figure(i+1,dpi =dpi)
-
         #plot
         x_ax = range(1, Ridge_result_LESS10_plot.shape[1] + 1)
         #Ridge
@@ -120,7 +120,9 @@ for i in range(Ridge_result_LESS10_plot.shape[0]):
             plt.legend(loc="lower left", prop=legend_fontsize)
         fig1_file = str(i) + ".pdf"
         plt.savefig(fig1_file,  bbox_inches='tight') #tight,否则底部会被截断！
-#
+
+
+
 
 
 

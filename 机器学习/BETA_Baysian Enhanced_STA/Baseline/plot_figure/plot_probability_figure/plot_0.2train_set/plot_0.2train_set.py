@@ -51,11 +51,6 @@ for i in range(3):
         universe_resource_consumption_list = locals()['resource_consumption_list' + str(i+1)]
         universe_extra_cost_list = locals()['extra_cost_list' + str(i+1)]
 
-        #选择用百分比，不需要可以注释掉，或Times表示？
-        universe_error_coverage_list = np.array(universe_error_coverage_list)*100
-        universe_resource_consumption_list = np.array(universe_resource_consumption_list)*100
-        universe_extra_cost_list = np.array(universe_extra_cost_list)*100
-
         variable_T0 = np.arange(0.006,0.9999,0.02)
 
         plt.plot(variable_T0, universe_error_coverage_list, color="red", marker='o', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="Error_Coverage")
@@ -63,9 +58,9 @@ for i in range(3):
         plt.plot(variable_T0,universe_extra_cost_list,color="blue",marker='^', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="extra cost")
         # title
         plt.title('Corner' + str(i + 1))
-        # label
-        plt.ylabel("Percent(%)")
-        plt.xlabel("T0")
+        #label
+        plt.ylabel("ratio")
+        plt.xlabel("$H^2$")
         # limit
         # plt.ylim()
 
@@ -84,5 +79,6 @@ for i in range(3):
         plt.grid(linewidth=grid_linewidth)
         # plt.show()
         plt.grid(linewidth=grid_linewidth)
-        fig_file = "line_graph_概率估计_plot" + str(i + 1) + ".pdf"
+        fig_file = "line_graph_02train_set_plot" + str(i + 1) + ".pdf"
         plt.savefig(fig_file, bbox_inches='tight')
+        plt.close()

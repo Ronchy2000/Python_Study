@@ -48,16 +48,10 @@ plt.rcParams['figure.figsize'] = figsize
 plt.rcParams['font.sans-serif'] = ['Arial']
 
 
-
 for i in range(3):
         universe_error_coverage_list = locals()['error_coverage_list' + str(i+1)]
         universe_resource_consumption_list = locals()['resource_consumption_list' + str(i+1)]
         universe_extra_cost_list = locals()['extra_cost_list' + str(i+1)]
-
-        #选择用百分比，不需要可以注释掉，或Times表示？
-        universe_error_coverage_list = np.array(universe_error_coverage_list)*100
-        universe_resource_consumption_list = np.array(universe_resource_consumption_list)*100
-        universe_extra_cost_list = np.array(universe_extra_cost_list)*100
 
         variable_T0 = np.arange(0.006,0.9999,0.02)
 
@@ -67,8 +61,8 @@ for i in range(3):
         # title
         plt.title('Corner'+str(i+1))
         #label
-        plt.ylabel("Percent(%)")
-        plt.xlabel("T0")
+        plt.ylabel("ratio")
+        plt.xlabel("$H^2$")
         #limit
         # plt.ylim()
 
@@ -85,8 +79,9 @@ for i in range(3):
                 plt.legend(loc="lower left", prop=legend_fontsize)
 
         plt.grid(linewidth=grid_linewidth)
-        fig_file = "line_graph_概率估计_plot"+str(i+1)+".pdf"
+        fig_file = "line_graph_15nm_plot"+str(i+1)+".pdf"
         plt.savefig(fig_file, bbox_inches='tight')
         # plt.show()
+        plt.close()
 
 

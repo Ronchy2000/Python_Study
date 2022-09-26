@@ -19,7 +19,7 @@ Ridge_result_RMSE_plot= np.sqrt(np.array([[293.37967128, 135.5279796,  196.98902
 Ridge_result_LESS10_plot= np.array([[0.59814815, 0.77407407, 0.74722222, 0.98518519, 0.94814815],
  [0.98981481, 0.97037037, 0.9462963 , 0.93518519, 0.76018519],
  [0.65925926, 0.62222222, 0.94259259, 0.97222222, 0.96759259],
- [0.66296296, 0.60555556, 0.91388889, 0.93518519, 0.46481481]])*100
+ [0.66296296, 0.60555556, 0.91388889, 0.93518519, 0.66481481]])*100
 
 ##MLP
 MLP_result_MAE_plot= np.array([[10.92800129 , 7.89310153,  8.22776285,  1.73819577,  2.72616657],
@@ -33,7 +33,7 @@ MLP_result_RMSE_plot= np.sqrt(np.array([[265.50839024, 137.27397367, 189.8085179
 MLP_result_LESS10_plot= np.array([[0.63611111 ,0.75648148 ,0.74166667 ,0.9787037  ,0.93240741],
  [0.98981481 ,0.96944444,0.95      , 0.91574074, 0.88611111],
  [0.78518519 ,0.60925926,0.94444444, 0.9712963 , 0.96111111],
- [0.81388889 ,0.63796296,0.8962963 , 0.94444444, 0.52685185]])*100
+ [0.81388889 ,0.63796296,0.8962963 , 0.94444444, 0.62685185]])*100
 
 ##RF
 RF_result_MAE_plot= np.array([[ 9.13366544 , 6.14558967,  6.93029194 , 1.41084577  ,3.25385789],
@@ -47,7 +47,7 @@ RF_result_RMSE_plot= np.sqrt(np.array([[240.06256414 ,100.06494199 ,172.26124429
 RF_result_LESS10_plot= np.array([[0.69722222 ,0.77685185 ,0.76388889, 0.96759259 ,0.8787037 ],
  [0.98796296, 0.94722222 ,0.94907407, 0.96203704, 0.8212963 ],
  [0.82222222, 0.66018519 ,0.92777778, 0.95462963, 0.92777778],
- [0.82222222, 0.67685185 ,0.89814815, 0.92777778, 0.48796296]])*100
+ [0.82222222, 0.67685185 ,0.89814815, 0.92777778, 0.68796296]])*100
 
 ##GP
 GP_result_MAE_plot= np.array([[8.435846 ,   5.48503  ,  5.251639  ,  0.27572706,  2.8391416 ],
@@ -66,7 +66,7 @@ GP_result_LESS10_plot= np.array([[0.91444444, 0.96555556, 0.96888889, 0.99888889
 
 ###Settings*******************************************************************************
 #设置x轴标签
-name_list = ["Corner1", 'Corner2', 'Corner3', 'Corner4','Corner5']
+name_list = ["1", '2', '3', '4','5']
 #set marker，line.
 markersize = 6
 linestyle = '-.'
@@ -77,88 +77,18 @@ font = {
         'size'   : 8}
 legend_fontsize={ 'size': 10}
 
-figsize = (4,3)
+figsize = (4.3,3.3)
 dpi = 150 #sci要求 300以上
 
-
+grid_linewidth = 0.5 #网格线宽度
 #******************************************************************************************
 plt.rcParams['figure.figsize'] = figsize
 plt.rcParams['font.sans-serif'] = ['Arial']
 
-####plot MAE
-# for i in range(Ridge_result_MAE_plot.shape[0]):
-#         fig = plt.figure(i+1,dpi =dpi)
-#
-#         #plot
-#         x_ax = range(1, Ridge_result_MAE_plot.shape[1] + 1)
-#         #Ridge
-#         plt.plot(x_ax, Ridge_result_MAE_plot[i,:], color="green", marker='o', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="Ridge")
-#         #MLP
-#         plt.plot(x_ax, MLP_result_MAE_plot[i,:], color="magenta", marker='s', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="MLP")
-#         #RF
-#         plt.plot(x_ax, RF_result_MAE_plot[i,:], color="blue", marker='^', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="RF")
-#         #GP
-#         plt.plot(x_ax,GP_result_MAE_plot[i,:], color="red", marker='*', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="Proposed")
-#
-#         plt.ylabel('MAE(ps)', font)   # set ystick label
-#         plt.xlabel('Designs', font)  # set xstck label
-#         plt.title("Use {} iteration".format(i+1))
-#         # plt.legend(loc="upper left", prop=legend_fontsize)  #set legend location
-#         plt.xticks(x_ax, name_list, rotation=40)
-#         plt.tick_params(labelsize=lablesize) #刻度字体大小10
-#
-#         plt.gcf().subplots_adjust(top=0.93,
-#         bottom=0.2,
-#         left=0.18,
-#         right=0.95,
-#         hspace=0.2,
-#         wspace=0.2)
-#         # plt.show()
-#         # fig1_file = "line_graph_MAE_plot.pdf"
-#         # plt.savefig(fig1_file,  bbox_inches='tight') #tight,否则底部会被截断！
-
-
-# ###plot RMSE
-# for i in range(MLP_result_RMSE_plot.shape[0]):
-#         fig = plt.figure(i+1,dpi =dpi)
-#
-#         #plot
-#         x_ax = range(1, Ridge_result_RMSE_plot.shape[1] + 1)
-#         #Ridge
-#         plt.plot(x_ax, Ridge_result_RMSE_plot[i,:], color="green", marker='o', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="Ridge")
-#         #MLP
-#         plt.plot(x_ax, MLP_result_RMSE_plot[i,:], color="magenta", marker='s', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="MLP")
-#         #RF
-#         plt.plot(x_ax, RF_result_RMSE_plot[i,:], color="blue", marker='^', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="RF")
-#         #GP
-#         plt.plot(x_ax,GP_result_RMSE_plot[i,:], color="red", marker='*', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="Proposed")
-#
-#         plt.ylabel('RMSE(ps)', font)   # set ystick label
-#         plt.xlabel('Designs', font)  # set xstck label
-#         plt.title("Use {} iteration".format(i+1))
-#         # plt.legend(loc="upper left", prop=legend_fontsize)  #set legend location
-#         plt.xticks(x_ax, name_list, rotation=40)
-#         plt.tick_params(labelsize=lablesize) #刻度字体大小10
-#
-#         plt.gcf().subplots_adjust(top=0.93,
-#         bottom=0.2,
-#         left=0.18,
-#         right=0.95,
-#         hspace=0.2,
-#         wspace=0.2)
-#         plt.show()
-#         # fig1_file = "line_graph_MAE_plot.pdf"
-#         # plt.savefig(fig1_file,  bbox_inches='tight') #tight,否则底部会被截断！
-#
-
-
-
-##plot_LESS30
 
 #plot less30
 for i in range(Ridge_result_LESS10_plot.shape[0]):
         fig = plt.figure(i+1,dpi =dpi)
-
         #plot
         x_ax = range(1, Ridge_result_LESS10_plot.shape[1] + 1)
         #Ridge
@@ -171,11 +101,12 @@ for i in range(Ridge_result_LESS10_plot.shape[0]):
         plt.plot(x_ax,GP_result_LESS10_plot[i,:], color="red", marker='*', markersize = markersize, linestyle=linestyle, linewidth=linewidth, label="Proposed")
 
         plt.ylabel('LESS30(%)', font)   # set ystick label
-        plt.xlabel('Corner', font)  # set xstck label
-        plt.title("Use {} iteration".format(i+1))
+        plt.xlabel('Corner ID', font)  # set xstck label
+        # plt.title("Use {} iteration".format(i+1))
         # plt.legend(loc="upper left", prop=legend_fontsize)  #set legend location
-        plt.xticks(x_ax, name_list, rotation=40)
+        plt.xticks(x_ax, name_list)
         plt.tick_params(labelsize=lablesize) #刻度字体大小10
+        plt.ylim(55,105)
 
         plt.gcf().subplots_adjust(top=0.93,
         bottom=0.2,
@@ -183,10 +114,15 @@ for i in range(Ridge_result_LESS10_plot.shape[0]):
         right=0.95,
         hspace=0.2,
         wspace=0.2)
-        plt.show()
-#         # fig1_file = "line_graph_MAE_plot.pdf"
-#         # plt.savefig(fig1_file,  bbox_inches='tight') #tight,否则底部会被截断！
-#
+        # plt.show()
+        plt.grid(linewidth=0.5)
+        if i == 1:
+            plt.legend(loc="lower left", prop=legend_fontsize)
+        fig1_file = str(i) + ".pdf"
+        plt.savefig(fig1_file,  bbox_inches='tight') #tight,否则底部会被截断！
+
+
+
 
 
 

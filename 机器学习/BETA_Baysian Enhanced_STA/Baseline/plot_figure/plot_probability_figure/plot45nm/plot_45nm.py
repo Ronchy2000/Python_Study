@@ -66,8 +66,8 @@ for i in range(3):
         # title
         plt.title('Corner' + str(i + 1))
         # label
-        plt.ylabel("Percent(%)")
-        plt.xlabel("T0")
+        plt.ylabel("ratio")
+        plt.xlabel("$H^2$")
         # limit
         # plt.ylim()
 
@@ -86,8 +86,8 @@ for i in range(3):
         plt.grid(linewidth=grid_linewidth)
         # plt.show()
         plt.grid(linewidth=grid_linewidth)
-        fig_file = "line_graph_概率估计_plot" + str(i + 1) + ".pdf"
+        fig_file = "line_graph_45nm_plot" + str(i + 1) + ".pdf"
         plt.savefig(fig_file, bbox_inches='tight')
-
+        plt.close()
 
 
