@@ -2,7 +2,7 @@
 # @Time    : 2022/9/26 11:53
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : 概率_不确定性计算plot.py
+# @File    : 概率_不确定性计算plo_template.py
 # @Software: PyCharm
 import pandas as pd
 import numpy as np
