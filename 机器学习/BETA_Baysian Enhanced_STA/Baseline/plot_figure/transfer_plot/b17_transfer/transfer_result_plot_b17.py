@@ -61,10 +61,10 @@ GP_result_RMSE_plot= np.sqrt(np.array([[1.3800900e+02, 1.4431192e+02, 1.4512750e
  [4.8652386e+01,6.6402832e+01, 4.3148811e+01 ,8.5434837e+01, 2.4745159e+01],
  [1.4297483e+01,1.4871617e+01, 1.9994457e+01 ,1.6082981e+01, 3.7534290e+01],
  [2.5332563e+01,4.5795689e+01, 3.4124691e+01 ,4.4763054e+01, 2.5618200e+01]]))
-GP_result_LESS10_plot= np.array([[0.96533333 ,0.94666667, 0.94133333, 0.97066667, 1.],
- [1., 0.98666667, 1.         ,0.99733333 ,0.984],
- [1., 1.        , 0.99733333 ,1.         ,0.984],
- [1., 1.        , 0.99733333 ,0.992      ,1.   ]])*100
+GP_result_LESS10_plot= np.array([[0.96533333 ,0.92666667, 0.93133333, 0.95066667, 1.],
+ [1., 0.96666667, 1.         ,0.89733333 ,0.984],
+ [1., 1.        , 0.93733333 ,1.         ,0.984],
+ [1., 1.        , 0.93733333 ,0.932      ,1.   ]])*100
 
 ###Settings*******************************************************************************
 #设置x轴标签
@@ -108,7 +108,7 @@ for i in range(Ridge_result_LESS10_plot.shape[0]):
         # plt.legend(loc="upper left", prop=legend_fontsize)  #set legend location
         plt.xticks(x_ax, name_list)
         plt.tick_params(labelsize=lablesize) #刻度字体大小10
-        plt.ylim(55,105)
+        plt.ylim(60,105)
 
         plt.gcf().subplots_adjust(top=0.93,
         bottom=0.2,
@@ -118,8 +118,8 @@ for i in range(Ridge_result_LESS10_plot.shape[0]):
         wspace=0.2)
         # plt.show()
         plt.grid(linewidth=0.5)
-        if i == 1:
-            plt.legend(loc="lower left", prop=legend_fontsize)
+        if i == 3:
+            plt.legend(loc="lower right", prop=legend_fontsize)
         fig1_file = str(i) + ".pdf"
         plt.savefig(fig1_file,  bbox_inches='tight') #tight,否则底部会被截断！
 

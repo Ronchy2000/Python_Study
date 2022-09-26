@@ -19,7 +19,7 @@ def uncentainty(a):
 df1 = pd.read_csv("../0.2训练集/BETA_twoCorner/b17_VTL3_prediction2.csv")
 df2 = pd.read_csv("../0.2训练集/BETA_twoCorner/b17_VTL3_covariance2.csv")
 df3 = pd.read_csv("../0.2训练集/BETA_twoCorner/b17_VTL3_real2.csv")
-t0 = 750
+t0 = 760
 df_data1 = np.array(df1.values[:, 1:]) + t0  #prediction
 df_data2 = np.array(df2.values[:, 1:])
 df_data3 = np.array(df3.values[:, 1:]) + t0  #real

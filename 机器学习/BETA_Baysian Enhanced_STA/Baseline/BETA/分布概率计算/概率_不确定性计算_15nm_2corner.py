@@ -16,10 +16,18 @@ def uncentainty(a):
     uncent = np.multiply((-a),np.log2(a)) - np.multiply((1-a),np.log2(1-a))
     return uncent
 
-df1 = pd.read_csv("../15nm实验/BETA_twoCorner/b19_15/b19_15nm_v5_prediction2.csv")
-df2 = pd.read_csv("../15nm实验/BETA_twoCorner/b19_15/b19_15nm_v5_covariance2.csv")
-df3 = pd.read_csv("../15nm实验/BETA_twoCorner/b19_15/b19_15nm_v5_real2.csv")
-t0 = 200
+# df1 = pd.read_csv("../15nm实验/BETA_twoCorner/b19_15/b19_15nm_v5_prediction2.csv")
+# df2 = pd.read_csv("../15nm实验/BETA_twoCorner/b19_15/b19_15nm_v5_covariance2.csv")
+# df3 = pd.read_csv("../15nm实验/BETA_twoCorner/b19_15/b19_15nm_v5_real2.csv")
+#
+# df1 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v4_prediction.csv")
+# df2 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v4_covariance.csv")
+# df3 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v4_real.csv")
+df1 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v2_prediction.csv")
+df2 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v2_covariance.csv")
+df3 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v2_real.csv")
+
+t0 = 830
 df_data1 = np.array(df1.values[:, 1:]) - t0  #prediction
 df_data2 = np.array(df2.values[:, 1:])
 df_data3 = np.array(df3.values[:, 1:]) - t0  #real
@@ -83,6 +91,7 @@ list_error_index = np.dstack((error_index[0], error_index[1])).squeeze()
 
 T0_min = 1
 print("与True对比后，错误的数量:",list_error_index.shape[0])
+print("初始正确率:",(1 - list_error_index.shape[0]/(df_data3.shape[0]*df_data3.shape[1]))*100 )
 for ii in list_error_index:
     tmp = uncentain_matrix[ii[0],ii[1]]
     if T0_min > tmp:
