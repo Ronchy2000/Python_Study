@@ -190,18 +190,18 @@ result_MAE_plot = np.empty(shape = [1,5])
 result_RMSE_plot = np.empty(shape = [1,5])
 result_LESS10_plot = np.empty(shape = [1,5])
 #设置
-LESS_value = 30
+LESS_value = 20
 
 one_iteration = 1
 
 
 if __name__ == "__main__":
 
-    df1 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b17_15nm_5次迭代//b17_15nm_v1_x5.csv")
-    df2 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b17_15nm_5次迭代//b17_15nm_v2_x5.csv")
-    df3 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b17_15nm_5次迭代//b17_15nm_v3_x5.csv")
-    df4 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b17_15nm_5次迭代//b17_15nm_v4_x5.csv")
-    df5 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b17_15nm_5次迭代//b17_15nm_v5_x5.csv")
+    df1 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b19_15nm_5次迭代//b19_15nm_v1_x5.csv")
+    df2 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b19_15nm_5次迭代//b19_15nm_v2_x5.csv")
+    df3 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b19_15nm_5次迭代//b19_15nm_v3_x5.csv")
+    df4 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b19_15nm_5次迭代//b19_15nm_v4_x5.csv")
+    df5 = pd.read_csv("../../../Benchmark/Benchmark/15nm//b19_15nm_5次迭代//b19_15nm_v5_x5.csv")
 
     df_data1 = np.array(df1.values[:, 1:])
     df_data2 = np.array(df2.values[:, 1:])
@@ -221,7 +221,7 @@ if __name__ == "__main__":
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
         model = cigp(xtr, ytr)
-        model.train_adam(250, lr=0.03)
+        model.train_adam(150, lr=0.03)
         with torch.no_grad():
             ypred, ypred_var = model(xte)
         mae = metrics.mean_absolute_error(yte, ypred)
@@ -265,7 +265,7 @@ if __name__ == "__main__":
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
         model = cigp(xtr, ytr)
-        model.train_adam(200, lr=0.03)
+        model.train_adam(150, lr=0.03)
         with torch.no_grad():
             ypred, ypred_var = model(xte)
         mae = metrics.mean_absolute_error(yte, ypred)
@@ -308,7 +308,7 @@ if __name__ == "__main__":
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
         model = cigp(xtr, ytr)
-        model.train_adam(200, lr=0.03)
+        model.train_adam(150, lr=0.03)
         with torch.no_grad():
             ypred, ypred_var = model(xte)
         mae = metrics.mean_absolute_error(yte, ypred)
@@ -352,7 +352,7 @@ if __name__ == "__main__":
         ytr = torch.Tensor(ytr).view(-1, 1)
         yte = torch.Tensor(yte).view(-1, 1)
         model = cigp(xtr, ytr)
-        model.train_adam(200, lr=0.03)
+        model.train_adam(150, lr=0.03)
         with torch.no_grad():
             ypred, ypred_var = model(xte)
         mae = metrics.mean_absolute_error(yte, ypred)
@@ -369,7 +369,7 @@ if __name__ == "__main__":
         list_result_less10.append(one_LESS10)
 
     print('------------------------------------------------------')
-    print('Use one version\n')
+    print('Use four version\n')
     print("MAE:", MAE)
     print("RMSE:", RMSE)
     print("less10:", list_result_less10)
@@ -382,7 +382,7 @@ if __name__ == "__main__":
     print("result_MAE_plot=", result_MAE_plot)
     print("result_RMSE_plot=", result_RMSE_plot)
     print("result_LESS10_plot=", result_LESS10_plot)
-
+    print("LESS_value",LESS_value)
 ##plot
     x = [i for i in range(1, len(MAE) + 1)]
     print(result_MAE_plot.shape)
