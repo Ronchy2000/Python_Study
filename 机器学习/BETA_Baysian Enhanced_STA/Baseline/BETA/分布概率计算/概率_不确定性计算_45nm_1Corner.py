@@ -2,7 +2,7 @@
 # @Time    : 2022/9/26 4:42
 # @Author  : Ronchy_LU
 # @Email   : rongqi1949@gmail.com
-# @File    : 概率_不确定性计算.py
+# @File    : 概率_不确定性计算_template.py
 # @Software: PyCharm
 import pandas as pd
 import numpy as np
@@ -16,13 +16,13 @@ def uncentainty(a):
     uncent = np.multiply((-a),np.log2(a)) - np.multiply((1-a),np.log2(1-a))
     return uncent
 
-df1 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v5_prediction.csv")
-df2 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v5_covariance.csv")
-df3 = pd.read_csv("../15nm实验/BETA_oneCorner/b19_15/b19_15nm_v5_real.csv")
-t0 = 200
-df_data1 = np.array(df1.values[:, 1:]) - t0  #prediction
+df1 = pd.read_csv("../BETA_oneCorner/b17_VTL3_prediction.csv")
+df2 = pd.read_csv("../BETA_oneCorner/b17_VTL3_covariance.csv")
+df3 = pd.read_csv("../BETA_oneCorner/b17_VTL3_real.csv")
+t0 = 800
+df_data1 = np.array(df1.values[:, 1:]) + t0  #prediction
 df_data2 = np.array(df2.values[:, 1:])
-df_data3 = np.array(df3.values[:, 1:]) - t0  #real
+df_data3 = np.array(df3.values[:, 1:]) + t0  #real
 pred_violation_ratio = np.sum( df_data1<0 )/(df_data1.shape[0]*df_data1.shape[1])
 real_violation_ratio = np.sum( df_data3<0 )/(df_data3.shape[0]*df_data3.shape[1])
 print("pred_violation_ratio:{}%".format(pred_violation_ratio*100))
@@ -71,7 +71,7 @@ print("other_aspect = ",np.sum(df_data3 != 0))
 
 diff_matrix = prob_matrix - df_data3
 # print(np.sum(diff_matrix != 0))
-print(diff_matrix[diff_matrix !=0 ])
+# print(diff_matrix[diff_matrix !=0 ])
 
 
 
@@ -92,44 +92,35 @@ print("覆盖率100%的阈值",T0_min)
 
 
 
-# #####计算T0增大，error_coverage 减小
-# # variable_T0 = [0.0062,0.007,0.008,0.009,0.010]
-# # variable_T0 = [0.006,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.90,0.99,0.999]
-# variable_T0 = np.arange(0.006,0.9999,0.02)
-# cnt = 0
-# error_coverage_list = []
-# for v_T0 in variable_T0:
-#     # bqd_index = np.argwhere(uncentain_matrix > v_T0)
-#     bqd_index = np.where(uncentain_matrix > v_T0)
-#     list_bqd_index = np.dstack((bqd_index[0], bqd_index[1])).squeeze()
-#     # print("list_bqd_index.shape[0]",list_bqd_index.shape[0])
-#     # print("list_error_index.shape[0]:",list_error_index.shape[0])
-#     ###重要，变成list 才能对比！！！
-#     for ii in range(list_error_index.shape[0]):
-#         for jj in range(list_bqd_index.shape[0]):
-#             if list_error_index[ii][0] ==list_bqd_index[jj][0] and list_error_index[ii][1] ==list_bqd_index[jj][1]:
-#             # print()
-#                 cnt += 1
-#     error_coverage = cnt/list_error_index.shape[0]  #错误覆盖率
-#     error_coverage_list.append(error_coverage)
-#     # print("cnt=",cnt)
-#     print("error_coverage:", error_coverage)
-#     cnt = 0
-#
-# print("error_coverage_list:",error_coverage_list)
-#
-#
-#
 
 
-resource_consumption_list = []
-#########计算T0增大，error_coverage 减小
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####计算T0增大，error_coverage 减小
+# variable_T0 = [0.0062,0.007,0.008,0.009,0.010]
+# variable_T0 = [0.006,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.90,0.99,0.999]
 variable_T0 = np.arange(0.006,0.9999,0.02)
+
 cnt = 0
 error_coverage_list = []
+resource_consumption_list = []
+extra_cost_list = []
+
+
 for v_T0 in variable_T0:
-    # bqd_index = np.argwhere(uncentain_matrix > v_T0)  #坑死人
-    bqd_index = np.where(uncentain_matrix > v_T0) #用这个
+    # bqd_index = np.argwhere(uncentain_matrix > v_T0)
+    bqd_index = np.where(uncentain_matrix > v_T0)
     list_bqd_index = np.dstack((bqd_index[0], bqd_index[1])).squeeze()
     # print("list_bqd_index.shape[0]",list_bqd_index.shape[0])
     # print("list_error_index.shape[0]:",list_error_index.shape[0])
@@ -139,11 +130,18 @@ for v_T0 in variable_T0:
             if list_error_index[ii][0] ==list_bqd_index[jj][0] and list_error_index[ii][1] ==list_bqd_index[jj][1]:
             # print()
                 cnt += 1
+    error_coverage = cnt/list_error_index.shape[0]  #错误覆盖率
+    error_coverage_list.append(error_coverage)
 
-    resource_consumption = (cnt_judged_2check + cnt) / cnt_real_needed_2check #资源消耗率
+    resource_consumption = (cnt_judged_2check + cnt) / cnt_real_needed_2check  # 资源消耗率
     resource_consumption_list.append(resource_consumption)
-    # print("cnt=",cnt)
-    print("error_coverage:", resource_consumption)
+
+    extra_cost = (cnt_judged_2check + cnt) / (df_data1.shape[0] * (5 - df_data1.shape[1]))  # extra cost
+    extra_cost_list.append(extra_cost)
+
     cnt = 0
 
-print("resource_consumption_list:",resource_consumption_list)
+print("error_coverage_list =",error_coverage_list)
+print("resource_consumption_list =",resource_consumption_list)
+print("extra_cost_list =",extra_cost_list)
+

@@ -213,6 +213,7 @@ if __name__ == "__main__":
     list_result_less10 = []
     Covariance_pred = np.arange(0, df_data1.shape[0] * test_size).reshape(-1, 1)
     mean_predict = np.arange(0, df_data1.shape[0] * test_size).reshape(-1, 1)
+    real_data = np.arange(0, df_data1.shape[0] * test_size).reshape(-1, 1)
 
     data_feature = df_data1[:, [first_corner,second_corner]]  # 第 1,2列
     # print(data_feature.shape)
@@ -220,6 +221,7 @@ if __name__ == "__main__":
     # print(data_target.shape)
     for j in data_target.T:  #对 列 进行迭代
         xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=test_size)
+        real_data = np.concatenate((real_data, yte), axis=1)  # 按列拼接
         xtr = torch.Tensor(xtr)
         xte = torch.Tensor(xte)
         ytr = torch.Tensor(ytr).view(-1, 1)
@@ -252,7 +254,9 @@ if __name__ == "__main__":
     dff = pd.DataFrame(Covariance_pred)
     dff.to_csv("b17_15nm_v1_covariance2.csv", sep=',', index=False)
     dff2 = pd.DataFrame(mean_predict)
-    dff2.to_csv("b17_15nm_v2_prediction2.csv", sep=',', index=False)
+    dff2.to_csv("b17_15nm_v1_prediction2.csv", sep=',', index=False)
+    dff3 = pd.DataFrame(real_data)
+    dff3.to_csv("b17_15nm_v1_real2.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -275,13 +279,14 @@ if __name__ == "__main__":
     list_result_less10 = []
     Covariance_pred = np.arange(0, df_data2.shape[0] * test_size).reshape(-1, 1)
     mean_predict = np.arange(0, df_data2.shape[0] * test_size).reshape(-1, 1)
-
+    real_data = np.arange(0, df_data2.shape[0] * test_size).reshape(-1, 1)
     data_feature = df_data2[:, [first_corner,second_corner]]  # 第 1,2列
     # print(data_feature.shape)
     data_target = np.delete(df_data2, [first_corner,second_corner], axis=1)  # del 第 1 列
     # print(data_target.shape)
     for j in data_target.T:  #对 列 进行迭代
         xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=test_size)
+        real_data = np.concatenate((real_data, yte), axis=1)  # 按列拼接
         xtr = torch.Tensor(xtr)
         xte = torch.Tensor(xte)
         ytr = torch.Tensor(ytr).view(-1, 1)
@@ -315,6 +320,9 @@ if __name__ == "__main__":
     dff.to_csv("b17_15nm_v2__covariance2.csv", sep=',', index=False)
     dff2 = pd.DataFrame(mean_predict)
     dff2.to_csv("b17_15nm_v2_prediction2.csv", sep=',', index=False)
+    dff3 = pd.DataFrame(real_data)
+    dff3.to_csv("b17_15nm_v2_real2.csv", sep=',', index=False)
+
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -336,13 +344,15 @@ if __name__ == "__main__":
     list_result_less10 = []
     Covariance_pred = np.arange(0, df_data3.shape[0] * test_size).reshape(-1, 1)
     mean_predict = np.arange(0, df_data3.shape[0] * test_size).reshape(-1, 1)
-
+    real_data = np.arange(0, df_data3.shape[0] * test_size).reshape(-1, 1)
     data_feature = df_data3[:, [first_corner,second_corner]]  # 第 1,2列
     # print(data_feature.shape)
     data_target = np.delete(df_data3, [first_corner,second_corner], axis=1)  # del 第 1 列
     # print(data_target.shape)
     for j in data_target.T:  #对 列 进行迭代
         xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=test_size)
+
+        real_data = np.concatenate((real_data, yte), axis=1)  # 按列拼接
         xtr = torch.Tensor(xtr)
         xte = torch.Tensor(xte)
         ytr = torch.Tensor(ytr).view(-1, 1)
@@ -376,6 +386,9 @@ if __name__ == "__main__":
     dff.to_csv("b17_15nm_v3_covariance2.csv", sep=',', index=False)
     dff2 = pd.DataFrame(mean_predict)
     dff2.to_csv("b17_15nm_v3_prediction2.csv", sep=',', index=False)
+
+    dff3 = pd.DataFrame(real_data)
+    dff3.to_csv("b17_15nm_v3_real2.csv", sep=',', index=False)
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -393,10 +406,11 @@ if __name__ == "__main__":
     print("b17_3 BenchMark Done.")
     print("==========next starting...=============")
 
-####b18_1
+####b17_4
     list_result_less10 = []
     Covariance_pred = np.arange(0, df_data4.shape[0] * test_size).reshape(-1, 1)
     mean_predict = np.arange(0, df_data4.shape[0] * test_size).reshape(-1, 1)
+    real_data = np.arange(0, df_data4.shape[0] * test_size).reshape(-1, 1)
 
     data_feature = df_data4[:, [first_corner,second_corner]]  # 第 1,2列
     # print(data_feature.shape)
@@ -404,6 +418,7 @@ if __name__ == "__main__":
     # print(data_target.shape)
     for j in data_target.T:  #对 列 进行迭代
         xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=test_size)
+        real_data = np.concatenate((real_data, yte), axis=1)  # 按列拼接
         xtr = torch.Tensor(xtr)
         xte = torch.Tensor(xte)
         ytr = torch.Tensor(ytr).view(-1, 1)
@@ -437,6 +452,9 @@ if __name__ == "__main__":
     dff.to_csv("b17_15nm_v4_covariance2.csv", sep=',', index=False)
     dff2 = pd.DataFrame(mean_predict)
     dff2.to_csv("b17_15nm_v4_prediction2.csv", sep=',', index=False)
+    dff3 = pd.DataFrame(real_data)
+    dff3.to_csv("b17_15nm_v4_real2.csv", sep=',', index=False)
+
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
@@ -454,10 +472,11 @@ if __name__ == "__main__":
     print("b17_4 BenchMark Done.")
     print("==========next starting...=============")
 
-####b18_2
+####b17_5
     list_result_less10 = []
     Covariance_pred = np.arange(0, df_data5.shape[0] * test_size).reshape(-1, 1)
     mean_predict = np.arange(0, df_data5.shape[0] * test_size).reshape(-1, 1)
+    real_data = np.arange(0, df_data5.shape[0] * test_size).reshape(-1, 1)
 
     data_feature = df_data5[:, [first_corner,second_corner]]  # 第 1,2列
     # print(data_feature.shape)
@@ -465,6 +484,8 @@ if __name__ == "__main__":
     # print(data_target.shape)
     for j in data_target.T:  #对 列 进行迭代
         xtr, xte, ytr, yte = train_test_split(data_feature, j.reshape(-1,1), test_size=test_size)
+        real_data = np.concatenate((real_data, yte), axis=1)  # 按列拼接
+
         xtr = torch.Tensor(xtr)
         xte = torch.Tensor(xte)
         ytr = torch.Tensor(ytr).view(-1, 1)
@@ -498,6 +519,10 @@ if __name__ == "__main__":
     dff.to_csv("b17_15nm_v5_covariance2.csv", sep=',', index=False)
     dff2 = pd.DataFrame(mean_predict)
     dff2.to_csv("b17_15nm_v5_prediction2.csv", sep=',', index=False)
+
+    dff3 = pd.DataFrame(real_data)
+    dff3.to_csv("b17_15nm_v5_real2.csv", sep=',', index=False)
+
     print("==================================================================")
     print("pridiction siteration:", len(MAE))  # 13*14 次
     result_mae = sum(MAE) / len(MAE)
