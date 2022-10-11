@@ -77,7 +77,7 @@ font = {
         'size'   : 8}
 legend_fontsize={ 'size': 10}
 
-figsize = (4.3,3.3)
+figsize = (4,3)
 dpi = 150 #sci要求 300以上
 
 grid_linewidth = 0.5 #网格线宽度
