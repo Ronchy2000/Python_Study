@@ -1,0 +1,9 @@
+include LICENSE
+include .travis.yml
+include tox.ini
+include setup.cfg
+include README.md
+include README.rst
+include requirements.txt
+recursive-include tests *.py
+recursive-include tests/test_data *
