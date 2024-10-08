@@ -35,7 +35,7 @@ wheels/
 *.manifest
 *.spec
 
-# Installer logs
+# Installer 1.tensorboard using
 pip-log.txt
 pip-delete-this-directory.txt
 
