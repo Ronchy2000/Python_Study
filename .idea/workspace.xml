@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="81cf7488-7892-4654-be5c-f87743234748" name="Default Changelist" comment="算法例程代码">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Opencv/6.19 图像处理课件/HSV阈值调节可视化/multithresh-master/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Opencv/6.19 图像处理课件/HSV阈值调节可视化/multithresh-master/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pytorch_learning/1.tensorboard using/1.tensorboard using.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pytorch_learning/1.tensorboard using/1.tensorboard using.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/机器学习/BETA_Baysian Enhanced_STA/Feature_Selection/pyHSICLasso/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/机器学习/BETA_Baysian Enhanced_STA/Feature_Selection/pyHSICLasso/.gitignore" afterDir="false" />
     </list>
     <list id="419c413f-76e5-4f04-a9de-dd9701dd1f8b" name="binary_search查找下标或值" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -105,7 +102,7 @@
       <recent name="E:\Developer\Python\Myworkshop\Python_Study\Python编程从入门到实践\文件和异常\数据处理\二维数据处理" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.1.tensorboard using (1)">
+  <component name="RunManager" selected="Python.Hello_NN module">
     <configuration name="爬虫图片" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Python_Study" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -158,6 +155,25 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="E:\Developer\WorkShop\Python_Study\Pytorch_learning\1.tensorboard using\1.tensorboard using.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Hello_NN module" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Python_Study" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="E:\Developer\Python\Anaconda\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pytorch_learning" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="E:\Developer\WorkShop\Python_Study\Pytorch_learning\Hello_NN module.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -1416,44 +1432,22 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="setup" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Python_Study" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="E:\Developer\Python\Anaconda\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/爬虫学习/m3u8/m3u8" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/爬虫学习/m3u8/m3u8/setup.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.爬虫图片" />
       <item itemvalue="Python.函数进阶_混合传参" />
       <item itemvalue="Python.1.tensorboard using" />
       <item itemvalue="Python.1.tensorboard using (1)" />
       <item itemvalue="Python.爬m3u8视频" />
-      <item itemvalue="Python.setup" />
       <item itemvalue="Python.run_m3u8_1" />
+      <item itemvalue="Python.Hello_NN module" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Hello_NN module" />
         <item itemvalue="Python.1.tensorboard using (1)" />
         <item itemvalue="Python.1.tensorboard using" />
         <item itemvalue="Python.爬m3u8视频" />
         <item itemvalue="Python.run_m3u8_1" />
-        <item itemvalue="Python.setup" />
       </list>
     </recent_temporary>
   </component>
@@ -1577,7 +1571,7 @@
       <workItem from="1643776656735" duration="188000" />
       <workItem from="1643797895382" duration="3544000" />
       <workItem from="1645005960409" duration="710000" />
-      <workItem from="1728222038124" duration="4284000" />
+      <workItem from="1728222038124" duration="10399000" />
     </task>
     <task id="LOCAL-00001" summary="添加汉诺塔问题">
       <created>1643024565491</created>
