@@ -2,9 +2,13 @@ import torch
 import torchvision.datasets
 from torch import nn
 from torch.nn import Conv2d, Flatten, MaxPool2d
+from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
 dataset =torchvision.datasets.CIFAR10("./data", train=False, transform=torchvision.transforms.ToTensor(), download=True)
+
+dataloader = DataLoader(dataset, batch_size=1)
+
 class Seq(nn.Module):
     def __init__(self):
         super(Seq, self).__init__()
@@ -25,14 +29,21 @@ class Seq(nn.Module):
         return x
 
 seq = Seq()
+loss_crossentropu = nn.CrossEntropyLoss()
 
 if __name__ == '__main__':
     # print("seq_module:", seq)
-    input = torch.ones((64,3,32,32))
-    # print("input:", input)
-    output = seq(input)
-    print("output:", output.shape)
+    for data in dataloader:
+        imgs, targets = data
+        outputs = seq(imgs)
+        result_loss = loss_crossentropu(outputs, targets)
+        result_loss.backward()  #  对loss进行反向传播
+        print("OK!")
+        # print("result_loss:", result_loss)
+        # print("output:", outputs)
+        # print("target:", targets)
 
-    writer = SummaryWriter("./logs/logs_seq")
-    writer.add_graph(seq, input)
-    writer.close()
+
+    # writer = SummaryWriter("./logs/logs_seq")
+    # writer.add_graph(seq, input)
+    # writer.close()
