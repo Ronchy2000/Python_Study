@@ -1,5 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
-.idea
+.idea/
 .idea/target/
 .pytest_cache
 .gitattributes
@@ -8,3 +8,7 @@
 **/logs/
 # 如果你想忽略所有名为data的文件夹，无论它们在项目中的位置如何，你可以在.gitignore文件中添加以下内容：
 **/data/
+#忽略 .pth
+*.pth
+#忽略.DS_Store文件
+.DS_Store
