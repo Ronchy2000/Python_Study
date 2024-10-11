@@ -10,5 +10,7 @@
 **/data/
 #忽略 .pth
 *.pth
+#忽略 .pt
+*.pt
 #忽略.DS_Store文件
 .DS_Store
