@@ -5,9 +5,6 @@ from torch.nn import Conv2d, Flatten, MaxPool2d
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
-# dataset =torchvision.datasets.CIFAR10("./data", train=False, transform=torchvision.transforms.ToTensor(), download=True)
-# 
-# dataloader = DataLoader(dataset, batch_size=1)
 
 class Seq(nn.Module):
     def __init__(self):
@@ -34,6 +31,10 @@ optim = torch.optim.SGD(seq.parameters(), lr=0.01)
 
 if __name__ == '__main__':
     # print("seq_module:", seq)
+    dataset =torchvision.datasets.CIFAR10("./data", train=False, transform=torchvision.transforms.ToTensor(), download=True)
+
+    dataloader = DataLoader(dataset, batch_size=1)
+
     for epoch in range(10):
         running_loss = 0.0
         for data in dataloader:
