@@ -43,7 +43,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 #  设置训练网络的一些参数
 total_train_step = 0 #  记录训练的次数
 total_test_step = 0  #  记录测试的次数
-epoch = 10 #  训练的轮数
+epoch = 5000 #  训练的轮数
 
 start_time = time.time()
 for i in range(epoch):
@@ -65,24 +65,10 @@ for i in range(epoch):
         if total_train_step % 100 == 0:
             print("训练次数：{}， Loss：{}".format(total_train_step, loss.item()))  #loss 与 loss.item()  的区别：item是索引到tensor中的值。
             writer.add_scalar("train_loss", loss.item(),total_train_step)  #  tag, y, x
+
     end_epoch_time = time.time()
     print("本轮训练结束：{}".format(end_epoch_time - start_epoch_time))
 
-end_time = time.time()
-total_time = end_time - start_time
-minutes = int(total_time // 60)
-seconds = total_time % 60
-print("训练结束，总耗时：{}分钟 {:.2f}秒".format(minutes, seconds))
-
-
-#  保存模型
-# torch.save(model.state_dict(), "./models/model.pth")
-# print("模型已保存")
-
-
-#  测试步骤开始
-
-for i in range(epoch):
     total_test_loss = 0
     with torch.no_grad():  # with 语句不计算梯度，减少计算量，提高运行速度
         for data in test_dataloader:
@@ -92,7 +78,36 @@ for i in range(epoch):
             outputs = model(imgs)
             loss = loss_fn(outputs, targets)
             total_test_loss += loss.item()
-            writer.add_scalar("test_loss", total_test_loss, total_test_step)
-            total_test_step += 1
-        print("测试集上的Loss：{}".format(total_test_loss))
+    writer.add_scalar("test_loss", total_test_loss, total_test_step)
+    total_test_step += 1
+    print("测试集上的Loss：{}".format(total_test_loss))
+
+end_time = time.time()
+total_time = end_time - start_time
+minutes = int(total_time // 60)
+seconds = total_time % 60
+print("训练结束，总耗时：{}分钟 {:.2f}秒".format(minutes, seconds))
+
+
+##  保存模型
+torch.save(model.state_dict(), "./models/model.pth")
+print("模型已保存")
+
+
+#  测试步骤开始
+#  应该写在每轮训练的时候，写在最后，test的loss不会变，因为模型没有改变。
+
+# for i in range(epoch):
+#     total_test_loss = 0
+#     with torch.no_grad():  # with 语句不计算梯度，减少计算量，提高运行速度
+#         for data in test_dataloader:
+#             imgs, targets = data
+#             imgs = imgs.to(device)
+#             targets = targets.to(device)
+#             outputs = model(imgs)
+#             loss = loss_fn(outputs, targets)
+#             total_test_loss += loss.item()
+#     writer.add_scalar("test_loss", total_test_loss, total_test_step)
+#     total_test_step += 1
+#     print("测试集上的Loss：{}".format(total_test_loss))
 
