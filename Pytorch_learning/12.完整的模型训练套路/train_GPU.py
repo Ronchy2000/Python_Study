@@ -43,7 +43,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 #  设置训练网络的一些参数
 total_train_step = 0 #  记录训练的次数
 total_test_step = 0  #  记录测试的次数
-epoch = 5000 #  训练的轮数
+epoch = 500 #  训练的轮数
 
 start_time = time.time()
 for i in range(epoch):
@@ -90,8 +90,8 @@ print("训练结束，总耗时：{}分钟 {:.2f}秒".format(minutes, seconds))
 
 
 ##  保存模型
-torch.save(model.state_dict(), "./models/model.pth")
-print("模型已保存")
+# torch.save(model.state_dict(), "./models/model.pth")
+# print("模型已保存")
 
 
 #  测试步骤开始
