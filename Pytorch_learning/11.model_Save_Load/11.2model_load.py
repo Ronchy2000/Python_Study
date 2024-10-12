@@ -6,7 +6,7 @@ import torchvision
 # model1 = torch.load("vgg16_method1.pth")
 # print("model", model1)
 
-#  保存方式1，加载模型
+#  保存方式2，加载模型
 # #  这两行可以查看保存的模型参数
 # model2_param = torch.load("vgg16_method2.pth")
 # print("model", model2_param)
