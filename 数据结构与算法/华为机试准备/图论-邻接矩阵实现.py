@@ -1,3 +1,17 @@
+
+# 邻接矩阵的原理描述
+"""
+邻接矩阵（Adjacency Matrix）
+使用一个二维数组 adj_matrix 来存储顶点之间的邻接关系。
+
+对于无权图来说，如果 adj-matrix[i][j] 为1，则说明顶点 va 到 vb 存在边.
+如果adj_matrix[i][j]为0，则说明顶点va到vb不存在边。
+
+•对于带权图来[]说，如果 adj_matrislil［i］为w，并且w0 不等于 ∞，则说明顶点到e；的权值为w。
+如果 adj_matriz[i][j]= ∞，则说明不存在边。
+"""
+
+
 class Graph:                                    # 基本图类，采用邻接矩阵表示
     # 图的初始化操作，ver_count 为顶点个数
     def __init__(self, ver_count):
