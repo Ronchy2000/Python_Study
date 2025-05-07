@@ -1,3 +1,7 @@
+'''
+这个是提交版本
+'''
+
 def optimize_bulb_switches(init_states, goal_states, node_count):
 
     # 操作总次数计数器
