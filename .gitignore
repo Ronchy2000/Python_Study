@@ -14,3 +14,8 @@
 *.pt
 #忽略.DS_Store文件
 .DS_Store
+
+data/*
+
+
+__pycache__/ # 忽略所有的 .pyc 文件
