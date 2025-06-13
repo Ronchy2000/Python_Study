@@ -9,6 +9,7 @@ import re
 该版本只能保存多个文件的title 和 内容，
 + 保存的文件加入日期命名。
 + fix bug: 修改文件命名日期重复
++ 加入多个请求头
 """
 
 # 创建保存文件的目录
@@ -156,6 +157,7 @@ def sanitize_filename(filename):
     # 移除文件名中的非法字符
     return re.sub(r'[\\/*?:"<>|]', '', filename).strip()
 
+
 def save_article(article_data, output_dir):
     if not article_data or not article_data.get("title"):
         return False
@@ -165,13 +167,20 @@ def save_article(article_data, output_dir):
     article_number = article_data["article_number"]
     date_str = article_data.get("date", "")  # Get the extracted date
 
-    # Check if title already starts with the date to avoid repetition
-    if date_str and title.startswith(date_str):
+    # Normalize date for comparison (remove leading zeros from month and day)
+    normalized_date = re.sub(r'\.0(\d)\.', r'.\1.', date_str) if date_str else ""
+
+    # Check if title already contains the date pattern to avoid repetition
+    date_in_title = re.match(r'^\d{4}\.\d{1,2}\.\d{1,2}', title)
+
+    if date_in_title:
+        # Title already starts with a date pattern, use as is
         filename = sanitize_filename(title)
-    # Create filename with date prefix if available and not already in title
     elif date_str:
+        # Add the extracted date as prefix
         filename = sanitize_filename(f"{date_str}-{title}")
     else:
+        # No date available
         filename = sanitize_filename(title)
 
     if not filename:
@@ -190,7 +199,7 @@ def main():
     output_dir = create_directory("鳄鱼派研报内容/文章")
 
     # 文章编号范围
-    start_number = 1
+    start_number = 100
     end_number = 149
 
     success_count = 0
