@@ -12,10 +12,11 @@
 *.pth
 #忽略 .pt
 *.pt
-#忽略.DS_Store文件
-.DS_Store
+#忽略.DS_Store文件,递归匹配所有子目录（推荐写法）。
+#直接写.DS_Store：仅匹配根目录下的文件。
+**/.DS_Store
 
-data/*
+**/data/*
 
 
 __pycache__/ # 忽略所有的 .pyc 文件
