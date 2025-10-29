@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 selenium_github.py
@@ -27,7 +26,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 # ============= 配置区域（在这里修改参数） =================
 CONFIG = {
     "URL": "https://github.com/Ronchy2000/Multi-agent-RL",   # 目标 URL
-    "MAX_VISITS": 50,           # 最大访问次数（设置为 0 表示无限次）
+    "MAX_VISITS": 5000,           # 最大访问次数（设置为 0 表示无限次）
     "INTERVAL_MEAN": 10,        # 平均访问间隔（秒），泊松分布的 lambda 参数
     "HEADLESS": True,           # True: 无头模式, False: 显示浏览器窗口（调试用）
     "WAIT_AFTER_LOAD": 3.0,     # 页面加载后等待的秒数
