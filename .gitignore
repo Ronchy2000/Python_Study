@@ -20,3 +20,4 @@
 
 
 __pycache__/ # 忽略所有的 .pyc 文件
+**/__pycache__
