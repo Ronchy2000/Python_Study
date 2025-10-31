@@ -21,3 +21,5 @@
 
 __pycache__/ # 忽略所有的 .pyc 文件
 **/__pycache__
+
+**/wiki_Gator_Investment_Research

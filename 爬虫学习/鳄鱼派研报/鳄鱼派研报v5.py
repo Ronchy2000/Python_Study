@@ -20,10 +20,13 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 更新要点：
 - 必须使用 Selenium：直接请求返回的是 SPA 壳，本版全程用无头 Chrome 渲染页面。
-- 文章保存为 Markdown，并按分类归档到“文章md/全部研报｜宏观分析｜行业分析”。
-- 保存排版更易读：保留标题层级、列表、粗体、链接、图片等常见格式。
+- 文章保存为 Markdown，并按分类归档到"文章md/全部研报｜宏观分析｜行业分析"。
+- 保存排版更易读:保留标题层级、列表、粗体、链接、图片等常见格式。
 - 跳过已下载文章：使用 index.json 记录 article_id，重复运行时自动跳过。
 - 继续同时输出调试 HTML（方便排查结构变动）。
+- 🆕 增量探测：在 index.json 中记录 last_probed_id，下次从该位置继续探测。
+- 🆕 增量下载：只下载新发现的文章，避免重复工作。
+- 🆕 智能恢复：即使中断，下次运行也能自动继续。
 """
 
 
@@ -175,10 +178,16 @@ def read_saved_index(index_path: str) -> Dict[str, Any]:
     if os.path.exists(index_path):
         try:
             with open(index_path, "r", encoding="utf-8") as fp:
-                return json.load(fp)
+                data = json.load(fp)
+                # 确保包含必要的字段
+                if "saved_ids" not in data:
+                    data["saved_ids"] = []
+                if "last_probed_id" not in data:
+                    data["last_probed_id"] = 0
+                return data
         except Exception:
-            return {"saved_ids": []}
-    return {"saved_ids": []}
+            return {"saved_ids": [], "last_probed_id": 0}
+    return {"saved_ids": [], "last_probed_id": 0}
 
 
 def write_saved_index(index_path: str, info: Dict[str, Any]) -> None:
@@ -196,6 +205,11 @@ def add_saved_id(article_id: int, saved_index: Dict[str, Any]) -> None:
     ids = set(saved_index.get("saved_ids", []))
     ids.add(int(article_id))
     saved_index["saved_ids"] = sorted(ids)
+
+
+def update_last_probed_id(probed_id: int, saved_index: Dict[str, Any]) -> None:
+    """更新最后探测的 ID"""
+    saved_index["last_probed_id"] = int(probed_id)
 
 
 def save_markdown(info: Dict[str, Any], root_md: str) -> str:
@@ -384,6 +398,77 @@ class SeleniumArticleFetcher:
         }
 
 
+def find_latest_article_id(fetcher, start_from: int = 1, initial_step: int = 50, max_consecutive_fails: int = 5) -> int:
+    """
+    自动发现最新文章的 ID - 改进版（两阶段探测）
+    
+    策略：
+    1. 粗略探测：用大步长快速找到大致边界
+    2. 精确定位：用小步长精确找到最后一篇文章
+    """
+    print(f"\n🔍 自动探测最新文章 ID...")
+    print(f"   起始 ID: {start_from}")
+    print(f"   阶段1: 粗略探测（步长 {initial_step}）")
+    
+    # 阶段1：粗略探测
+    current_id = start_from
+    last_valid_id = start_from - 1  # 初始化为起始ID的前一个
+    consecutive_fails = 0
+    
+    # 先检查起始ID是否有效
+    try:
+        info = fetcher.fetch(start_from)
+        if info:
+            last_valid_id = start_from
+            print(f"  ✅ ID {start_from}: {info['title'][:40]}... ({info['date']})")
+        else:
+            print(f"  ❌ ID {start_from}: 未找到")
+    except Exception:
+        print(f"  ❌ ID {start_from}: 访问失败")
+    
+    # 继续大步长探测
+    current_id = start_from + initial_step
+    while consecutive_fails < max_consecutive_fails:
+        try:
+            info = fetcher.fetch(current_id)
+            if info:
+                last_valid_id = current_id
+                consecutive_fails = 0
+                print(f"  ✅ ID {current_id}: {info['title'][:40]}... ({info['date']})")
+            else:
+                consecutive_fails += 1
+                print(f"  ❌ ID {current_id}: 未找到 ({consecutive_fails}/{max_consecutive_fails})")
+        except Exception:
+            consecutive_fails += 1
+            print(f"  ❌ ID {current_id}: 访问失败 ({consecutive_fails}/{max_consecutive_fails})")
+        
+        current_id += initial_step
+    
+    # 阶段2：精确定位（从最后一个有效ID开始，小步长向前）
+    print(f"\n   阶段2: 精确定位（从 ID {last_valid_id + 1} 开始，步长 5）")
+    precise_step = 5
+    consecutive_fails = 0
+    
+    current_id = last_valid_id + 1
+    while consecutive_fails < 10:  # 连续10个不存在就停止
+        try:
+            info = fetcher.fetch(current_id)
+            if info:
+                last_valid_id = current_id
+                consecutive_fails = 0
+                print(f"  ✅ ID {current_id}: {info['title'][:40]}... ({info['date']})")
+            else:
+                consecutive_fails += 1
+        except Exception:
+            consecutive_fails += 1
+        
+        current_id += precise_step
+    
+    print(f"\n✅ 探测完成！最新文章 ID: {last_valid_id}")
+    
+    return last_valid_id
+
+
 def crawl_range(start_id: int, end_id: int, out_root: str, pause_sec: float = 1.2) -> None:
     root_dir = create_directory(out_root)
     index_path = os.path.join(root_dir, "index.json")
@@ -436,11 +521,69 @@ def crawl_range(start_id: int, end_id: int, out_root: str, pause_sec: float = 1.
 def main():
     project_root = pathlib.Path(__file__).resolve().parent
     out_root = project_root / "鳄鱼派研报内容" / "文章md"
-
-    start_id = 1
-    end_id = 149
-
-    crawl_range(start_id, end_id, str(out_root), pause_sec=1.0)
+    index_path = out_root / "index.json"
+    
+    # 确保目录存在
+    create_directory(str(out_root))
+    
+    # 读取已保存的索引
+    saved_index = read_saved_index(str(index_path))
+    saved_ids = saved_index.get("saved_ids", [])
+    max_saved_id = max(saved_ids) if saved_ids else 0
+    last_probed_id = saved_index.get("last_probed_id", 0)
+    
+    print(f"📊 当前状态:")
+    print(f"   已保存文章: {len(saved_ids)} 篇")
+    print(f"   最大已保存 ID: {max_saved_id}")
+    print(f"   上次探测到的最新 ID: {last_probed_id}")
+    
+    # 决定从哪里开始探测
+    if last_probed_id > 0:
+        # 从上次探测的位置继续
+        start_probe = last_probed_id + 1
+        print(f"\n🔄 增量模式：从 ID {start_probe} 开始探测新文章")
+    else:
+        # 首次运行，从最大已保存ID开始
+        start_probe = max(max_saved_id + 1, 1)
+        print(f"\n🆕 首次探测：从 ID {start_probe} 开始")
+    
+    # 自动发现最新文章 ID
+    print("\n🚀 启动自动探测...")
+    fetcher = SeleniumArticleFetcher(BASE_URL)
+    try:
+        latest_id = find_latest_article_id(fetcher, start_from=start_probe, initial_step=50)
+        
+        # 更新探测记录
+        if latest_id >= start_probe:
+            update_last_probed_id(latest_id, saved_index)
+            write_saved_index(str(index_path), saved_index)
+            print(f"\n💾 已更新探测记录：最新 ID = {latest_id}")
+        
+        end_id = latest_id + 10  # 留一些余量
+    finally:
+        fetcher.close()
+    
+    # 增量下载：只下载未保存的文章
+    if max_saved_id > 0:
+        # 优先下载新发现的文章
+        start_id = max_saved_id + 1
+        print(f"\n📥 增量下载模式：下载 ID {start_id} - {end_id} 的新文章")
+    else:
+        # 首次运行，从头开始
+        start_id = 1
+        print(f"\n📥 完整下载模式：下载 ID {start_id} - {end_id} 的所有文章")
+    
+    if start_id <= end_id:
+        crawl_range(start_id, end_id, str(out_root), pause_sec=1.0)
+    else:
+        print(f"\n✅ 没有新文章需要下载！")
+    
+    # 显示最终统计
+    final_index = read_saved_index(str(index_path))
+    final_count = len(final_index.get("saved_ids", []))
+    print(f"\n🎉 任务完成！")
+    print(f"   当前共有 {final_count} 篇文章")
+    print(f"   最新探测 ID: {final_index.get('last_probed_id', 0)}")
 
 
 if __name__ == "__main__":
